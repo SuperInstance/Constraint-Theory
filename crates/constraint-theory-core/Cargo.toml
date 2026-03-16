@@ -1,0 +1,23 @@
+[package]
+name = "constraint-theory-core"
+version = "0.1.0"
+edition = "2021"
+description = "High-performance constraint theory engine core"
+authors = ["SuperInstance Team"]
+license = "MIT"
+
+[dependencies]
+
+[dev-dependencies]
+rand = "0.8"
+
+[features]
+default = []
+simd = []
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+target-cpu = "native"

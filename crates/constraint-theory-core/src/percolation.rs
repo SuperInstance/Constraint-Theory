@@ -1,0 +1,109 @@
+//! Rigidity Percolation using Laman's Theorem
+
+use std::collections::HashMap;
+
+pub struct RigidityResult {
+    pub is_rigid: bool,
+    pub rank: usize,
+    pub deficiency: usize,
+    pub n_clusters: usize,
+    pub rigid_fraction: f32,
+}
+
+pub struct FastPercolation {
+    parent: Vec<usize>,
+    rank: Vec<usize>,
+    size: Vec<usize>,
+}
+
+impl FastPercolation {
+    pub fn new(n: usize) -> Self {
+        Self {
+            parent: (0..n).collect(),
+            rank: vec![0; n],
+            size: vec![1; n],
+        }
+    }
+
+    fn find(&mut self, x: usize) -> usize {
+        if self.parent[x] != x {
+            self.parent[x] = self.find(self.parent[x]);
+        }
+        self.parent[x]
+    }
+
+    fn union(&mut self, x: usize, y: usize) {
+        let xr = self.find(x);
+        let yr = self.find(y);
+
+        if xr == yr {
+            return;
+        }
+
+        if self.rank[xr] < self.rank[yr] {
+            self.parent[xr] = yr;
+            self.size[yr] += self.size[xr];
+        } else if self.rank[xr] > self.rank[yr] {
+            self.parent[yr] = xr;
+            self.size[xr] += self.size[yr];
+        } else {
+            self.parent[yr] = xr;
+            self.rank[xr] += 1;
+            self.size[xr] += self.size[yr];
+        }
+    }
+
+    pub fn compute_rigidity(&mut self, edges: &[(usize, usize)], n_nodes: usize) -> RigidityResult {
+        for &(u, v) in edges {
+            if u < n_nodes && v < n_nodes {
+                self.union(u, v);
+            }
+        }
+
+        let mut clusters: HashMap<usize, usize> = HashMap::new();
+        for i in 0..n_nodes {
+            let root = self.find(i);
+            *clusters.entry(root).or_insert(0) += 1;
+        }
+
+        let n_clusters = clusters.len();
+        let n_edges = edges.len();
+        let expected_edges = 2 * n_nodes - 3;
+
+        let is_rigid = n_edges >= expected_edges;
+        let rank = n_edges.min(2 * n_nodes - 3);
+        let deficiency = if n_edges >= 2 * n_nodes - 2 {
+            n_edges - (2 * n_nodes - 3)
+        } else {
+            2 * n_nodes - 3 - n_edges
+        };
+
+        let rigid_nodes: usize = clusters.values()
+            .filter(|&&s| s >= 3)
+            .sum();
+
+        let rigid_fraction = rigid_nodes as f32 / n_nodes as f32;
+
+        RigidityResult {
+            is_rigid,
+            rank,
+            deficiency,
+            n_clusters,
+            rigid_fraction,
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_percolation() {
+        let mut perc = FastPercolation::new(5);
+        let edges = [(0, 1), (1, 2), (2, 3), (3, 4)];
+        let result = perc.compute_rigidity(&edges, 5);
+        
+        assert!(result.rigid_fraction > 0.0);
+    }
+}
