@@ -1,6 +1,6 @@
 import { Router } from 'itty-router';
 import { apiRoutes } from './routes/api';
-import { HOMEPAGE_HTML, PYTHAGOREAN_HTML, RIGIDITY_HTML, COMING_SOON_HTML, PYTHAGOREAN_JS, RIGIDITY_JS } from './routes/static';
+import { HOMEPAGE_HTML, PYTHAGOREAN_HTML, RIGIDITY_HTML, COMING_SOON_HTML, PYTHAGOREAN_JS, RIGIDITY_JS, VOXEL_HTML, SWARM_HTML, REASONING_HTML, ENTROPY_HTML, BOTTLENECK_HTML, FLOW_NETWORK_HTML, PERFORMANCE_HTML } from './routes/static';
 
 // Create router
 const router = Router();
@@ -144,6 +144,122 @@ router.get('/simulators/kdtree/', () => {
       'Cache-Control': 'public, max-age=3600'
     }
   });
+});
+
+// New interactive simulators
+router.get('/simulators/voxel/', () => {
+  try {
+    const html = VOXEL_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator: ' + errorMessage, { status: 500 });
+  }
+});
+
+router.get('/simulators/swarm/', () => {
+  try {
+    const html = SWARM_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator: ' + errorMessage, { status: 500 });
+  }
+});
+
+router.get('/simulators/reasoning/', () => {
+  try {
+    const html = REASONING_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator: ' + errorMessage, { status: 500 });
+  }
+});
+
+router.get('/simulators/entropy/', () => {
+  try {
+    const html = ENTROPY_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator: ' + errorMessage, { status: 500 });
+  }
+});
+
+// Theory of Constraints Bottleneck
+router.get('/simulators/bottleneck/', () => {
+  try {
+    const html = BOTTLENECK_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator: ' + errorMessage, { status: 500 });
+  }
+});
+
+// Flow Network Simulator
+router.get('/simulators/flow/', () => {
+  try {
+    const html = FLOW_NETWORK_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator: ' + errorMessage, { status: 500 });
+  }
+});
+
+// Performance Benchmarks
+router.get('/simulators/benchmark/', () => {
+  try {
+    const html = PERFORMANCE_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator: ' + errorMessage, { status: 500 });
+  }
 });
 
 // Export for Cloudflare Workers
