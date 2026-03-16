@@ -1,8 +1,9 @@
 /**
  * Sentry error tracking integration for Cloudflare Workers
+ *
+ * Note: To enable Sentry, install @sentry/cloudflare and uncomment the imports
+ * import * as Sentry from '@sentry/cloudflare';
  */
-
-import type * as Sentry from '@sentry/cloudflare';
 
 export interface SentryConfig {
   dsn: string;

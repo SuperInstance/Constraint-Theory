@@ -1,61 +1,74 @@
 import { Router } from 'itty-router';
-import { corsMiddleware } from './middleware/cors';
-import { cacheMiddleware } from './middleware/cache';
-import { simulatorsRoutes } from './routes/simulators';
 import { apiRoutes } from './routes/api';
-import { staticRoutes } from './routes/static';
 
 // Create router
 const router = Router();
-
-// Apply middleware
-router.all('*', corsMiddleware);
-router.all('*', cacheMiddleware);
 
 // Health check
 router.get('/health', () => {
   return Response.json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
-    version: ENVIRONMENT.API_VERSION
+    version: 'v1'
   });
 });
 
-// Mount routes
-router.route('/api/simulators', simulatorsRoutes);
+// API documentation
+router.get('/api', () => {
+  return Response.json({
+    version: 'v1',
+    title: 'Constraint Theory API',
+    description: 'RESTful API for constraint theory computations and simulations',
+    baseUrl: '/api',
+    endpoints: {
+      health: 'GET /health',
+      docs: 'GET /api',
+      snap: 'POST /api/geometry/snap',
+      solve: 'POST /api/constraints/solve',
+      validate: 'POST /api/constraints/validate',
+    },
+  });
+});
+
+// Mount API routes
 router.route('/api', apiRoutes);
-router.route('/', staticRoutes);
+
+// Root endpoint
+router.get('/', () => {
+  return Response.json({
+    name: 'Constraint Theory API',
+    version: 'v1',
+    status: 'operational',
+    endpoints: {
+      health: '/health',
+      api: '/api',
+      docs: '/api',
+    },
+  });
+});
 
 // 404 handler
 router.all('*', () => {
   return Response.json({
     error: 'Not Found',
     message: 'The requested resource was not found',
-    documentation: '/api/docs'
+    documentation: '/api'
   }, { status: 404 });
-});
-
-// Error handler
-router.all('*', (error: Error) => {
-  console.error('Error:', error);
-  return Response.json({
-    error: 'Internal Server Error',
-    message: error.message
-  }, { status: 500 });
 });
 
 // Export for Cloudflare Workers
 export interface Env {
-  ENVIRONMENT: string;
-  API_VERSION: string;
-  CORS_ORIGIN: string;
-  SESSION_STORE: KVNamespace;
-  CACHE: KVNamespace;
+  ENVIRONMENT?: string;
+  API_VERSION?: string;
+  CORS_ORIGIN?: string;
+  // KV namespaces (optional - add these in Cloudflare dashboard first)
+  // SESSION_STORE?: KVNamespace;
+  // CACHE?: KVNamespace;
 }
 
 export default {
   fetch: (request: Request, env: Env, ctx: ExecutionContext) =>
-    router.handle(request, env, ctx).catch(err => {
+    router.handle(request).catch(err => {
       console.error('Unhandled error:', err);
       return Response.json({
         error: 'Internal Server Error',

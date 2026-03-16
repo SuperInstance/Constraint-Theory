@@ -364,10 +364,10 @@ export const DEFAULT_ALERT_CONFIG: AlertConfig = {
     cacheHitRate: { warning: 0.5, critical: 0.3 },
   },
   notifications: {
-    // Configure these via environment variables or secrets
-    email: process.env.ALERT_EMAIL,
-    webhook: process.env.ALERT_WEBHOOK,
-    slack: process.env.ALERT_SLACK,
+    // Configure these via Cloudflare Workers environment variables or secrets
+    // email: env.ALERT_EMAIL,
+    // webhook: env.ALERT_WEBHOOK,
+    // slack: env.ALERT_SLACK,
   },
 };
 
@@ -390,8 +390,8 @@ export const SYNTHETIC_CHECKS: SyntheticCheck[] = [
         name: 'API responds',
         action: async () => {
           const response = await fetch('https://constrainttheory.com/api/simulators/pythagorean/config');
-          const data = await response.json();
-          return data.initialRatios && Array.isArray(data.initialRatios);
+          const data = await response.json() as { initialRatios?: unknown };
+          return !!(data.initialRatios && Array.isArray(data.initialRatios));
         },
       },
     ],
@@ -404,7 +404,7 @@ export const SYNTHETIC_CHECKS: SyntheticCheck[] = [
         name: 'Health endpoint',
         action: async () => {
           const response = await fetch('https://constrainttheory.com/health');
-          const data = await response.json();
+          const data = await response.json() as { status?: string };
           return data.status === 'healthy';
         },
       },

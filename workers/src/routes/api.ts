@@ -36,76 +36,111 @@ apiRoutes.get('/docs', () => {
 
 // Constraint solving endpoint
 apiRoutes.post('/constraints/solve', async (request) => {
-  const body = await request.json();
+  try {
+    const body = await request.json() as { constraints?: Array<any> };
 
-  // Validate input
-  if (!body.constraints || !Array.isArray(body.constraints)) {
+    // Validate input
+    if (!body.constraints || !Array.isArray(body.constraints)) {
+      return Response.json({
+        error: 'Invalid input',
+        message: 'constraints must be an array'
+      }, { status: 400 });
+    }
+
+    // Simulate constraint solving
+    const solution = {
+      solved: true,
+      iterations: 42,
+      convergence: 0.001,
+      result: body.constraints.map((c: any) => ({
+        ...c,
+        satisfied: true
+      }))
+    };
+
+    return Response.json(solution);
+  } catch (error) {
     return Response.json({
-      error: 'Invalid input',
-      message: 'constraints must be an array'
+      error: 'Invalid JSON',
+      message: 'Request body must be valid JSON'
     }, { status: 400 });
   }
-
-  // Simulate constraint solving
-  const solution = {
-    solved: true,
-    iterations: 42,
-    convergence: 0.001,
-    result: body.constraints.map((c: any) => ({
-      ...c,
-      satisfied: true
-    }))
-  };
-
-  return Response.json(solution);
 });
 
 // Constraint validation endpoint
 apiRoutes.post('/constraints/validate', async (request) => {
-  const body = await request.json();
+  try {
+    const body = await request.json() as { constraints?: Array<any> };
 
-  const validation = {
-    valid: true,
-    constraints: body.constraints.map((c: any) => ({
-      id: c.id,
+    if (!body.constraints || !Array.isArray(body.constraints)) {
+      return Response.json({
+        error: 'Invalid input',
+        message: 'constraints must be an array'
+      }, { status: 400 });
+    }
+
+    const validation = {
       valid: true,
-      satisfiable: true,
-      dependencies: []
-    }))
-  };
+      constraints: body.constraints.map((c: any) => ({
+        id: c.id,
+        valid: true,
+        satisfiable: true,
+        dependencies: []
+      }))
+    };
 
-  return Response.json(validation);
+    return Response.json(validation);
+  } catch (error) {
+    return Response.json({
+      error: 'Invalid JSON',
+      message: 'Request body must be valid JSON'
+    }, { status: 400 });
+  }
 });
 
 // Geometric snapping endpoint
 apiRoutes.post('/geometry/snap', async (request) => {
-  const body = await request.json();
-  const { vector, threshold = 0.1 } = body;
+  try {
+    const body = await request.json() as { vector?: { x: number; y: number }; threshold?: number };
+    const { vector, threshold = 0.1 } = body;
 
-  // Pythagorean snapping logic
-  const ratios = [
-    { a: 3, b: 4, c: 5 },
-    { a: 5, b: 12, c: 13 },
-    { a: 8, b: 15, c: 17 }
-  ];
+    if (!vector) {
+      return Response.json({
+        error: 'Invalid input',
+        message: 'vector is required'
+      }, { status: 400 });
+    }
 
-  const snapped = ratios.find(ratio => {
-    const distance = Math.sqrt(
-      Math.pow(vector.x - ratio.a, 2) +
-      Math.pow(vector.y - ratio.b, 2)
-    );
-    return distance < threshold;
-  });
+    // Pythagorean snapping logic
+    const ratios = [
+      { a: 3, b: 4, c: 5 },
+      { a: 5, b: 12, c: 13 },
+      { a: 8, b: 15, c: 17 }
+    ];
 
-  return Response.json({
-    original: vector,
-    snapped: snapped || vector,
-    snappedTo: snapped ? 'pythagorean_ratio' : 'none',
-    distance: snapped ? Math.sqrt(
-      Math.pow(vector.x - snapped.a, 2) +
-      Math.pow(vector.y - snapped.b, 2)
-    ) : 0
-  });
+    const snapped = ratios.find(ratio => {
+      const distance = Math.sqrt(
+        Math.pow(vector.x - ratio.a, 2) +
+        Math.pow(vector.y - ratio.b, 2)
+      );
+      return distance < threshold;
+    });
+
+    return Response.json({
+      original: vector,
+      snapped: snapped || vector,
+      snappedTo: snapped ? 'pythagorean_ratio' : 'none',
+      distance: snapped ? Math.sqrt(
+        Math.pow(vector.x - snapped.a, 2) +
+        Math.pow(vector.y - snapped.b, 2)
+      ) : 0
+    });
+  } catch (error) {
+    return Response.json({
+      error: 'Invalid JSON',
+      message: 'Request body must be valid JSON'
+    }, { status: 400 });
+  }
 });
 
 // API status endpoint
@@ -113,7 +148,6 @@ apiRoutes.get('/status', () => {
   return Response.json({
     status: 'operational',
     version: 'v1',
-    uptime: process.uptime(),
     timestamp: new Date().toISOString()
   });
 });

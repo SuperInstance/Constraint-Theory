@@ -186,7 +186,7 @@ export async function getHealthMetrics(env: any): Promise<HealthMetrics> {
   // This would collect actual metrics from the worker
   return {
     status: 'healthy',
-    uptime: process.uptime ? process.uptime() : 0,
+    uptime: 0, // Cloudflare Workers don't expose uptime
     memory: {
       used: 0,
       limit: 128, // MB
