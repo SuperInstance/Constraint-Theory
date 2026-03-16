@@ -76,7 +76,7 @@ $$
 Maps continuous vectors to discrete valid states:
 
 $$
-\Phi(v) = \operatorname{argmin}_{g \in G} \|v - g \cdot v_0\|
+\Phi(v) = \text{argmin}_{g \in G} \|v - g \cdot v_0\|
 $$
 
 Where:
