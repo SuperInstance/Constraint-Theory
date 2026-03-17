@@ -1,6 +1,7 @@
 import { Router } from 'itty-router';
 import { apiRoutes } from './routes/api';
 import { apiExplorerRoutes, API_EXPLORER_HTML } from './routes/api-explorer';
+import { tutorialsRoutes } from './routes/tutorials';
 import { HOMEPAGE_HTML, PYTHAGOREAN_HTML, RIGIDITY_HTML, COMING_SOON_HTML, PYTHAGOREAN_JS, RIGIDITY_JS, VOXEL_HTML, SWARM_HTML, REASONING_HTML, ENTROPY_HTML, BOTTLENECK_HTML, FLOW_NETWORK_HTML, PERFORMANCE_HTML, DIFFERENTIATION_HTML, INTEGRATION_HTML, GRADIENT_HTML } from './routes/static';
 
 // Create router
@@ -52,6 +53,9 @@ router.get('/', () => {
 
 // Mount API routes
 router.route('/api', apiRoutes);
+
+// Mount Tutorial routes
+router.route('/tutorials', tutorialsRoutes);
 
 // Mount API Explorer routes
 router.route('/api-explorer', apiExplorerRoutes);

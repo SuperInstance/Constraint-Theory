@@ -6,11 +6,19 @@
     <title>Constraint Theory - Interactive Demos</title>
     <meta name="description" content="Interactive demonstrations of Constraint Theory - deterministic geometric computation with zero uncertainty">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/cyberpunk-base.css">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <div class="container">
+            <!-- Breadcrumb Navigation -->
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <a href="/" class="breadcrumb-item">Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-item active">Interactive Demos</span>
+            </nav>
+
             <div class="header-content">
                 <h1 class="logo">
                     <span class="logo-icon">📐</span>
@@ -19,9 +27,18 @@
                 <p class="tagline">Deterministic geometric computation for AI</p>
             </div>
             <nav class="nav">
-                <a href="https://github.com/SuperInstance/Constraint-Theory" target="_blank" class="nav-link">GitHub</a>
-                <a href="https://github.com/SuperInstance/Constraint-Theory/blob/main/README.md" target="_blank" class="nav-link">Documentation</a>
-                <a href="https://github.com/SuperInstance/Constraint-Theory/discussions" target="_blank" class="nav-link">Discussions</a>
+                <a href="https://github.com/SuperInstance/Constraint-Theory" target="_blank" class="nav-link">
+                    <span class="nav-icon">⚡</span> GitHub
+                </a>
+                <a href="https://github.com/SuperInstance/Constraint-Theory/blob/main/README.md" target="_blank" class="nav-link">
+                    <span class="nav-icon">📖</span> Documentation
+                </a>
+                <a href="https://github.com/SuperInstance/Constraint-Theory/discussions" target="_blank" class="nav-link">
+                    <span class="nav-icon">💬</span> Discussions
+                </a>
+                <a href="#simulators" class="nav-link">
+                    <span class="nav-icon">🎮</span> Simulators
+                </a>
             </nav>
         </div>
     </header>
@@ -493,6 +510,11 @@ console.log(snapped); // [0.6, 0.8] - perfect 3-4-5 triangle!</code></pre>
         </div>
     </main>
 
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTop" class="scroll-to-top" aria-label="Scroll to top">
+        <span class="scroll-icon">↑</span>
+    </button>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -917,5 +939,61 @@ console.log(snapped); // [0.6, 0.8] - perfect 3-4-5 triangle!</code></pre>
             }
         }
     </style>
+
+    <script>
+        // Scroll to Top Button
+        const scrollToTopButton = document.getElementById('scrollToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopButton.classList.add('visible');
+            } else {
+                scrollToTopButton.classList.remove('visible');
+            }
+        });
+
+        scrollToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.education-card, .simulator-card, .concept-card, .application-card, .research-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
