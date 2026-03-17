@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodecet Geometric Primitives Demo - Constraint Theory</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.2em;
+        }
+
+        .demo-section {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .section-title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #818cf8;
+        }
+
+        #geometricCanvas {
+            width: 100%;
+            height: 700px;
+            border-radius: 10px;
+            background: #0f172a;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #94a3b8;
+            font-size: 0.9em;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #334155;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #818cf8;
+            cursor: pointer;
+        }
+
+        .control-group input[type="text"] {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: #f8fafc;
+            font-family: 'Courier New', monospace;
+        }
+
+        .control-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .value-display {
+            color: #818cf8;
+            font-weight: bold;
+        }
+
+        .simulator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .simulator-card {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .simulator-card h3 {
+            color: #34d399;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .simulator-card pre {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            line-height: 1.6;
+        }
+
+        .hex-display {
+            font-family: 'Courier New', monospace;
+            color: #10b981;
+        }
+
+        .precision-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .precision-12bit {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .precision-8bit {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #818cf8;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Dodecet Geometric Primitives</h1>
+            <p class="subtitle">12-bit encoding for constraint theory simulators</p>
+        </header>
+
+        <!-- Geometric Primitives Demo -->
+        <section class="demo-section">
+            <h2 class="section-title">Interactive Geometric Primitives</h2>
+
+            <canvas id="geometricCanvas"></canvas>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label>
+                        <input type="checkbox" id="comparisonToggle" checked>
+                        Show Precision Comparison
+                    </label>
+                </div>
+
+                <div class="control-group">
+                    <label>Animation Speed: <span class="value-display" id="speedValue">1.0x</span></label>
+                    <input type="range" id="speedSlider" min="0" max="2" step="0.1" value="1">
+                </div>
+
+                <div class="control-group">
+                    <label>Point X (hex):</label>
+                    <input type="text" id="pointX" value="800">
+                </div>
+
+                <div class="control-group">
+                    <label>Point Y (hex):</label>
+                    <input type="text" id="pointY" value="800">
+                </div>
+
+                <div class="control-group">
+                    <label>Point Z (hex):</label>
+                    <input type="text" id="pointZ" value="800">
+                </div>
+
+                <div class="control-group">
+                    <label>Vector X (hex):</label>
+                    <input type="text" id="vectorX" value="FFF">
+                </div>
+
+                <div class="control-group">
+                    <label>Vector Y (hex):</label>
+                    <input type="text" id="vectorY" value="800">
+                </div>
+
+                <div class="control-group">
+                    <label>Vector Z (hex):</label>
+                    <input type="text" id="vectorZ" value="000">
+                </div>
+            </div>
+        </section>
+
+        <!-- All 8 Simulators Integration -->
+        <section class="demo-section">
+            <h2 class="section-title">All 8 Simulators with Dodecet Encoding</h2>
+
+            <div class="simulator-grid">
+                <div class="simulator-card">
+                    <h3>1. Pythagorean Snapping</h3>
+                    <pre id="pythagoreanOutput" class="hex-display">Loading...</pre>
+                </div>
+
+                <div class="simulator-card">
+                    <h3>2. Rigidity Matroid</h3>
+                    <pre id="rigidityOutput" class="hex-display">Loading...</pre>
+                </div>
+
+                <div class="simulator-card">
+                    <h3>3. Holonomy Transport</h3>
+                    <pre id="holonomyOutput" class="hex-display">Loading...</pre>
+                </div>
+
+                <div class="simulator-card">
+                    <h3>4. Entropy Dynamics</h3>
+                    <pre id="entropyOutput" class="hex-display">Loading...</pre>
+                </div>
+
+                <div class="simulator-card">
+                    <h3>5. KD-Tree Spatial</h3>
+                    <pre id="kdtreeOutput" class="hex-display">Loading...</pre>
+                </div>
+
+                <div class="simulator-card">
+                    <h3>6. Permutation Groups</h3>
+                    <pre id="permutationOutput" class="hex-display">Loading...</pre>
+                </div>
+
+                <div class="simulator-card">
+                    <h3>7. Origami Mathematics</h3>
+                    <pre id="origamiOutput" class="hex-display">Loading...</pre>
+                </div>
+
+                <div class="simulator-card">
+                    <h3>8. Cell Bots</h3>
+                    <pre id="cellbotsOutput" class="hex-display">Loading...</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Precision Statistics -->
+        <section class="demo-section">
+            <h2 class="section-title">Precision Comparison Statistics</h2>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">4,096</div>
+                    <div class="stat-label">12-bit States <span class="precision-badge precision-12bit">Dodecet</span></div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-value">256</div>
+                    <div class="stat-label">8-bit States <span class="precision-badge precision-8bit">Traditional</span></div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-value">16x</div>
+                    <div class="stat-label">Precision Improvement</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-value">9</div>
+                    <div class="stat-label">Hex Digits per Point3D</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-value">48</div>
+                    <div class="stat-label">Hex Digits per Transform3D</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-value">8/8</div>
+                    <div class="stat-label">Simulators Integrated</div>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #10b981;"></div>
+                    <span>Dodecet Encoding (12-bit)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f59e0b;"></div>
+                    <span>8-bit Encoding</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #818cf8;"></div>
+                    <span>Point3D</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #34d399;"></div>
+                    <span>Vector3D</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #fbbf24;"></div>
+                    <span>Transform3D</span>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Dodecet Geometric Primitives Demo - Constraint Theory Project</p>
+            <p>12-bit encoding for geometric operations with 16x precision improvement over 8-bit</p>
+        </footer>
+    </div>
+
+    <!-- TypeScript compilation output will be loaded here -->
+    <script src="static/js/dodecet.js"></script>
+    <script src="static/js/dodecet-geometric.js"></script>
+    <script src="static/js/geometric-demo.js"></script>
+    <script src="static/js/simulator-integration.js"></script>
+
+    <script>
+        // Initialize all integrations and update displays
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait for libraries to load
+            setTimeout(() => {
+                try {
+                    // Initialize simulator integrations
+                    const integrator = new DodecetSimulatorIntegrator();
+
+                    // Get all simulation outputs
+                    const outputs = integrator.getAllSimulations();
+
+                    // Update all displays
+                    document.getElementById('pythagoreanOutput').textContent = outputs.pythagorean;
+                    document.getElementById('rigidityOutput').textContent = outputs.rigidity;
+                    document.getElementById('holonomyOutput').textContent = outputs.holonomy;
+                    document.getElementById('entropyOutput').textContent = outputs.entropy;
+                    document.getElementById('kdtreeOutput').textContent = outputs.kdtree;
+                    document.getElementById('permutationOutput').textContent = outputs.permutation;
+                    document.getElementById('origamiOutput').textContent = outputs.origami;
+                    document.getElementById('cellbotsOutput').textContent = outputs.cellbots;
+
+                    console.log('All simulators initialized with dodecet encoding');
+                    console.log(integrator.getPrecisionSummary());
+                } catch (error) {
+                    console.error('Error initializing simulators:', error);
+                    document.querySelectorAll('.simulator-card pre').forEach(el => {
+                        el.textContent = 'Error: ' + error.message;
+                    });
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
