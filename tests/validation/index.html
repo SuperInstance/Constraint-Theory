@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation Tests - Constraint Theory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .test-pass { color: #10b981; }
+        .test-fail { color: #ef4444; }
+        .test-running { color: #f59e0b; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-8">
+            <nav class="mb-6">
+                <a href="/" class="text-blue-400 hover:text-blue-300">← Back to Home</a>
+            </nav>
+            <h1 class="text-4xl font-bold mb-2">Validation Tests</h1>
+            <p class="text-gray-400 text-lg">
+                Comprehensive validation of calculus visualizations and constraint theory implementations
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2">
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold">Test Results</h2>
+                        <button id="runTests" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-semibold">
+                            Run All Tests
+                        </button>
+                    </div>
+
+                    <div id="testSummary" class="mb-6 p-4 bg-gray-900 rounded-lg">
+                        <div class="grid grid-cols-4 gap-4 text-center">
+                            <div>
+                                <p class="text-gray-400 text-sm">Total</p>
+                                <p class="text-2xl font-bold" id="totalTests">0</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Passed</p>
+                                <p class="text-2xl font-bold text-green-400" id="passedTests">0</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Failed</p>
+                                <p class="text-2xl font-bold text-red-400" id="failedTests">0</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Duration</p>
+                                <p class="text-2xl font-bold text-yellow-400" id="testDuration">0ms</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="testResults" class="space-y-2 max-h-96 overflow-y-auto">
+                        <p class="text-gray-500 text-center py-8">Click "Run All Tests" to begin validation</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3">Test Categories</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-cyan-500 rounded-full"></div>
+                            <span>Numerical Differentiation</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            <span>Numerical Integration</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-purple-500 rounded-full"></div>
+                            <span>Gradient Computation</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <span>Dodecet Encoding</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <span>Pythagorean Snapping</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                            <span>Performance Benchmarks</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3">Validation Criteria</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li>• Accuracy: < 0.1% error</li>
+                        <li>• Performance: < 100ms per operation</li>
+                        <li>• Consistency: Deterministic results</li>
+                        <li>• Convergence: O(hⁿ) as expected</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3">Research References</h3>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li>Higher_Dimensional_Rigidity_Research_Report.pdf</li>
+                        <li>Implementation_Guide_Constraint_Theory.pdf</li>
+                        <li>Constraint_Theory_Validation_Report.pdf</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple test framework
+        class TestRunner {
+            constructor() {
+                this.tests = [];
+                this.results = [];
+            }
+
+            describe(name, fn) {
+                const suite = { name, tests: [] };
+                this.tests.push(suite);
+                fn();
+            }
+
+            test(name, fn) {
+                this.tests[this.tests.length - 1].tests.push({ name, fn });
+            }
+
+            async run() {
+                this.results = [];
+                const startTime = performance.now();
+
+                for (const suite of this.tests) {
+                    for (const test of suite.tests) {
+                        try {
+                            await test.fn();
+                            this.results.push({
+                                suite: suite.name,
+                                name: test.name,
+                                status: 'pass'
+                            });
+                        } catch (error) {
+                            this.results.push({
+                                suite: suite.name,
+                                name: test.name,
+                                status: 'fail',
+                                error: error.message
+                            });
+                        }
+                    }
+                }
+
+                const endTime = performance.now();
+                return {
+                    results: this.results,
+                    duration: endTime - startTime
+                };
+            }
+        }
+
+        // Expect function
+        function expect(actual) {
+            return {
+                toBe: (expected) => {
+                    if (actual !== expected) {
+                        throw new Error(`Expected ${expected}, but got ${actual}`);
+                    }
+                },
+                toBeLessThan: (expected) => {
+                    if (!(actual < expected)) {
+                        throw new Error(`Expected ${actual} to be less than ${expected}`);
+                    }
+                },
+                toBeNull: () => {
+                    if (actual !== null) {
+                        throw new Error(`Expected null, but got ${actual}`);
+                    }
+                },
+                toBeGreaterThan: (expected) => {
+                    if (!(actual > expected)) {
+                        throw new Error(`Expected ${actual} to be greater than ${expected}`);
+                    }
+                }
+            };
+        }
+
+        // Create test runner
+        const runner = new TestRunner();
+
+        // Load tests
+        document.getElementById('runTests').addEventListener('click', async () => {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<p class="text-yellow-400 text-center py-8">Running tests...</p>';
+
+            const { results, duration } = await runner.run();
+
+            // Update summary
+            const total = results.length;
+            const passed = results.filter(r => r.status === 'pass').length;
+            const failed = results.filter(r => r.status === 'fail').length;
+
+            document.getElementById('totalTests').textContent = total;
+            document.getElementById('passedTests').textContent = passed;
+            document.getElementById('failedTests').textContent = failed;
+            document.getElementById('testDuration').textContent = duration.toFixed(0) + 'ms';
+
+            // Display results
+            resultsDiv.innerHTML = results.map(result => {
+                const statusClass = result.status === 'pass' ? 'test-pass' : 'test-fail';
+                const statusIcon = result.status === 'pass' ? '✓' : '✗';
+                return `
+                    <div class="p-3 bg-gray-900 rounded flex items-center gap-3">
+                        <span class="${statusClass} text-xl">${statusIcon}</span>
+                        <div class="flex-1">
+                            <p class="font-semibold">${result.name}</p>
+                            <p class="text-xs text-gray-500">${result.suite}</p>
+                            ${result.error ? `<p class="text-xs text-red-400 mt-1">${result.error}</p>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        });
+
+        // Import test definitions
+        // (In a real setup, this would load the external test file)
+    </script>
+
+    <script src="calculus_validation.test.js"></script>
+</body>
+</html>
