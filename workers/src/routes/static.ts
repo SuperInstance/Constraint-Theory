@@ -131,10 +131,10 @@ export function HOMEPAGE_HTML(): string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Constraint Theory - Deterministic geometric logic for computational intelligence. 74ns/op, 280x faster than traditional methods.">
-    <meta name="keywords" content="constraint theory, geometric logic, deterministic AI, Pythagorean snapping, rigidity matroid">
+    <meta name="description" content="Constraint Theory - Research implementation of deterministic geometric logic for computational systems. Mathematical foundations, interactive visualizations, and open source code.">
+    <meta name="keywords" content="constraint theory, geometric logic, deterministic systems, Pythagorean snapping, rigidity matroid, mathematical research">
     <meta property="og:title" content="Constraint Theory - Deterministic Geometric Logic">
-    <meta property="og:description" content="Replace stochastic matrix multiplication with deterministic geometric logic. 74ns/op, zero hallucinations.">
+    <meta property="og:description" content="Research implementation of deterministic geometric logic. Interactive visualizations and mathematical foundations.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://constraint-theory.superinstance.ai">
     <title>Constraint Theory - Deterministic Geometric Logic for AI</title>
@@ -223,45 +223,43 @@ export function HOMEPAGE_HTML(): string {
         <div class="container mx-auto max-w-6xl">
             <div class="text-center mb-16">
                 <div class="inline-block mb-6 px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-full">
-                    <span class="text-purple-400 text-sm font-medium">Now Available: Open Source Constraint Theory Engine</span>
+                    <span class="text-purple-400 text-sm font-medium">Open Source Research Implementation</span>
                 </div>
                 <h1 class="text-5xl md:text-7xl font-bold mb-6">
-                    <span class="gradient-text">Deterministic Logic</span>
+                    <span class="gradient-text">Constraint Theory</span>
                     <br>
-                    <span class="text-white">for Computational Intelligence</span>
+                    <span class="text-white">Deterministic Geometric Logic</span>
                 </h1>
                 <p class="text-xl text-gray-400 mb-8 max-w-3xl mx-auto">
-                    Replace stochastic matrix multiplication with deterministic geometric logic.
-                    <span class="text-purple-400 font-semibold">Zero hallucinations</span>,
-                    <span class="text-purple-400 font-semibold">provable correctness</span>,
-                    <span class="text-purple-400 font-semibold">280x faster</span>.
+                    A research implementation of deterministic geometric logic for computational systems.
+                    Explore the mathematical foundations through interactive visualizations and open-source code.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4 mb-12">
-                    <a href="#quickstart" class="px-8 py-4 hero-gradient hover:opacity-90 rounded-lg text-lg font-semibold transition">
-                        Get Started
+                    <a href="/simulators/voxel/" class="px-8 py-4 hero-gradient hover:opacity-90 rounded-lg text-lg font-semibold transition">
+                        Try 3D Physics
                     </a>
                     <a href="#simulators" class="px-8 py-4 bg-gray-800 hover:bg-gray-700 rounded-lg text-lg font-semibold transition">
-                        Try Simulators
+                        Explore Simulators
                     </a>
                 </div>
 
-                <!-- Performance Metrics -->
-                <div id="performance" class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <!-- Key Concepts (not performance metrics) -->
+                <div id="concepts" class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
                     <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover">
-                        <div class="metric-value text-purple-400">74ns</div>
-                        <div class="text-sm text-gray-400 mt-2">per operation</div>
+                        <div class="metric-value text-purple-400">Ω</div>
+                        <div class="text-sm text-gray-400 mt-2">Origin-Centric</div>
                     </div>
                     <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover">
-                        <div class="metric-value text-green-400">280x</div>
-                        <div class="text-sm text-gray-400 mt-2">faster than MLP</div>
+                        <div class="metric-value text-green-400">Φ</div>
+                        <div class="text-sm text-gray-400 mt-2">Geometric Folding</div>
                     </div>
                     <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover">
-                        <div class="metric-value text-blue-400">0</div>
-                        <div class="text-sm text-gray-400 mt-2">hallucinations</div>
+                        <div class="metric-value text-blue-400">△</div>
+                        <div class="text-sm text-gray-400 mt-2">Pythagorean</div>
                     </div>
                     <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover">
-                        <div class="metric-value">O(log n)</div>
-                        <div class="text-sm text-gray-400 mt-2">complexity</div>
+                        <div class="metric-value">📐</div>
+                        <div class="text-sm text-gray-400 mt-2">Rigidity</div>
                     </div>
                 </div>
             </div>
@@ -312,21 +310,18 @@ export function HOMEPAGE_HTML(): string {
                 </a>
 
                 <!-- Discrete Holonomy -->
-                <a href="/simulators/holonomy/" class="bg-gray-800 rounded-xl p-6 card-hover block">
-                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
+                <div class="bg-gray-800 rounded-xl p-6 card-hover opacity-75">
+                    <div class="w-12 h-12 bg-blue-500/50 rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold mb-2">Discrete Holonomy</h3>
                     <p class="text-gray-400 mb-4">Parallel transport along Platonic symmetries with closure properties</p>
-                    <div class="flex items-center text-blue-400">
-                        <span class="text-sm font-medium">Coming soon</span>
-                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
+                    <div class="flex items-center text-gray-500">
+                        <span class="text-sm font-medium">Coming Soon</span>
                     </div>
-                </a>
+                </div>
 
                 <!-- Performance Benchmarks -->
                 <a href="/simulators/performance/" class="bg-gray-800 rounded-xl p-6 card-hover block">
@@ -346,21 +341,18 @@ export function HOMEPAGE_HTML(): string {
                 </a>
 
                 <!-- KD-Tree Visualization -->
-                <a href="/simulators/kdtree/" class="bg-gray-800 rounded-xl p-6 card-hover block">
-                    <div class="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center mb-4">
+                <div class="bg-gray-800 rounded-xl p-6 card-hover opacity-75">
+                    <div class="w-12 h-12 bg-red-500/50 rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold mb-2">KD-Tree Visualization</h3>
                     <p class="text-gray-400 mb-4">Spatial partitioning for Lattice Vector Quantization tokenization</p>
-                    <div class="flex items-center text-red-400">
-                        <span class="text-sm font-medium">Coming soon</span>
-                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
+                    <div class="flex items-center text-gray-500">
+                        <span class="text-sm font-medium">Coming Soon</span>
                     </div>
-                </a>
+                </div>
 
                 <!-- Voxel Physics -->
                 <a href="/simulators/voxel/" class="bg-gray-800 rounded-xl p-6 card-hover block">
@@ -5630,3 +5622,71 @@ export function KDTREE_HTML(): string {
 </body>
 </html>`;
 }
+
+
+// Calculus: Differentiation Visualization
+export function DIFFERENTIATION_HTML(): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numerical Differentiation - Constraint Theory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            Numerical Differentiation
+        </h1>
+        <p class="text-gray-400 mb-8">Coming soon - Interactive derivative visualization</p>
+        <a href="/" class="text-purple-400 hover:text-purple-300">← Back to Simulators</a>
+    </div>
+</body>
+</html>`;
+}
+
+// Calculus: Integration Visualization  
+export function INTEGRATION_HTML(): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numerical Integration - Constraint Theory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            Numerical Integration
+        </h1>
+        <p class="text-gray-400 mb-8">Coming soon - Interactive integral visualization</p>
+        <a href="/" class="text-purple-400 hover:text-purple-300">← Back to Simulators</a>
+    </div>
+</body>
+</html>`;
+}
+
+// Calculus: Gradient Field Visualization
+export function GRADIENT_HTML(): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Fields - Constraint Theory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            Gradient Fields
+        </h1>
+        <p class="text-gray-400 mb-8">Coming soon - Interactive gradient field visualization</p>
+        <a href="/" class="text-purple-400 hover:text-purple-300">← Back to Simulators</a>
+    </div>
+</body>
+</html>`;
+}
+

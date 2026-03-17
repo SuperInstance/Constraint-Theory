@@ -1089,3 +1089,6 @@ apiExplorerRoutes.get('/endpoints', () => {
     ]
   });
 });
+
+// Export the HTML function so it can be used elsewhere
+export { API_EXPLORER_HTML };

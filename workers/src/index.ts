@@ -1,7 +1,7 @@
 import { Router } from 'itty-router';
 import { apiRoutes } from './routes/api';
-import { apiExplorerRoutes } from './routes/api-explorer';
-import { HOMEPAGE_HTML, PYTHAGOREAN_HTML, RIGIDITY_HTML, COMING_SOON_HTML, PYTHAGOREAN_JS, RIGIDITY_JS, VOXEL_HTML, SWARM_HTML, REASONING_HTML, ENTROPY_HTML, BOTTLENECK_HTML, FLOW_NETWORK_HTML, PERFORMANCE_HTML } from './routes/static';
+import { apiExplorerRoutes, API_EXPLORER_HTML } from './routes/api-explorer';
+import { HOMEPAGE_HTML, PYTHAGOREAN_HTML, RIGIDITY_HTML, COMING_SOON_HTML, PYTHAGOREAN_JS, RIGIDITY_JS, VOXEL_HTML, SWARM_HTML, REASONING_HTML, ENTROPY_HTML, BOTTLENECK_HTML, FLOW_NETWORK_HTML, PERFORMANCE_HTML, DIFFERENTIATION_HTML, INTEGRATION_HTML, GRADIENT_HTML } from './routes/static';
 
 // Create router
 const router = Router();
@@ -55,6 +55,23 @@ router.route('/api', apiRoutes);
 
 // Mount API Explorer routes
 router.route('/api-explorer', apiExplorerRoutes);
+
+// Serve API docs at /api/docs (serve directly, not redirect)
+router.get('/api/docs', () => {
+  try {
+    const html = API_EXPLORER_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving API docs:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading API docs: ' + errorMessage, { status: 500 });
+  }
+});
 
 // Serve simulator JavaScript files (hardcoded routes)
 router.get('/simulators/pythagorean/app.js', () => {
@@ -253,6 +270,55 @@ router.get('/simulators/flow/', () => {
 router.get('/simulators/benchmark/', () => {
   try {
     const html = PERFORMANCE_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator: ' + errorMessage, { status: 500 });
+  }
+});
+
+// Calculus Visualizations
+router.get('/simulators/differentiation/', () => {
+  try {
+    const html = DIFFERENTIATION_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator: ' + errorMessage, { status: 500 });
+  }
+});
+
+router.get('/simulators/integration/', () => {
+  try {
+    const html = INTEGRATION_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator: ' + errorMessage, { status: 500 });
+  }
+});
+
+router.get('/simulators/gradient/', () => {
+  try {
+    const html = GRADIENT_HTML();
     return new Response(html, {
       headers: {
         'Content-Type': 'text/html; charset=utf-8',
