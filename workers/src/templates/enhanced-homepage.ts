@@ -3,7 +3,7 @@
  * Implements better navigation, simulator discovery, and user journey
  */
 
-import { SIMULATORS, CATEGORIES, DIFFICULTY_LEVELS, generateStickyHeader, generateSearchModal } from '../components/navigation';
+import { SIMULATORS, CATEGORIES, DIFFICULTY_LEVELS, generateStickyHeader, generateSearchModal, SimulatorInfo } from '../components/navigation';
 
 export function ENHANCED_HOMEPAGE_HTML(): string {
   return `<!DOCTYPE html>
@@ -535,7 +535,7 @@ export function ENHANCED_HOMEPAGE_HTML(): string {
 }
 
 // Helper function to generate simulator card HTML
-function generateSimulatorCard(sim: any): string {
+function generateSimulatorCard(sim: SimulatorInfo): string {
   return `
     <a href="/simulators/${sim.id}/"
        class="bg-gray-800 rounded-xl p-6 card-hover block"
