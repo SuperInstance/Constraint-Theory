@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KD-Tree Spatial Queries - Constraint Theory</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/demos.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="demo-nav">
+    <a href="/" class="demo-nav-logo">← constraint-theory</a>
+    <h1 class="demo-nav-title">KD-Tree Spatial Queries</h1>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="demo-main">
+    <!-- Introduction -->
+    <section class="demo-intro">
+      <div class="container">
+        <h2>O(log n) Spatial Queries</h2>
+        <p>
+          KD-tree indexing enables logarithmic-time neighbor queries. Watch how the tree structure
+          automatically balances and efficiently finds nearby agents.
+        </p>
+      </div>
+    </section>
+
+    <!-- Demo Container -->
+    <section class="demo-section">
+      <div class="container">
+        <div class="demo-grid">
+          <!-- Spatial Query Canvas -->
+          <div class="demo-panel demo-panel-large">
+            <div class="demo-panel-header">
+              <h3>Spatial Query Visualization</h3>
+              <span class="demo-badge demo-badge-success">O(log n) performance</span>
+            </div>
+
+            <div class="canvas-container">
+              <canvas id="spatial-canvas" width="600" height="600"></canvas>
+            </div>
+
+            <div class="demo-controls">
+              <div class="control-group">
+                <label>Agents: <span id="agent-count">50</span></label>
+                <input type="range" id="agent-slider" min="10" max="200" value="50">
+              </div>
+              <div class="control-group">
+                <label>Query Radius: <span id="query-radius">100</span>px</label>
+                <input type="range" id="radius-slider" min="50" max="200" value="100">
+              </div>
+              <div class="control-group">
+                <button id="run-query-btn" class="btn btn-primary btn-sm">Run Query</button>
+                <button id="add-agents-btn" class="btn btn-secondary btn-sm">Add 10 Agents</button>
+                <button id="reset-btn" class="btn btn-secondary btn-sm">Reset</button>
+              </div>
+            </div>
+
+            <div class="demo-instructions">
+              <strong>Instructions:</strong> Click anywhere on the canvas to set a query point and find neighbors within the radius.
+            </div>
+          </div>
+
+          <!-- KD-Tree Visualization -->
+          <div class="demo-panel">
+            <div class="demo-panel-header">
+              <h3>KD-Tree Structure</h3>
+              <span class="demo-badge demo-badge-info">Binary space partitioning</span>
+            </div>
+
+            <div class="canvas-container canvas-container-small">
+              <canvas id="kdtree-canvas" width="400" height="400"></canvas>
+            </div>
+
+            <div class="tree-stats">
+              <div class="stat-item">
+                <span class="stat-label">Tree Depth:</span>
+                <span class="stat-value" id="tree-depth">0</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Leaf Nodes:</span>
+                <span class="stat-value" id="leaf-nodes">0</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Balance Factor:</span>
+                <span class="stat-value" id="balance-factor">0.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="demo-panel">
+          <div class="demo-panel-header">
+            <h3>Query Performance</h3>
+          </div>
+
+          <div class="performance-metrics">
+            <div class="metric-chart">
+              <canvas id="performance-chart" width="800" height="250"></canvas>
+            </div>
+
+            <div class="metric-details">
+              <div class="metric-detail">
+                <h4>Last Query</h4>
+                <div class="detail-item">
+                  <span class="detail-label">Agents Searched:</span>
+                  <span class="detail-value" id="agents-searched">0</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Neighbors Found:</span>
+                  <span class="detail-value" id="neighbors-found">0</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Query Time:</span>
+                  <span class="detail-value" id="query-time">0ms</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Tree Nodes Visited:</span>
+                  <span class="detail-value" id="nodes-visited">0</span>
+                </div>
+              </div>
+
+              <div class="metric-detail">
+                <h4>Comparison</h4>
+                <div class="detail-item">
+                  <span class="detail-label">Linear Search (O(n)):</span>
+                  <span class="detail-value" id="linear-time">0ms</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">KD-Tree Search (O(log n)):</span>
+                  <span class="detail-value" id="kdtree-time">0ms</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Speedup:</span>
+                  <span class="detail-value" id="speedup">0x</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Efficiency:</span>
+                  <span class="detail-value" id="efficiency">0%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Algorithm Explanation -->
+        <div class="demo-panel">
+          <div class="demo-panel-header">
+            <h3>How KD-Tree Works</h3>
+          </div>
+
+          <div class="algorithm-explanation">
+            <div class="algorithm-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4>Build Phase</h4>
+                <p>Recursively split space by median points. Alternate between X and Y dimensions at each level to create a balanced binary tree.</p>
+                <pre><code>function buildKDTree(points, depth = 0):
+  if points is empty: return null
+  axis = depth % 2  # Alternate X, Y
+  sort points by axis
+  median = middle point
+  left = buildKDTree(points before median, depth + 1)
+  right = buildKDTree(points after median, depth + 1)
+  return Node(median, left, right)</code></pre>
+              </div>
+            </div>
+
+            <div class="algorithm-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4>Query Phase</h4>
+                <p>Traverse tree pruning branches that cannot contain neighbors. Only search relevant regions of space.</p>
+                <pre><code>function queryNeighbors(node, target, radius, depth = 0):
+  if node is null: return []
+  axis = depth % 2
+  distance = euclidean(node.point, target)
+  neighbors = []
+  if distance <= radius:
+    neighbors.append(node.point)
+  # Prune branches outside search space
+  if target[axis] - radius <= node.point[axis]:
+    neighbors += queryNeighbors(node.left, target, radius, depth + 1)
+  if target[axis] + radius >= node.point[axis]:
+    neighbors += queryNeighbors(node.right, target, radius, depth + 1)
+  return neighbors</code></pre>
+              </div>
+            </div>
+
+            <div class="algorithm-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4>Why O(log n)?</h4>
+                <p>At each level, we eliminate half the search space. With n points, tree depth is ~log₂(n). We only visit nodes that could contain neighbors.</p>
+                <ul>
+                  <li><strong>Linear search:</strong> Check every point → O(n)</li>
+                  <li><strong>KD-tree search:</strong> Only check relevant branches → O(log n)</li>
+                  <li><strong>At 1000 points:</strong> ~1000 checks vs ~10 checks</li>
+                  <li><strong>At 10000 points:</strong> ~10000 checks vs ~13 checks</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Use Cases -->
+        <div class="insights">
+          <h3>Real-World Use Cases</h3>
+          <div class="insight-grid">
+            <div class="insight-card">
+              <div class="insight-icon">🎮</div>
+              <h4>Game Development</h4>
+              <p>Find nearby players, collision detection, spatial audio, visibility culling for rendering.</p>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">🤖</div>
+              <h4>Cellular Agents</h4>
+              <p>Agents query neighbors within perception radius for coordination and communication.</p>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">📍</div>
+              <h4>Location Services</h4>
+              <p>Find nearby points of interest, geospatial queries, recommendation systems.</p>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">🔬</div>
+              <h4>Scientific Computing</h4>
+              <p>N-body simulations, particle interactions, spatial clustering analysis.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script src="/js/demos/spatial-queries.js"></script>
+</body>
+</html>

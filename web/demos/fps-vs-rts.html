@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FPS vs RTS Agent Coordination - Constraint Theory</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/demos.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="demo-nav">
+    <a href="/" class="demo-nav-logo">← constraint-theory</a>
+    <h1 class="demo-nav-title">FPS vs RTS Agent Coordination</h1>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="demo-main">
+    <!-- Introduction -->
+    <section class="demo-intro">
+      <div class="container">
+        <h2>Understanding the Paradigm Shift</h2>
+        <p>
+          Traditional AI systems use Real-Time Strategy (RTS) coordination where a central controller sees everything.
+          Constraint Theory uses First-Person Shooter (FPS) coordination where each agent has its own perspective.
+        </p>
+      </div>
+    </section>
+
+    <!-- Demo Container -->
+    <section class="demo-section">
+      <div class="container">
+        <div class="demo-grid">
+          <!-- RTS Demo -->
+          <div class="demo-panel">
+            <div class="demo-panel-header">
+              <h3>RTS (Traditional)</h3>
+              <span class="demo-badge demo-badge-warning">O(n²) complexity</span>
+            </div>
+
+            <div class="canvas-container">
+              <canvas id="rts-canvas" width="500" height="500"></canvas>
+            </div>
+
+            <div class="demo-controls">
+              <div class="control-group">
+                <label>Agents: <span id="rts-agent-count">10</span></label>
+                <input type="range" id="rts-agent-slider" min="2" max="50" value="10">
+              </div>
+              <div class="control-group">
+                <button id="rts-communicate-btn" class="btn btn-primary btn-sm">
+                  Simulate Communication
+                </button>
+                <button id="rts-reset-btn" class="btn btn-secondary btn-sm">
+                  Reset
+                </button>
+              </div>
+            </div>
+
+            <div class="demo-metrics">
+              <div class="metric">
+                <span class="metric-label">Messages</span>
+                <span class="metric-value" id="rts-messages">0</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Time</span>
+                <span class="metric-value" id="rts-time">0ms</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">State Updates</span>
+                <span class="metric-value" id="rts-updates">0</span>
+              </div>
+            </div>
+
+            <div class="demo-explanation">
+              <h4>How RTS Works</h4>
+              <ul>
+                <li>Central controller sees all agents</li>
+                <li>Each agent must coordinate with all others</li>
+                <li>Shared state requires constant synchronization</li>
+                <li>Communication grows quadratically: n × (n-1)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- FPS Demo -->
+          <div class="demo-panel">
+            <div class="demo-panel-header">
+              <h3>FPS (Constraint Theory)</h3>
+              <span class="demo-badge demo-badge-success">O(log n) complexity</span>
+            </div>
+
+            <div class="canvas-container">
+              <canvas id="fps-canvas" width="500" height="500"></canvas>
+            </div>
+
+            <div class="demo-controls">
+              <div class="control-group">
+                <label>Agents: <span id="fps-agent-count">10</span></label>
+                <input type="range" id="fps-agent-slider" min="2" max="50" value="10">
+              </div>
+              <div class="control-group">
+                <label>Query Radius: <span id="fps-radius">100</span>px</label>
+                <input type="range" id="fps-radius-slider" min="50" max="200" value="100">
+              </div>
+              <div class="control-group">
+                <button id="fps-query-btn" class="btn btn-primary btn-sm">
+                  Run Spatial Query
+                </button>
+                <button id="fps-reset-btn" class="btn btn-secondary btn-sm">
+                  Reset
+                </button>
+              </div>
+            </div>
+
+            <div class="demo-metrics">
+              <div class="metric">
+                <span class="metric-label">Messages</span>
+                <span class="metric-value" id="fps-messages">0</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Time</span>
+                <span class="metric-value" id="fps-time">0ms</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">State Updates</span>
+                <span class="metric-value" id="fps-updates">0</span>
+              </div>
+            </div>
+
+            <div class="demo-explanation">
+              <h4>How FPS Works</h4>
+              <ul>
+                <li>Each agent has unique position and perspective</li>
+                <li>Agents only see neighbors within radius</li>
+                <li>No central coordinator needed</li>
+                <li>Spatial queries via KD-tree: O(log n)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Performance Comparison -->
+        <div class="performance-comparison">
+          <h3>Performance Comparison</h3>
+          <div class="comparison-chart">
+            <canvas id="comparison-chart" width="800" height="300"></canvas>
+          </div>
+          <div class="comparison-legend">
+            <div class="legend-item">
+              <div class="legend-color" style="background: oklch(0.55 0.22 27)"></div>
+              <span>RTS Communication</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background: oklch(0.72 0.19 145)"></div>
+              <span>FPS Spatial Query</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Insights -->
+        <div class="insights">
+          <h3>Key Insights</h3>
+          <div class="insight-grid">
+            <div class="insight-card">
+              <div class="insight-icon">📈</div>
+              <h4>Scalability</h4>
+              <p>FPS scales logarithmically while RTS scales quadratically. At 1000 agents, FPS needs ~10 operations vs RTS needing ~1,000,000.</p>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">🎯</div>
+              <h4>Perspective</h4>
+              <p>FPS agents naturally filter information by position. RTS agents must process all global state.</p>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">⚡</div>
+              <h4>Performance</h4>
+              <p>FPS maintains low latency even with thousands of agents. RTS degrades rapidly as agent count increases.</p>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">🔒</div>
+              <h4>Security</h4>
+              <p>FPS naturally limits information access. RTS requires complex RBAC to prevent information leaks.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script src="/js/demos/fps-vs-rts.js"></script>
+</body>
+</html>

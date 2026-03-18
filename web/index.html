@@ -60,6 +60,7 @@
       <div class="nav-menu">
         <a href="#features" class="nav-link">Features</a>
         <a href="#demo" class="nav-link">Demo</a>
+        <a href="#demos" class="nav-link">Interactive Demos</a>
         <a href="#technical" class="nav-link">Technical</a>
         <a href="https://github.com/SuperInstance/constrainttheory" class="nav-link">GitHub</a>
         <a href="https://docs.constraint-theory.superinstance.ai" class="nav-link">Docs</a>
@@ -439,6 +440,98 @@ println!("Found {} neighbors", neighbors.len());</code></pre>
           <a href="https://docs.constraint-theory.superinstance.ai" class="btn btn-primary btn-lg">
             View Full Documentation
           </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Demos Section -->
+    <section id="demos" class="section demos-section">
+      <div class="container">
+        <h2 class="section-title">Interactive Demos</h2>
+        <p class="section-subtitle" style="text-align: center; color: var(--muted-foreground); margin-bottom: var(--spacing-12);">
+          Explore the core concepts of Constraint Theory through hands-on interactive demonstrations
+        </p>
+
+        <div class="features-grid">
+          <!-- Demo 1 -->
+          <div class="card card-3d scroll-animate">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+            </div>
+            <h3 class="card-title">FPS vs RTS Coordination</h3>
+            <p class="card-description">
+              Compare traditional Real-Time Strategy coordination with First-Person Shooter perspective-based agent coordination.
+            </p>
+            <div class="card-footer">
+              <a href="/demos/fps-vs-rts.html" class="btn btn-ghost">Try Demo →</a>
+            </div>
+          </div>
+
+          <!-- Demo 2 -->
+          <div class="card card-3d scroll-animate">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <h3 class="card-title">12-Bit Dodecet Encoding</h3>
+            <p class="card-description">
+              Learn about memory-efficient geometric encoding. Encode and decode 3D coordinates in just 12 bits.
+            </p>
+            <div class="card-footer">
+              <a href="/demos/dodecet-encoding.html" class="btn btn-ghost">Try Demo →</a>
+            </div>
+          </div>
+
+          <!-- Demo 3 -->
+          <div class="card card-3d scroll-animate">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <h3 class="card-title">KD-Tree Spatial Queries</h3>
+            <p class="card-description">
+              Experience O(log n) spatial queries with interactive KD-tree visualization and performance metrics.
+            </p>
+            <div class="card-footer">
+              <a href="/demos/spatial-queries.html" class="btn btn-ghost">Try Demo →</a>
+            </div>
+          </div>
+
+          <!-- Demo 4 -->
+          <div class="card card-3d scroll-animate">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </div>
+            <h3 class="card-title">Agent Perspective Filtering</h3>
+            <p class="card-description">
+              See the world from an agent's perspective. Understand how position and orientation automatically filter information.
+            </p>
+            <div class="card-footer">
+              <a href="/demos/orientation-filtering.html" class="btn btn-ghost">Try Demo →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: var(--spacing-12);">
+          <div>
+            <div class="alert-title">About These Demos</div>
+            <div class="alert-content">
+              All demos run entirely in your browser using HTML5 Canvas. No server-side processing required.
+              Adjust parameters, interact with visualizations, and see real-time performance metrics.
+            </div>
+          </div>
         </div>
       </div>
     </section>

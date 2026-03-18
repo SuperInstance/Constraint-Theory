@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>12-Bit Dodecet Encoding - Constraint Theory</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/demos.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="demo-nav">
+    <a href="/" class="demo-nav-logo">← constraint-theory</a>
+    <h1 class="demo-nav-title">12-Bit Dodecet Encoding</h1>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="demo-main">
+    <!-- Introduction -->
+    <section class="demo-intro">
+      <div class="container">
+        <h2>Memory-Efficient Geometric Encoding</h2>
+        <p>
+          Dodecet encoding packs 3D coordinates into 12 bits using Pythagorean triples.
+          Perfect for cellular agent positions with exact arithmetic and zero floating-point ambiguity.
+        </p>
+      </div>
+    </section>
+
+    <!-- Demo Container -->
+    <section class="demo-section">
+      <div class="container">
+        <!-- Interactive Encoder/Decoder -->
+        <div class="demo-panel demo-panel-full">
+          <div class="demo-panel-header">
+            <h3>Interactive Dodecet Encoder/Decoder</h3>
+            <span class="demo-badge demo-badge-info">12 bits = 4096 states</span>
+          </div>
+
+          <div class="encoder-grid">
+            <!-- Encoder -->
+            <div class="encoder-section">
+              <h4>Encode Coordinates → Dodecet</h4>
+
+              <div class="coordinate-inputs">
+                <div class="coordinate-input">
+                  <label>X (0-15)</label>
+                  <input type="number" id="coord-x" min="0" max="15" value="7">
+                </div>
+                <div class="coordinate-input">
+                  <label>Y (0-15)</label>
+                  <input type="number" id="coord-y" min="0" max="15" value="11">
+                </div>
+                <div class="coordinate-input">
+                  <label>Z (0-15)</label>
+                  <input type="number" id="coord-z" min="0" max="15" value="3">
+                </div>
+              </div>
+
+              <button id="encode-btn" class="btn btn-primary">Encode</button>
+
+              <div class="encoding-result">
+                <div class="result-item">
+                  <span class="result-label">Binary:</span>
+                  <span class="result-value" id="binary-result">0000 0000 0000</span>
+                </div>
+                <div class="result-item">
+                  <span class="result-label">Hexadecimal:</span>
+                  <span class="result-value" id="hex-result">0x000</span>
+                </div>
+                <div class="result-item">
+                  <span class="result-label">Decimal:</span>
+                  <span class="result-value" id="decimal-result">0</span>
+                </div>
+                <div class="result-item">
+                  <span class="result-label">Memory:</span>
+                  <span class="result-value" id="memory-result">2 bytes</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Decoder -->
+            <div class="encoder-section">
+              <h4>Decode Dodecet → Coordinates</h4>
+
+              <div class="dodecet-inputs">
+                <div class="dodecet-input">
+                  <label>Hexadecimal (0x000-0xFFF)</label>
+                  <input type="text" id="hex-input" placeholder="0x123" maxlength="5">
+                </div>
+                <div class="dodecet-input">
+                  <label>Decimal (0-4095)</label>
+                  <input type="number" id="decimal-input" min="0" max="4095" placeholder="291">
+                </div>
+              </div>
+
+              <button id="decode-btn" class="btn btn-primary">Decode</button>
+
+              <div class="decoding-result">
+                <div class="result-item">
+                  <span class="result-label">X Coordinate:</span>
+                  <span class="result-value" id="decoded-x">0</span>
+                </div>
+                <div class="result-item">
+                  <span class="result-label">Y Coordinate:</span>
+                  <span class="result-value" id="decoded-y">0</span>
+                </div>
+                <div class="result-item">
+                  <span class="result-label">Z Coordinate:</span>
+                  <span class="result-value" id="decoded-z">0</span>
+                </div>
+                <div class="result-item">
+                  <span class="result-label">3D Position:</span>
+                  <span class="result-value" id="decoded-position">(0, 0, 0)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Representation -->
+        <div class="demo-panel">
+          <div class="demo-panel-header">
+            <h3>3D Dodecet Space Visualization</h3>
+          </div>
+
+          <div class="canvas-container">
+            <canvas id="dodecet-canvas" width="800" height="500"></canvas>
+          </div>
+
+          <div class="demo-controls">
+            <div class="control-group">
+              <label>Rotation Speed: <span id="rotation-speed">1</span>x</label>
+              <input type="range" id="rotation-slider" min="0" max="5" step="0.1" value="1">
+            </div>
+            <div class="control-group">
+              <label>Points to Display: <span id="point-count">100</span></label>
+              <input type="range" id="points-slider" min="10" max="500" value="100">
+            </div>
+            <div class="control-group">
+              <button id="regenerate-btn" class="btn btn-primary btn-sm">Regenerate Points</button>
+              <button id="toggle-axes-btn" class="btn btn-secondary btn-sm">Toggle Axes</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bit Layout Explanation -->
+        <div class="demo-panel">
+          <div class="demo-panel-header">
+            <h3>Bit Layout</h3>
+          </div>
+
+          <div class="bit-layout">
+            <div class="bit-diagram">
+              <div class="bit-row">
+                <span class="bit-label">Bits 11-8 (X)</span>
+                <div class="bit-container">
+                  <span class="bit">1</span>
+                  <span class="bit">0</span>
+                  <span class="bit">1</span>
+                  <span class="bit">1</span>
+                </div>
+                <span class="bit-value">= 7</span>
+              </div>
+              <div class="bit-row">
+                <span class="bit-label">Bits 7-4 (Y)</span>
+                <div class="bit-container">
+                  <span class="bit">1</span>
+                  <span class="bit">0</span>
+                  <span class="bit">1</span>
+                  <span class="bit">1</span>
+                </div>
+                <span class="bit-value">= 11</span>
+              </div>
+              <div class="bit-row">
+                <span class="bit-label">Bits 3-0 (Z)</span>
+                <div class="bit-container">
+                  <span class="bit">0</span>
+                  <span class="bit">0</span>
+                  <span class="bit">1</span>
+                  <span class="bit">1</span>
+                </div>
+                <span class="bit-value">= 3</span>
+              </div>
+            </div>
+
+            <div class="bit-explanation">
+              <h4>Why 12 Bits?</h4>
+              <ul>
+                <li><strong>4 bits per coordinate:</strong> Each axis (X, Y, Z) gets 4 bits</li>
+                <li><strong>16 values per axis:</strong> 2⁴ = 16 discrete positions per dimension</li>
+                <li><strong>4096 total states:</strong> 16³ = 4096 unique positions in 3D space</li>
+                <li><strong>Memory efficient:</strong> Only 2 bytes to store any 3D position</li>
+                <li><strong>Hex-friendly:</strong> Each digit represents one coordinate (0xXYZ)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Benefits -->
+        <div class="insights">
+          <h3>Benefits of Dodecet Encoding</h3>
+          <div class="insight-grid">
+            <div class="insight-card">
+              <div class="insight-icon">💾</div>
+              <h4>Memory Efficient</h4>
+              <p>Store any 3D position in just 2 bytes. Compared to 3 floats (12 bytes), that's 6x compression.</p>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">🎯</div>
+              <h4>Exact Arithmetic</h4>
+              <p>No floating-point ambiguity. Every position is a discrete, exact value.</p>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">⚡</div>
+              <h4>Fast Comparison</h4>
+              <p>Single integer comparison instead of three float comparisons.</p>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon">🔢</div>
+              <h4>Hex-Friendly</h4>
+              <p>Easy to read: 0x123 = (1, 2, 3). Perfect for debugging and logging.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script src="/js/demos/dodecet-encoding.js"></script>
+</body>
+</html>
