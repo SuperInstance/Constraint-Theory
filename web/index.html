@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Constraint Theory - Geometric substrate for cellularized agent infrastructure. O(log n) spatial queries, deterministic output, no hallucinations.">
+  <meta name="keywords" content="constraint theory, cellular agents, geometric substrate, spatial queries, deterministic computation">
+  <meta name="author" content="SuperInstance">
+  <meta name="theme-color" content="oklch(0.08 0.01 145)">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Constraint Theory - Geometric Substrate for Cellular Agents">
+  <meta property="og:description" content="O(log n) spatial queries. Deterministic output. No hallucinations.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://constraint-theory.superinstance.ai">
+  <meta property="og:image" content="/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Constraint Theory - Geometric Substrate for Cellular Agents">
+  <meta name="twitter:description" content="O(log n) spatial queries. Deterministic output. No hallucinations.">
+
+  <title>Constraint Theory - Geometric Substrate for Cellular Agents</title>
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span class="nav-logo-text">constraint-theory</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle navigation menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="nav-menu">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#demo" class="nav-link">Demo</a>
+        <a href="#technical" class="nav-link">Technical</a>
+        <a href="https://github.com/SuperInstance/constrainttheory" class="nav-link">GitHub</a>
+        <a href="https://docs.constraint-theory.superinstance.ai" class="nav-link">Docs</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+      </div>
+
+      <div class="hero-content">
+        <h1 class="hero-headline">
+          Geometric Substrate for<br>
+          Cellularized Agent Infrastructure
+        </h1>
+
+        <p class="hero-subhead">
+          O(log n) spatial queries. Deterministic output.<br class="hide-mobile">
+          No hallucinations. Built for scale.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="https://docs.constraint-theory.superinstance.ai" class="btn btn-primary btn-lg">
+            Get Started
+          </a>
+          <a href="https://github.com/SuperInstance/constrainttheory" class="btn btn-secondary btn-lg">
+            View on GitHub
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem/Solution Section -->
+    <section class="section comparison-section">
+      <div class="container">
+        <h2 class="section-title">The Paradigm Shift</h2>
+
+        <div class="comparison-grid">
+          <!-- Traditional AI (RTS) -->
+          <div class="comparison-card">
+            <h3 class="comparison-title">Traditional AI (RTS)</h3>
+
+            <div class="comparison-diagram">┌─────────────────────────────────────┐
+│     Central Controller sees ALL       │
+│                                     │
+│    ↙  ↘       ↙  ↘       ↙  ↘       │
+│   A1   A2     A3   A4     A5   A6   │
+│    ↓    ↓      ↓    ↓      ↓    ↓    │
+│  All agents share global state       │
+│                                     │
+│  Problem: Doesn't scale             │
+│  - Central bottleneck               │
+│  - Shared state coordination        │
+│  - O(n²) communication complexity   │
+└─────────────────────────────────────┘</div>
+
+            <p class="comparison-description">
+              All agents see the same global state, requiring coordination with every other agent.
+            </p>
+          </div>
+
+          <!-- Constraint Theory (FPS) -->
+          <div class="comparison-card">
+            <h3 class="comparison-title">Constraint Theory (FPS)</h3>
+
+            <div class="comparison-diagram">┌─────────────────────────────────────┐
+│  Agent A1 (position: dodecet_0x123)  │
+│      │                               │
+│      │ Sees neighbors within radius   │
+│      ▼                               │
+│  ┌─────────────────┐                 │
+│  │ Agent A1's View  │                 │
+│  │                 │                 │
+│  │  [A2]──[A3]     │                 │
+│  │    │    │       │                 │
+│  │  [A1]──[A4]     │                 │
+│  │                 │                 │
+│  └─────────────────┘                 │
+│                                     │
+│  Benefit: Scales naturally           │
+│  - No central coordinator            │
+│  - Each agent independent           │
+│  - O(log n) spatial queries          │
+└─────────────────────────────────────┘</div>
+
+            <p class="comparison-description">
+              Each agent has its own perspective, seeing only neighbors within geometric radius.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section features-section">
+      <div class="container">
+        <h2 class="section-title">Why Constraint Theory?</h2>
+
+        <div class="features-grid">
+          <!-- Feature 1 -->
+          <div class="card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <h3 class="card-title">O(log n) Queries</h3>
+            <p class="card-description">
+              Lightning-fast spatial queries via KD-tree indexing. Scale to thousands of agents without performance degradation.
+            </p>
+            <div class="card-footer">
+              <a href="#technical" class="btn btn-ghost">Learn More →</a>
+            </div>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h3 class="card-title">Deterministic Output</h3>
+            <p class="card-description">
+              Mathematical guarantees ensure consistent, reproducible results. No hallucinations within the geometric constraint engine.
+            </p>
+            <div class="card-footer">
+              <a href="#technical" class="btn btn-ghost">Learn More →</a>
+            </div>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <h3 class="card-title">Cellular Agents</h3>
+            <p class="card-description">
+              Build sophisticated multiagent systems that scale naturally. Each agent operates independently with FPS-style perspective.
+            </p>
+            <div class="card-footer">
+              <a href="#technical" class="btn btn-ghost">Learn More →</a>
+            </div>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+            </div>
+            <h3 class="card-title">KD-tree Indexing</h3>
+            <p class="card-description">
+              Efficient spatial data structure for logarithmic-time neighbor queries. Automatically balances for optimal performance.
+            </p>
+            <div class="card-footer">
+              <a href="#technical" class="btn btn-ghost">Learn More →</a>
+            </div>
+          </div>
+
+          <!-- Feature 5 -->
+          <div class="card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M8 12s1.5-2 4-2 4 2 4 2"></path>
+                <path d="M9 12s1.5 2 4 2 4-2 4-2"></path>
+              </svg>
+            </div>
+            <h3 class="card-title">Pythagorean Manifold</h3>
+            <p class="card-description">
+              Exact geometric snapping using Pythagorean triples. Zero floating-point ambiguity, guaranteed exact arithmetic.
+            </p>
+            <div class="card-footer">
+              <a href="#technical" class="btn btn-ghost">Learn More →</a>
+            </div>
+          </div>
+
+          <!-- Feature 6 -->
+          <div class="card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <h3 class="card-title">Dodecet Encoding</h3>
+            <p class="card-description">
+              Memory-efficient 12-bit geometric coordinates. 4096 discrete states with hex-friendly representation.
+            </p>
+            <div class="card-footer">
+              <a href="#technical" class="btn btn-ghost">Learn More →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Demo Section -->
+    <section id="demo" class="section demo-section">
+      <div class="container">
+        <h2 class="section-title">Interactive Agent Simulation</h2>
+
+        <div class="demo-container">
+          <div class="demo-canvas">
+            <canvas id="agent-canvas"></canvas>
+
+            <div class="demo-metrics">
+              <div class="demo-metric">
+                <span class="demo-metric-label">Agents</span>
+                <span class="demo-metric-value" data-metric="agent-count">50</span>
+              </div>
+              <div class="demo-metric">
+                <span class="demo-metric-label">Query Time</span>
+                <span class="demo-metric-value" data-metric="query-time">0ms</span>
+              </div>
+              <div class="demo-metric">
+                <span class="demo-metric-label">Memory</span>
+                <span class="demo-metric-value" data-metric="memory-usage">1.2MB</span>
+              </div>
+            </div>
+
+            <div class="demo-controls">
+              <button id="add-agent-btn" class="btn btn-primary btn-sm">Add Agent</button>
+              <button id="add-10-agents-btn" class="btn btn-primary btn-sm">Add 10</button>
+              <button id="add-100-agents-btn" class="btn btn-primary btn-sm">Add 100</button>
+              <button id="reset-btn" class="btn btn-secondary btn-sm">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info mt-8">
+          <div>
+            <div class="alert-title">How to use the demo</div>
+            <div class="alert-content">
+              <strong>Click</strong> anywhere on the canvas to add an agent at that position.
+              <strong>Right-click</strong> near an agent to query its neighbors within the radius.
+              Watch the metrics update in real-time as you add more agents.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Overview Section -->
+    <section id="technical" class="section technical-section">
+      <div class="container">
+        <h2 class="section-title">How It Works</h2>
+
+        <div class="technical-flow">
+          <!-- Step 1 -->
+          <div class="technical-step">
+            <h3 class="technical-step-title">1. Input Vector</h3>
+            <p class="technical-step-content">
+              Start with a continuous vector in ℝⁿ space. This represents the agent's position or state.
+            </p>
+
+            <div class="code-block">
+              <div class="code-header">
+                <div class="code-dots">
+                  <div class="code-dot code-dot-red"></div>
+                  <div class="code-dot code-dot-yellow"></div>
+                  <div class="code-dot code-dot-green"></div>
+                </div>
+                <span class="code-filename">input.rs</span>
+              </div>
+              <div class="code-content">
+                <pre><code>let vec = [0.6f32, 0.8];</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="technical-step">
+            <h3 class="technical-step-title">2. Φ-Folding (Pythagorean Manifold)</h3>
+            <p class="technical-step-content">
+              The continuous vector is folded onto a pre-computed manifold of exact Pythagorean geometric states.
+            </p>
+
+            <div class="code-block">
+              <div class="code-header">
+                <div class="code-dots">
+                  <div class="code-dot code-dot-red"></div>
+                  <div class="code-dot code-dot-yellow"></div>
+                  <div class="code-dot code-dot-green"></div>
+                </div>
+                <span class="code-filename">manifold.rs</span>
+              </div>
+              <div class="code-content">
+                <pre><code>// Create manifold with 200 Pythagorean triples
+let manifold = PythagoreanManifold::new(200);
+
+// Pre-build KD-tree index for O(log n) queries
+manifold.build_index();</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="technical-step">
+            <h3 class="technical-step-title">3. Snapping</h3>
+            <p class="technical-step-content">
+              The vector is snapped to the nearest exact geometric state. Guaranteed noise &lt; 0.001.
+            </p>
+
+            <div class="code-block">
+              <div class="code-header">
+                <div class="code-dots">
+                  <div class="code-dot code-dot-red"></div>
+                  <div class="code-dot code-dot-yellow"></div>
+                  <div class="code-dot code-dot-green"></div>
+                </div>
+                <span class="code-filename">snap.rs</span>
+              </div>
+              <div class="code-content">
+                <pre><code>// Snap continuous vector to exact discrete state
+let (snapped, noise) = snap(&manifold, vec);
+
+assert!(noise < 0.001);  // Guaranteed exact result
+println!("Snapped: ({}, {})", snapped[0], snapped[1]);
+// Output: (0.6, 0.8) = (3/5, 4/5) exactly</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="technical-step">
+            <h3 class="technical-step-title">4. Spatial Query</h3>
+            <p class="technical-step-content">
+              Query the KD-tree to find all agents within the geometric radius. O(log n) time complexity.
+            </p>
+
+            <div class="code-block">
+              <div class="code-header">
+                <div class="code-dots">
+                  <div class="code-dot code-dot-red"></div>
+                  <div class="code-dot code-dot-yellow"></div>
+                  <div class="code-dot code-dot-green"></div>
+                </div>
+                <span class="code-filename">query.rs</span>
+              </div>
+              <div class="code-content">
+                <pre><code>// Query neighbors within radius
+let radius = 0.2;
+let neighbors = manifold.neighbors(snapped, radius);
+
+// Returns: O(log n) time complexity
+// Each agent sees only its local neighborhood
+println!("Found {} neighbors", neighbors.len());</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-12">
+          <a href="https://docs.constraint-theory.superinstance.ai" class="btn btn-primary btn-lg">
+            View Full Documentation
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <!-- Product -->
+        <div class="footer-column">
+          <h4 class="footer-column-title">Product</h4>
+          <div class="footer-links">
+            <a href="#features" class="footer-link">Features</a>
+            <a href="#demo" class="footer-link">Interactive Demo</a>
+            <a href="#technical" class="footer-link">Technical Overview</a>
+            <a href="https://docs.constraint-theory.superinstance.ai" class="footer-link">Documentation</a>
+          </div>
+        </div>
+
+        <!-- Resources -->
+        <div class="footer-column">
+          <h4 class="footer-column-title">Resources</h4>
+          <div class="footer-links">
+            <a href="https://github.com/SuperInstance/constrainttheory" class="footer-link">GitHub</a>
+            <a href="https://github.com/SuperInstance/constrainttheory/issues" class="footer-link">Issues</a>
+            <a href="https://github.com/SuperInstance/constrainttheory/discussions" class="footer-link">Discussions</a>
+            <a href="https://docs.constraint-theory.superinstance.ai" class="footer-link">API Reference</a>
+          </div>
+        </div>
+
+        <!-- Related Projects -->
+        <div class="footer-column">
+          <h4 class="footer-column-title">Related Projects</h4>
+          <div class="footer-links">
+            <a href="https://github.com/SuperInstance/claw" class="footer-link">claw - Agent Engine</a>
+            <a href="https://github.com/SuperInstance/spreadsheet-moment" class="footer-link">spreadsheet-moment</a>
+            <a href="https://github.com/SuperInstance/dodecet-encoder" class="footer-link">dodecet-encoder</a>
+            <a href="https://github.com/SuperInstance/SuperInstance-papers" class="footer-link">Research Papers</a>
+          </div>
+        </div>
+
+        <!-- Community -->
+        <div class="footer-column">
+          <h4 class="footer-column-title">Community</h4>
+          <div class="footer-links">
+            <a href="https://github.com/SuperInstance/constrainttheory/blob/main/CONTRIBUTING.md" class="footer-link">Contributing</a>
+            <a href="https://github.com/SuperInstance/constrainttheory/blob/main/LICENSE" class="footer-link">License (MIT)</a>
+            <a href="https://github.com/SuperInstance/constrainttheory/blob/main/CODE_OF_CONDUCT.md" class="footer-link">Code of Conduct</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">
+          © 2026 SuperInstance. All rights reserved.
+        </p>
+
+        <div class="footer-social">
+          <a href="https://github.com/SuperInstance/constrainttheory" class="footer-social-link" aria-label="GitHub">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/main.js"></script>
+</body>
+</html>
