@@ -3,94 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Constraint Theory - Deterministic geometric logic for computational intelligence. 74ns/op, 280x faster than traditional methods.">
-    <meta name="keywords" content="constraint theory, geometric logic, deterministic AI, Pythagorean snapping, rigidity matroid">
-    <meta property="og:title" content="Constraint Theory - Deterministic Geometric Logic">
-    <meta property="og:description" content="Replace stochastic matrix multiplication with deterministic geometric logic. 74ns/op, zero hallucinations.">
+    <meta name="description" content="Constraint Theory - Geometric substrate for cellularized agent infrastructure. FPS-style perspective for scalable multi-agent systems.">
+    <meta name="keywords" content="constraint theory, cellular agents, FPS paradigm, geometric logic, deterministic AI, multi-agent systems">
+    <meta property="og:title" content="Constraint Theory - Geometric Substrate for Cellular Agents">
+    <meta property="og:description" content="FPS-style perspective for scalable multi-agent systems. O(log n) spatial queries, zero coordination overhead.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://constraint-theory.superinstance.ai">
-    <title>Constraint Theory - Deterministic Geometric Logic for AI</title>
+    <title>Constraint Theory - Geometric Substrate for Cellular Agents</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <link rel="stylesheet" href="/css/main.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        :root {
+            --primary-50: #f0f9ff;
+            --primary-100: #e0f2fe;
+            --primary-200: #bae6fd;
+            --primary-300: #7dd3fc;
+            --primary-400: #38bdf8;
+            --primary-500: #0ea5e9;
+            --primary-600: #0284c7;
+            --primary-700: #0369a1;
+            --primary-800: #075985;
+            --primary-900: #0c4a6e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: #f1f5f9;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', 'Monaco', 'Courier New', monospace;
+        }
+
         .gradient-text {
-            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
         .hero-gradient {
-            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
         }
+
         .card-hover {
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
+
         .metric-value {
-            font-size: 2.5rem;
-            font-weight: 800;
+            font-size: 3rem;
+            font-weight: 900;
             line-height: 1;
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+
         .animate-float {
-            animation: float 3s ease-in-out infinite;
+            animation: float 6s ease-in-out infinite;
         }
+
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
+
+        .animate-pulse-slow {
+            animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
         .code-block {
-            background: #1e293b;
-            border-radius: 8px;
-            padding: 1rem;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
             overflow-x: auto;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
         }
+
         .nav-link {
             position: relative;
+            font-weight: 500;
+            transition: color 0.2s ease;
         }
+
         .nav-link::after {
             content: '';
             position: absolute;
             width: 0;
             height: 2px;
-            bottom: -2px;
-            left: 0;
-            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-            transition: width 0.3s ease;
+            bottom: -4px;
+            left: 50%;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
+
         .nav-link:hover::after {
             width: 100%;
         }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .section-gradient {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(30, 41, 59, 0.3) 50%, rgba(15, 23, 42, 0) 100%);
+        }
+
+        .cta-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .fps-badge {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        .rts-badge {
+            background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        .comparison-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comparison-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .comparison-card.fps::before {
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+        }
+
+        .comparison-card.rts::before {
+            background: linear-gradient(90deg, #94a3b8, #64748b);
+        }
+
+        .research-badge {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #1e293b;
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+        }
+
+        @media (max-width: 768px) {
+            .metric-value {
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="antialiased">
+    <!-- Research Status Banner -->
+    <div class="bg-gradient-to-r from-amber-500 to-orange-600 text-slate-900 py-2 px-4 text-center">
+        <p class="text-sm font-semibold">
+            <span class="inline-block mr-2">⚠️</span>
+            Research Release - Not Production Ready. See <a href="https://github.com/SuperInstance/constrainttheory/blob/main/DISCLAIMERS.md" class="underline hover:no-underline font-bold">DISCLAIMERS.md</a> for details.
+        </p>
+    </div>
+
     <!-- Navigation -->
-    <nav class="fixed w-full top-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-sm">Ω</span>
+    <nav class="fixed w-full top-8 z-50 glass-card border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 hero-gradient rounded-xl flex items-center justify-center shadow-lg">
+                        <span class="text-white font-bold text-lg">Ω</span>
                     </div>
-                    <span class="text-xl font-bold">Constraint Theory</span>
+                    <div class="flex flex-col">
+                        <span class="text-lg font-bold text-white leading-tight">Constraint Theory</span>
+                        <span class="text-xs text-slate-400">Geometric Substrate for Cellular Agents</span>
+                    </div>
                 </div>
-                <div class="hidden md:flex gap-6">
-                    <a href="#simulators" class="nav-link text-gray-300 hover:text-white">Simulators</a>
-                    <a href="#performance" class="nav-link text-gray-300 hover:text-white">Performance</a>
-                    <a href="#docs" class="nav-link text-gray-300 hover:text-white">Documentation</a>
-                    <a href="#quickstart" class="nav-link text-gray-300 hover:text-white">Quick Start</a>
+                <div class="hidden lg:flex items-center gap-8">
+                    <a href="#paradigm" class="nav-link text-slate-300 hover:text-white">FPS Paradigm</a>
+                    <a href="#simulators" class="nav-link text-slate-300 hover:text-white">Simulators</a>
+                    <a href="#performance" class="nav-link text-slate-300 hover:text-white">Performance</a>
+                    <a href="#docs" class="nav-link text-slate-300 hover:text-white">Documentation</a>
+                    <a href="#quickstart" class="nav-link text-slate-300 hover:text-white">Quick Start</a>
                 </div>
-                <div class="flex gap-3">
-                    <a href="https://github.com/SuperInstance/constrainttheory" target="_blank" rel="noopener" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm font-medium transition">
-                        GitHub
+                <div class="flex items-center gap-3">
+                    <a href="https://github.com/SuperInstance/constrainttheory" target="_blank" rel="noopener" class="hidden sm:flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-medium transition border border-slate-700">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>GitHub</span>
                     </a>
-                    <a href="/api/docs" class="px-4 py-2 hero-gradient hover:opacity-90 rounded-lg text-sm font-medium transition">
+                    <a href="/api/docs" class="cta-button hero-gradient hover:opacity-90 px-5 py-2 rounded-lg text-sm font-semibold text-white shadow-lg">
                         API Docs
                     </a>
                 </div>
@@ -99,145 +254,279 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-32 pb-20 px-4">
-        <div class="container mx-auto max-w-6xl">
+    <section class="relative pt-40 pb-20 px-4 overflow-hidden">
+        <!-- Background decoration -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
             <div class="text-center mb-16">
-                <div class="inline-block mb-6 px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full">
-                    <span class="text-cyan-400 text-sm font-medium">Deterministic Geometric Engine for Vector Computations</span>
+                <!-- Research badge -->
+                <div class="inline-flex items-center gap-2 mb-8 px-4 py-2 bg-amber-500/10 border border-amber-500/30 rounded-full">
+                    <span class="research-badge">Research Release</span>
+                    <span class="text-slate-400 text-sm">Academic implementation, not production-ready</span>
                 </div>
-                <h1 class="text-5xl md:text-7xl font-bold mb-6">
-                    <span class="gradient-text">Constraint Theory</span>
+
+                <h1 class="text-5xl sm:text-6xl md:text-7xl font-black mb-6 tracking-tight">
+                    <span class="gradient-text">Agents Play FPS,</span>
+                    <br>
+                    <span class="text-white">Not RTS</span>
                 </h1>
-                <p class="text-2xl text-cyan-400 font-semibold mb-4 max-w-4xl mx-auto">
-                    Snap continuous vectors onto a discrete constraint manifold
+
+                <p class="text-xl md:text-2xl text-slate-300 font-medium mb-4 max-w-4xl mx-auto leading-relaxed">
+                    Geometric substrate for <span class="text-cyan-400 font-semibold">cellularized agent infrastructure</span>
                 </p>
-                <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-                    Get exact, deterministic results at up to <span class="text-cyan-400 font-bold">13.5M ops/sec</span>.
-                    Replace approximate floating-point operations with provable geometric constraints.
+
+                <p class="text-lg text-slate-400 mb-12 max-w-3xl mx-auto leading-relaxed">
+                    Each agent has a unique position and orientation in multidimensional space.
+                    Automatically filters information. Scales to <span class="text-purple-400 font-semibold">10,000+ agents</span> with <span class="text-cyan-400 font-semibold">O(log n)</span> spatial queries.
                 </p>
 
                 <!-- Three Primary CTAs -->
-                <div class="flex flex-wrap justify-center gap-4 mb-12">
-                    <a href="https://github.com/SuperInstance/constrainttheory" target="_blank" rel="noopener" class="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg text-lg font-semibold transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                <div class="flex flex-wrap justify-center gap-4 mb-16">
+                    <a href="https://github.com/SuperInstance/constrainttheory" target="_blank" rel="noopener" class="cta-button hero-gradient hover:opacity-90 px-8 py-4 rounded-xl text-lg font-bold text-white shadow-2xl hover:shadow-cyan-500/25 transform hover:-translate-y-0.5 transition">
                         View on GitHub
                     </a>
-                    <a href="https://github.com/SuperInstance/SuperInstance-papers" target="_blank" rel="noopener" class="px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-lg font-semibold transition">
-                        Read Math Overview
+                    <a href="https://github.com/SuperInstance/SuperInstance-papers" target="_blank" rel="noopener" class="cta-button px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-lg font-semibold text-white shadow-xl hover:shadow-slate-500/10 transform hover:-translate-y-0.5 transition">
+                        Read Research Papers
                     </a>
-                    <a href="/simulators/pythagorean/" class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-cyan-600 hover:from-emerald-600 hover:to-cyan-700 rounded-lg text-lg font-semibold transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                        Try Visualizer
+                    <a href="/simulators/pythagorean/" class="cta-button px-8 py-4 bg-gradient-to-r from-emerald-500 to-cyan-600 hover:from-emerald-600 hover:to-cyan-700 rounded-xl text-lg font-bold text-white shadow-2xl hover:shadow-emerald-500/25 transform hover:-translate-y-0.5 transition">
+                        Try Interactive Demo
                     </a>
                 </div>
 
                 <!-- Performance Metrics -->
-                <div id="performance" class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover border border-gray-700">
-                        <div class="metric-value text-cyan-400">13.5M</div>
-                        <div class="text-sm text-gray-400 mt-2">ops/second</div>
+                <div id="performance" class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+                    <div class="glass-card rounded-2xl p-6 card-hover">
+                        <div class="metric-value">O(log n)</div>
+                        <div class="text-sm text-slate-400 mt-2 font-medium">spatial queries</div>
                     </div>
-                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover border border-gray-700">
-                        <div class="metric-value text-green-400">O(log n)</div>
-                        <div class="text-sm text-gray-400 mt-2">complexity</div>
+                    <div class="glass-card rounded-2xl p-6 card-hover">
+                        <div class="metric-value">10K+</div>
+                        <div class="text-sm text-slate-400 mt-2 font-medium">concurrent agents</div>
                     </div>
-                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover border border-gray-700">
-                        <div class="metric-value text-blue-400">100%</div>
-                        <div class="text-sm text-gray-400 mt-2">deterministic</div>
+                    <div class="glass-card rounded-2xl p-6 card-hover">
+                        <div class="metric-value">74ns</div>
+                        <div class="text-sm text-slate-400 mt-2 font-medium">per operation</div>
                     </div>
-                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover border border-gray-700">
-                        <div class="metric-value text-purple-400">Zero</div>
-                        <div class="text-sm text-gray-400 mt-2">approximation error</div>
+                    <div class="glass-card rounded-2xl p-6 card-hover">
+                        <div class="metric-value">Zero</div>
+                        <div class="text-sm text-slate-400 mt-2 font-medium">coordination overhead</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- What Is It Section -->
-    <section class="py-20 px-4 bg-gray-800/30">
-        <div class="container mx-auto max-w-4xl">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4">What Is It?</h2>
-                <p class="text-xl text-gray-400">Plain English explanation</p>
+    <!-- FPS vs RTS Paradigm Section -->
+    <section id="paradigm" class="py-24 px-4 section-gradient">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black mb-6">
+                    <span class="gradient-text">FPS vs RTS Paradigm</span>
+                </h2>
+                <p class="text-xl text-slate-400 max-w-3xl mx-auto">
+                    The key innovation that enables scalable multi-agent systems
+                </p>
             </div>
 
-            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
-                <div class="space-y-6 text-lg text-gray-300">
-                    <p>
-                        <strong class="text-cyan-400">The Problem:</strong> Traditional matrix operations use stochastic (random) methods and approximate floating-point arithmetic. This introduces tiny errors that compound and creates unpredictable results.
-                    </p>
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                <!-- Traditional RTS Approach -->
+                <div class="comparison-card rts glass-card rounded-2xl p-8 card-hover">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="rts-badge px-4 py-1 rounded-full text-sm">RTS Style</span>
+                        <h3 class="text-2xl font-bold text-slate-300">Traditional Approach</h3>
+                    </div>
 
-                    <p>
-                        <strong class="text-green-400">The Solution:</strong> Constraint theory uses a geometric "constraint manifold" - a discrete mathematical structure where all computations are exact. When you perform an operation, the result "snaps" to the nearest valid geometric state, like magnets clicking together.
-                    </p>
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-red-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                            </svg>
+                            <div>
+                                <p class="font-semibold text-slate-200">Central Coordinator</p>
+                                <p class="text-sm text-slate-400">Single point of failure, bottleneck</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-red-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                            </svg>
+                            <div>
+                                <p class="font-semibold text-slate-200">Global State Sharing</p>
+                                <p class="text-sm text-slate-400">All agents see the same data</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-red-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                            </svg>
+                            <div>
+                                <p class="font-semibold text-slate-200">O(n²) Coordination</p>
+                                <p class="text-sm text-slate-400">Each agent coordinates with every other</p>
+                            </div>
+                        </div>
+                    </div>
 
-                    <p>
-                        <strong class="text-blue-400">The Result:</strong> All outputs are guaranteed to satisfy your constraints (geometric rules) with zero approximation error. Operations run in O(log n) time instead of O(n), making them dramatically faster for large problems.
-                    </p>
+                    <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                        <p class="text-sm text-slate-400 font-mono">
+                            <span class="text-red-400">complexity:</span> O(n²)<br>
+                            <span class="text-red-400">scalability:</span> Poor<br>
+                            <span class="text-red-400">bottleneck:</span> Central controller
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FPS Approach -->
+                <div class="comparison-card fps glass-card rounded-2xl p-8 card-hover">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="fps-badge px-4 py-1 rounded-full text-sm">FPS Style</span>
+                        <h3 class="text-2xl font-bold text-slate-200">Our Approach</h3>
+                    </div>
+
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-emerald-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <div>
+                                <p class="font-semibold text-slate-200">Unique Position & Orientation</p>
+                                <p class="text-sm text-slate-400">Each agent has its own perspective</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-emerald-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <div>
+                                <p class="font-semibold text-slate-200">Automatic Information Filtering</p>
+                                <p class="text-sm text-slate-400">Spatial queries show only relevant data</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-emerald-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <div>
+                                <p class="font-semibold text-slate-200">O(log n) Spatial Queries</p>
+                                <p class="text-sm text-slate-400">KD-tree enables efficient neighbor lookup</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                        <p class="text-sm text-slate-400 font-mono">
+                            <span class="text-emerald-400">complexity:</span> O(log n)<br>
+                            <span class="text-emerald-400">scalability:</span> Excellent<br>
+                            <span class="text-emerald-400">bottleneck:</span> None
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Innovation -->
+            <div class="glass-card rounded-2xl p-8 border border-cyan-500/20">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <span class="text-white text-xl">💡</span>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">Key Innovation</h3>
+                        <p class="text-slate-300 leading-relaxed">
+                            Asymmetric understanding is a <span class="text-cyan-400 font-semibold">feature, not a bug</span>.
+                            Each agent's position and orientation in multidimensional space automatically filters
+                            what it can see and interact with. No central coordination needed - agents naturally
+                            scale to 10,000+ concurrent instances through geometric perspective.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- What Can I Use It For Section -->
-    <section class="py-20 px-4">
-        <div class="container mx-auto max-w-6xl">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4">What Can I Use It For?</h2>
-                <p class="text-xl text-gray-400">Practical applications (all experimental)</p>
+    <!-- Research Applications Section -->
+    <section class="py-24 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black mb-6">
+                    <span class="gradient-text">Research Applications</span>
+                </h2>
+                <p class="text-xl text-slate-400 max-w-3xl mx-auto">
+                    Potential applications being explored through academic research
+                </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 card-hover">
-                    <div class="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Application 1 -->
+                <div class="glass-card rounded-2xl p-8 card-hover">
+                    <div class="w-14 h-14 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Stable Geometric Preprocessing</h3>
-                    <p class="text-gray-400 mb-4">
-                        Preprocess vector embeddings (like those from ML models) to snap them onto a stable geometric lattice, reducing noise and improving downstream tasks.
+                    <h3 class="text-xl font-bold text-white mb-3">Stable Geometric Preprocessing</h3>
+                    <p class="text-slate-400 mb-6 leading-relaxed">
+                        Preprocess vector embeddings to snap them onto a stable geometric lattice, potentially reducing noise in ML pipelines.
                     </p>
-                    <div class="inline-block px-3 py-1 bg-yellow-500/10 border border-yellow-500/30 rounded-full">
-                        <span class="text-yellow-400 text-xs font-medium">Experimental</span>
+                    <div class="flex items-center gap-2">
+                        <span class="research-badge">Theoretical</span>
+                        <span class="text-slate-500 text-sm">No validation yet</span>
                     </div>
                 </div>
 
-                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 card-hover">
-                    <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <!-- Application 2 -->
+                <div class="glass-card rounded-2xl p-8 card-hover">
+                    <div class="w-14 h-14 bg-gradient-to-br from-emerald-500/20 to-green-600/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Geometric Invariants in Robotics</h3>
-                    <p class="text-gray-400 mb-4">
-                        Enforce physical constraints (like "this joint can't bend beyond 90 degrees") in robotic simulations and path planning, guaranteeing feasible solutions.
+                    <h3 class="text-xl font-bold text-white mb-3">Geometric Invariants in Robotics</h3>
+                    <p class="text-slate-400 mb-6 leading-relaxed">
+                        Enforce physical constraints in robotic simulations and path planning, potentially guaranteeing feasible solutions.
                     </p>
-                    <div class="inline-block px-3 py-1 bg-yellow-500/10 border border-yellow-500/30 rounded-full">
-                        <span class="text-yellow-400 text-xs font-medium">Experimental</span>
+                    <div class="flex items-center gap-2">
+                        <span class="research-badge">Theoretical</span>
+                        <span class="text-slate-500 text-sm">No validation yet</span>
                     </div>
                 </div>
 
-                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 card-hover">
-                    <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <!-- Application 3 -->
+                <div class="glass-card rounded-2xl p-8 card-hover">
+                    <div class="w-14 h-14 bg-gradient-to-br from-purple-500/20 to-violet-600/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Constrained State Space Models</h3>
-                    <p class="text-gray-400 mb-4">
-                        Build state machines and transition systems where state changes must satisfy geometric constraints, preventing invalid states and reducing error rates.
+                    <h3 class="text-xl font-bold text-white mb-3">Constrained State Space Models</h3>
+                    <p class="text-slate-400 mb-6 leading-relaxed">
+                        Build state machines where state changes must satisfy geometric constraints, potentially preventing invalid states.
                     </p>
-                    <div class="inline-block px-3 py-1 bg-yellow-500/10 border border-yellow-500/30 rounded-full">
-                        <span class="text-yellow-400 text-xs font-medium">Experimental</span>
+                    <div class="flex items-center gap-2">
+                        <span class="research-badge">Theoretical</span>
+                        <span class="text-slate-500 text-sm">No validation yet</span>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-8 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
-                <p class="text-yellow-400 text-sm text-center">
-                    <strong>Note:</strong> All applications are experimental and active research areas. This is an academic research implementation, not production-ready software.
-                </p>
+            <!-- Important Disclaimer -->
+            <div class="mt-12 glass-card rounded-2xl p-8 border border-amber-500/30">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <span class="text-white text-xl">⚠️</span>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">Important: Research Release Status</h3>
+                        <p class="text-slate-300 leading-relaxed">
+                            <strong>This is an academic research implementation, not production-ready software.</strong>
+                            All applications listed above are <span class="text-amber-400 font-semibold">theoretical</span> and have not been validated in production environments.
+                            See our <a href="https://github.com/SuperInstance/constrainttheory/blob/main/DISCLAIMERS.md" class="text-cyan-400 underline hover:no-underline">DISCLAIMERS.md</a> for known limitations and risks.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -734,65 +1023,86 @@ curl -X POST https://constraint-theory.superinstance.ai/api/geometry/snap \
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 px-4 border-t border-gray-800">
-        <div class="container mx-auto max-w-6xl">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-8 h-8 hero-gradient rounded-lg flex items-center justify-center">
-                            <span class="text-white font-bold text-sm">Ω</span>
+    <footer class="py-16 px-4 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="lg:col-span-1">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 hero-gradient rounded-xl flex items-center justify-center shadow-lg">
+                            <span class="text-white font-bold text-lg">Ω</span>
                         </div>
-                        <span class="text-lg font-bold">Constraint Theory</span>
+                        <div class="flex flex-col">
+                            <span class="text-lg font-bold text-white">Constraint Theory</span>
+                            <span class="text-xs text-slate-400">Geometric Substrate</span>
+                        </div>
                     </div>
-                    <p class="text-gray-400 text-sm">
-                        Deterministic geometric logic for computational intelligence.
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+                        Academic research implementation exploring geometric constraints for scalable multi-agent systems.
                     </p>
+                    <div class="flex items-center gap-2">
+                        <span class="research-badge">Research Release</span>
+                    </div>
                 </div>
+
+                <!-- Resources -->
                 <div>
-                    <h4 class="font-semibold mb-4">Resources</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#simulators" class="hover:text-white">Simulators</a></li>
-                        <li><a href="#docs" class="hover:text-white">Documentation</a></li>
-                        <li><a href="/api/docs" class="hover:text-white">API Reference</a></li>
-                        <li><a href="https://github.com/SuperInstance/SuperInstance-papers" class="hover:text-white">Research Papers</a></li>
+                    <h4 class="font-semibold text-white mb-4">Resources</h4>
+                    <ul class="space-y-3 text-slate-400 text-sm">
+                        <li><a href="#simulators" class="hover:text-cyan-400 transition">Interactive Simulators</a></li>
+                        <li><a href="#docs" class="hover:text-cyan-400 transition">Documentation</a></li>
+                        <li><a href="/api/docs" class="hover:text-cyan-400 transition">API Reference</a></li>
+                        <li><a href="https://github.com/SuperInstance/SuperInstance-papers" class="hover:text-cyan-400 transition" target="_blank" rel="noopener">Research Papers</a></li>
                     </ul>
                 </div>
+
+                <!-- Community -->
                 <div>
-                    <h4 class="font-semibold mb-4">Community</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="https://github.com/SuperInstance/constrainttheory" class="hover:text-white">GitHub</a></li>
-                        <li><a href="https://github.com/SuperInstance" class="hover:text-white">SuperInstance</a></li>
-                        <li><a href="#" class="hover:text-white">Discord</a></li>
-                        <li><a href="#" class="hover:text-white">Twitter</a></li>
+                    <h4 class="font-semibold text-white mb-4">Community</h4>
+                    <ul class="space-y-3 text-slate-400 text-sm">
+                        <li><a href="https://github.com/SuperInstance/constrainttheory" class="hover:text-cyan-400 transition" target="_blank" rel="noopener">GitHub Repository</a></li>
+                        <li><a href="https://github.com/SuperInstance" class="hover:text-cyan-400 transition" target="_blank" rel="noopener">SuperInstance Org</a></li>
+                        <li><a href="https://github.com/SuperInstance/constrainttheory/blob/main/DISCLAIMERS.md" class="hover:text-cyan-400 transition" target="_blank" rel="noopener">Disclaimers</a></li>
+                        <li><a href="https://github.com/SuperInstance/constrainttheory/blob/main/BENCHMARKS.md" class="hover:text-cyan-400 transition" target="_blank" rel="noopener">Benchmarks</a></li>
                     </ul>
                 </div>
+
+                <!-- Legal -->
                 <div>
-                    <h4 class="font-semibold mb-4">Legal</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-white">License (MIT)</a></li>
+                    <h4 class="font-semibold text-white mb-4">Legal</h4>
+                    <ul class="space-y-3 text-slate-400 text-sm">
+                        <li><a href="https://github.com/SuperInstance/constrainttheory/blob/main/LICENSE" class="hover:text-cyan-400 transition" target="_blank" rel="noopener">MIT License</a></li>
+                        <li><a href="https://github.com/SuperInstance/constrainttheory/blob/main/DISCLAIMERS.md" class="hover:text-cyan-400 transition" target="_blank" rel="noopener">Disclaimers</a></li>
+                        <li><a href="https://github.com/SuperInstance/constrainttheory/blob/main/CODE_OF_CONDUCT.md" class="hover:text-cyan-400 transition" target="_blank" rel="noopener">Code of Conduct</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 text-sm">
-                    © 2024 SuperInstance. Open source under MIT license.
-                </p>
-                <div class="flex gap-4 mt-4 md:mt-0">
-                    <a href="https://github.com/SuperInstance/constrainttheory" target="_blank" rel="noopener" class="text-gray-400 hover:text-white">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
-                        </svg>
-                    </a>
+
+            <!-- Bottom bar -->
+            <div class="border-t border-slate-800 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-slate-500 text-sm text-center md:text-left">
+                        © 2024 SuperInstance. Open source under <a href="https://github.com/SuperInstance/constrainttheory/blob/main/LICENSE" class="text-cyan-400 hover:text-cyan-300 transition" target="_blank" rel="noopener">MIT License</a>.
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <a href="https://github.com/SuperInstance/constrainttheory" target="_blank" rel="noopener" class="text-slate-400 hover:text-white transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
+                <p class="text-slate-600 text-xs text-center mt-4">
+                    This is an academic research implementation. Not suitable for production use.
+                </p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Render KaTeX equations
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
+            // Render KaTeX equations
             if (typeof katex !== 'undefined') {
                 const equations = document.querySelectorAll('code');
                 equations.forEach(eq => {
@@ -815,22 +1125,50 @@ curl -X POST https://constraint-theory.superinstance.ai/api/geometry/snap \
                     e.preventDefault();
                     const target = document.querySelector(this.getAttribute('href'));
                     if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
+                        const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
                         });
                     }
                 });
             });
 
             // Add scroll effect to navigation
+            const nav = document.querySelector('nav');
+            let lastScrollY = window.scrollY;
+
             window.addEventListener('scroll', () => {
-                const nav = document.querySelector('nav');
-                if (window.scrollY > 50) {
-                    nav.classList.add('shadow-lg');
+                const currentScrollY = window.scrollY;
+
+                // Add shadow when scrolled
+                if (currentScrollY > 50) {
+                    nav.classList.add('shadow-2xl');
                 } else {
-                    nav.classList.remove('shadow-lg');
+                    nav.classList.remove('shadow-2xl');
                 }
+
+                lastScrollY = currentScrollY;
+            });
+
+            // Animate elements on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all cards
+            document.querySelectorAll('.card-hover, .glass-card').forEach(card => {
+                observer.observe(card);
             });
         });
     </script>
