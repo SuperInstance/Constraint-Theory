@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculus Visualization - Constraint Theory</title>
+    <meta name="description" content="Interactive calculus visualization using dodecet geometric encoding - differentiation, integration, and gradient operations">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/cyberpunk-base.css">
+    <style>
+        .calculus-section {
+            background: rgba(26, 26, 26, 0.5);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .calculus-section h2 {
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            font-family: var(--font-display);
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            background: var(--color-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .canvas-wrapper canvas {
+            display: block;
+            width: 100%;
+            height: 400px;
+        }
+
+        .controls-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .control-group label {
+            display: block;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--color-border);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--color-primary);
+        }
+
+        .control-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--color-border);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-mono);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .info-card .value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--color-primary);
+            font-family: var(--font-mono);
+        }
+
+        .info-card .label {
+            color: var(--color-text-secondary);
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        .info-card .hex {
+            color: var(--color-success);
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+        }
+
+        .formula-display {
+            background: var(--color-bg);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            color: var(--color-text);
+            margin-bottom: 15px;
+            border-left: 3px solid var(--color-primary);
+        }
+
+        .explanation {
+            background: rgba(0, 119, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .explanation h3 {
+            color: var(--color-secondary);
+            margin-bottom: 10px;
+        }
+
+        .explanation p {
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .explanation code {
+            background: var(--color-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--color-success);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: var(--color-bg-secondary);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            border: 1px solid var(--color-border);
+            transition: all 0.2s ease;
+        }
+
+        .tab:hover {
+            border-color: var(--color-primary);
+        }
+
+        .tab.active {
+            background: var(--color-primary);
+            color: var(--color-bg);
+            border-color: var(--color-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .precision-comparison {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .precision-item {
+            text-align: center;
+            padding: 15px;
+            background: var(--color-bg-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+        }
+
+        .precision-item.highlight {
+            border-color: var(--color-success);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+        }
+
+        .precision-item .title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .precision-item .bits {
+            font-size: 2em;
+            color: var(--color-primary);
+        }
+
+        .precision-item .states {
+            color: var(--color-text-secondary);
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .controls-row {
+                grid-template-columns: 1fr;
+            }
+
+            .precision-comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="logo">
+                    <span class="logo-icon">🧮</span>
+                    Calculus Visualization
+                </h1>
+                <p class="tagline">Dodecet-encoded calculus operations with geometric precision</p>
+            </div>
+            <nav class="nav">
+                <a href="../index.html" class="nav-link">Back to Demos</a>
+                <a href="https://github.com/SuperInstance/Constraint-Theory" target="_blank" class="nav-link">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h2 class="hero-title">Interactive Calculus with Dodecet Encoding</h2>
+                <p class="hero-description">
+                    Explore differentiation, integration, and gradient operations using 12-bit geometric encoding.
+                    <strong class="highlight">16x more precision than 8-bit. Deterministic computation.</strong>
+                </p>
+                <div class="hero-metrics">
+                    <div class="metric">
+                        <span class="metric-value">4,096</span>
+                        <span class="metric-label">States (12-bit)</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">O(h^2)</span>
+                        <span class="metric-label">Diff Error</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">O(h^4)</span>
+                        <span class="metric-label">Int Error</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-tab="differentiation">Differentiation</div>
+                <div class="tab" data-tab="integration">Integration</div>
+                <div class="tab" data-tab="gradient">Gradient</div>
+            </div>
+
+            <!-- Differentiation Tab -->
+            <div id="differentiation" class="tab-content active">
+                <section class="calculus-section">
+                    <h2>Dodecet Differentiation</h2>
+
+                    <div class="formula-display">
+                        f'(x) = (f(x+h) - f(x-h)) / 2h
+                        <br>
+                        <small>Central difference with dodecet-encoded slope</small>
+                    </div>
+
+                    <div class="canvas-wrapper">
+                        <canvas id="diffCanvas" width="800" height="400"></canvas>
+                    </div>
+
+                    <div class="controls-row">
+                        <div class="control-group">
+                            <label>Function:</label>
+                            <select id="diffFunction">
+                                <option value="sin">f(x) = sin(x)</option>
+                                <option value="cos">f(x) = cos(x)</option>
+                                <option value="x2">f(x) = x^2</option>
+                                <option value="exp">f(x) = e^x</option>
+                                <option value="log">f(x) = ln(x+3)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label>Step Size (h): <span id="hValue">0.001</span></label>
+                            <input type="range" id="hSlider" min="-4" max="-1" step="0.1" value="-3">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Animation Speed: <span id="speedValue">1.0x</span></label>
+                            <input type="range" id="speedSlider" min="0" max="3" step="0.1" value="1">
+                        </div>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="value" id="derivValue">0.000</div>
+                            <div class="label">Derivative f'(x)</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="value" id="derivError">0.000</div>
+                            <div class="label">Est. Error</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="hex" id="derivHex">000</div>
+                            <div class="label">Encoded Slope</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="value" id="derivFPS">60</div>
+                            <div class="label">FPS</div>
+                        </div>
+                    </div>
+
+                    <div class="explanation">
+                        <h3>How It Works</h3>
+                        <p>
+                            The derivative is computed using the <strong>central difference method</strong>,
+                            which provides O(h^2) truncation error. The slope is then encoded as a
+                            <strong>12-bit dodecet</strong> for geometric precision.
+                        </p>
+                        <p>
+                            Move your mouse over the canvas to see the tangent line at different points.
+                            The green dot shows the current point, and the magenta dashed line shows the tangent.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Integration Tab -->
+            <div id="integration" class="tab-content">
+                <section class="calculus-section">
+                    <h2>Dodecet Integration</h2>
+
+                    <div class="formula-display">
+                        Integral = (h/3) * [f(x0) + 4*f(x1) + 2*f(x2) + ... + f(xn)]
+                        <br>
+                        <small>Simpson's rule with dodecet-encoded area</small>
+                    </div>
+
+                    <div class="canvas-wrapper">
+                        <canvas id="intCanvas" width="800" height="400"></canvas>
+                    </div>
+
+                    <div class="controls-row">
+                        <div class="control-group">
+                            <label>Function:</label>
+                            <select id="intFunction">
+                                <option value="sin">f(x) = sin(x)</option>
+                                <option value="cos">f(x) = cos(x)</option>
+                                <option value="x2">f(x) = x^2</option>
+                                <option value="exp">f(x) = e^x</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label>Integration Strips: <span id="stripsValue">50</span></label>
+                            <input type="range" id="stripsSlider" min="10" max="200" step="2" value="50">
+                        </div>
+
+                        <div class="control-group">
+                            <label>
+                                <input type="checkbox" id="showRiemann" checked>
+                                Show Riemann Strips
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="value" id="intValue">0.000</div>
+                            <div class="label">Integral Value</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="value" id="intError">0.000</div>
+                            <div class="label">Est. Error</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="hex" id="intHex">000</div>
+                            <div class="label">Encoded Area</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="value" id="intFPS">60</div>
+                            <div class="label">FPS</div>
+                        </div>
+                    </div>
+
+                    <div class="explanation">
+                        <h3>How It Works</h3>
+                        <p>
+                            The integral is computed using <strong>Simpson's rule</strong>,
+                            which provides O(h^4) truncation error - much more accurate than
+                            simple Riemann sums. The area is encoded as a <strong>12-bit dodecet</strong>.
+                        </p>
+                        <p>
+                            The blue area shows the region under the curve, and the animated
+                            yellow strips visualize the Simpson's rule approximation.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Gradient Tab -->
+            <div id="gradient" class="tab-content">
+                <section class="calculus-section">
+                    <h2>Dodecet Gradient</h2>
+
+                    <div class="formula-display">
+                        grad(f) = (df/dx, df/dy)
+                        <br>
+                        <small>Multivariable calculus with dodecet vector encoding</small>
+                    </div>
+
+                    <div class="canvas-wrapper">
+                        <canvas id="gradCanvas" width="800" height="400"></canvas>
+                    </div>
+
+                    <div class="controls-row">
+                        <div class="control-group">
+                            <label>Function:</label>
+                            <select id="gradFunction">
+                                <option value="sincos">f(x,y) = sin(x)*cos(y)</option>
+                                <option value="x2y2">f(x,y) = x^2 + y^2</option>
+                                <option value="exp">f(x,y) = e^(-(x^2+y^2))</option>
+                                <option value="ripple">f(x,y) = sin(sqrt(x^2+y^2))</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label>Particles: <span id="particleValue">50</span></label>
+                            <input type="range" id="particleSlider" min="10" max="200" step="10" value="50">
+                        </div>
+
+                        <div class="control-group">
+                            <label>
+                                <input type="checkbox" id="showContours" checked>
+                                Show Contours
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="value" id="particleCount">50</div>
+                            <div class="label">Active Particles</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="value" id="avgMagnitude">0.000</div>
+                            <div class="label">Avg |grad|</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="hex" id="gradHex">000000</div>
+                            <div class="label">Sample Gradient</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="value" id="gradFPS">60</div>
+                            <div class="label">FPS</div>
+                        </div>
+                    </div>
+
+                    <div class="explanation">
+                        <h3>How It Works</h3>
+                        <p>
+                            The gradient of a scalar field f(x,y) points in the direction of
+                            steepest increase. Green particles follow <strong>gradient descent</strong>,
+                            flowing toward local minima like water flowing downhill.
+                        </p>
+                        <p>
+                            Each gradient vector is encoded as two dodecets (one for each component),
+                            providing <strong>16x more precision</strong> than 8-bit encoding.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Precision Comparison -->
+            <section class="calculus-section">
+                <h2>Precision Comparison</h2>
+
+                <div class="precision-comparison">
+                    <div class="precision-item">
+                        <div class="title">8-bit (Traditional)</div>
+                        <div class="bits">256</div>
+                        <div class="states">discrete states</div>
+                    </div>
+                    <div class="precision-item highlight">
+                        <div class="title">12-bit Dodecet</div>
+                        <div class="bits">4,096</div>
+                        <div class="states">discrete states</div>
+                    </div>
+                    <div class="precision-item">
+                        <div class="title">Improvement</div>
+                        <div class="bits">16x</div>
+                        <div class="states">more precision</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Code Example -->
+            <section class="calculus-section">
+                <h2>Code Example</h2>
+
+                <div class="formula-display">
+                    <pre style="margin: 0; overflow-x: auto;">
+// Differentiation with dodecet encoding
+const { value, encodedSlope, error } = DodecetDifferentiation.derivative(
+    (x) => Math.sin(x),
+    Math.PI / 4
+);
+
+console.log(`Derivative: ${value}`);        // cos(PI/4) = 0.707
+console.log(`Encoded: ${encodedSlope.toHexString()}`);  // "59E"
+console.log(`Error: ${error}`);             // ~0.000001
+
+// Integration with Simpson's rule
+const { value, encodedArea, strips } = DodecetIntegration.integrate(
+    (x) => Math.sin(x),
+    0, Math.PI
+);
+
+console.log(`Integral: ${value}`);          // 2.0
+console.log(`Encoded: ${encodedArea.toHexString()}`);   // "FFF"
+
+// Gradient computation
+const { grad, partials, magnitude } = DodecetGradient.gradient(
+    (x, y, z) => x*x + y*y + z*z,
+    { x: 1, y: 2, z: 3 }
+);
+
+console.log(`Gradient: (${partials.dx}, ${partials.dy}, ${partials.dz})`);
+// (2, 4, 6) - gradient of f = x^2 + y^2 + z^2
+                    </pre>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <div class="container">
+                    <div class="footer-content">
+                        <p>Calculus Visualization - Constraint Theory Project</p>
+                        <p>12-bit dodecet encoding for geometric operations</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../js/dodecet.js"></script>
+    <script src="../js/dodecet-geometric.js"></script>
+    <script src="../js/dodecet-calculus.js"></script>
+    <script src="../js/calculus-visualization.js"></script>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active from all tabs
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                // Add active to clicked tab
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Initialize visualizers
+        let diffViz, intViz, gradViz;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                try {
+                    // Create visualizers
+                    diffViz = new DifferentiationVisualizer('diffCanvas');
+                    intViz = new IntegrationVisualizer('intCanvas');
+                    gradViz = new GradientVisualizer('gradCanvas');
+
+                    // Start animations
+                    diffViz.startAnimation();
+                    intViz.startAnimation();
+                    gradViz.startAnimation();
+
+                    console.log('All calculus visualizers initialized');
+                } catch (error) {
+                    console.error('Error initializing visualizers:', error);
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

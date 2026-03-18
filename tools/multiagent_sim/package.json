@@ -1,0 +1,30 @@
+{
+  "name": "multiagent-simulator",
+  "version": "1.0.0",
+  "description": "Simulate N agents with origin-centric geometry and asymmetric understanding",
+  "main": "simulate.js",
+  "bin": {
+    "multiagent-sim": "./simulate.js"
+  },
+  "scripts": {
+    "start": "node simulate.js",
+    "demo:asymmetric": "node simulate.js --demo asymmetric",
+    "demo:encoding": "node simulate.js --demo encoding",
+    "demo:visibility": "node simulate.js --demo visibility",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "multiagent",
+    "simulation",
+    "origin-centric",
+    "dodecet",
+    "asymmetric",
+    "geometry",
+    "superinstance"
+  ],
+  "author": "SuperInstance",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

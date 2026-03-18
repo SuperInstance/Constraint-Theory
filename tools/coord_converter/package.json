@@ -1,0 +1,28 @@
+{
+  "name": "coord-converter",
+  "version": "1.0.0",
+  "description": "Convert between 3D coordinates and Dodecet 12-bit encoding",
+  "main": "convert.js",
+  "bin": {
+    "coord-converter": "./convert.js"
+  },
+  "scripts": {
+    "test": "node test.js",
+    "example:to": "node convert.js to-dodecet 1.5 -2.3 0.8",
+    "example:from": "node convert.js from-dodecet 0x5E4199",
+    "example:batch": "node convert.js batch sample_input.json sample_output.json"
+  },
+  "keywords": [
+    "dodecet",
+    "coordinate",
+    "converter",
+    "superinstance",
+    "3d",
+    "encoding"
+  ],
+  "author": "SuperInstance",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

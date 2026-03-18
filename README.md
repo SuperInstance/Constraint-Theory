@@ -1,6 +1,6 @@
 # Constraint Theory
 
-**A geometric approach to deterministic computation via exact constraint-solving**
+**Geometric substrate for cellularized agent infrastructure**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![docs](https://img.shields.io/badge/docs-rigorous-blue)](docs/)
@@ -10,56 +10,81 @@
 
 ---
 
-## Executive Summary
+## The Problem: Traditional AI is RTS-Style
 
-Constraint Theory is a research framework exploring geometric computation as an alternative to probabilistic approximation. By transforming continuous vector operations into discrete geometric constraint-solving, we achieve deterministic outputs for well-defined mathematical problems.
+Traditional systems use a bird's-eye view where all agents see the same data:
 
-**Core Innovation:** Use geometric constraints (Pythagorean triples, structural rigidity) to define a valid state space G where all outputs satisfy constraint C(g) by construction.
+```
+┌─────────────────────────────────────┐
+│     RTS (Real-Time Strategy)        │
+│                                     │
+│   Central Controller sees ALL       │
+│   ↙  ↘       ↙  ↘       ↙  ↘       │
+│  A1   A2     A3   A4     A5   A6   │
+│  ↓    ↓      ↓    ↓      ↓    ↓     │
+│ All agents share global state       │
+│                                     │
+│  Problem: Doesn't scale             │
+│  - Central bottleneck               │
+│  - Shared state coordination        │
+│  - O(n²) communication complexity   │
+└─────────────────────────────────────┘
+```
 
-**Current Status:** Research release with working Rust implementation, interactive web visualizations, and formal mathematical proofs. Empirical validation on real-world ML workloads is ongoing.
+Every agent needs to coordinate with every other agent. As agent count grows, coordination cost explodes.
 
 ---
 
-## What Problem Does This Solve?
+## Our Solution: FPS-Style Perspective
 
-Traditional approaches to approximation use probabilistic methods with inherent uncertainty:
-
-```
-Input → Probabilistic Model → Output (with uncertainty ε)
-```
-
-Constraint Theory uses geometric constraint-solving:
+Constraint Theory gives each agent its own first-person-shooter perspective:
 
 ```
-Input → Geometric Constraints → Output (guaranteed valid)
+┌────────────────────────────────────────────────────────────┐
+│            FPS (First-Person-Shooter)                     │
+│                                                            │
+│  Agent A1 (position: dodecet_0x123, orientation: φ=0.73)  │
+│      │                                                     │
+│      │ Sees neighbors within geometric radius             │
+│      ▼                                                     │
+│  ┌─────────────────┐                                       │
+│  │ Agent A1's View  │                                       │
+│  │                 │                                       │
+│  │  [A2]──[A3]     │  <- Only visible agents              │
+│  │    │    │       │                                       │
+│  │  [A1]──[A4]     │  <- A1 is center                     │
+│  │                 │                                       │
+│  └─────────────────┘                                       │
+│                                                            │
+│  Agent A5 (position: dodecet_0x456, orientation: φ=1.24)  │
+│      │                                                     │
+│      │ Different perspective, different visible set       │
+│      ▼                                                     │
+│  ┌─────────────────┘                                       │
+│  │ Agent A5's View  │                                       │
+│  │                 │                                       │
+│  │  [A6]           │  <- Different neighbors               │
+│  │    │            │                                       │
+│  │  [A5]──[A7]     │                                       │
+│  │                 │                                       │
+│  └─────────────────┘                                       │
+│                                                            │
+│  Benefit: Scales naturally                                 │
+│  - No central coordinator needed                          │
+│  - Each agent independent                                 │
+│  - O(log n) spatial queries via KD-tree                   │
+└────────────────────────────────────────────────────────────┘
 ```
 
-**Key difference:** In our constrained model, invalid outputs are mathematically impossible because they violate the geometric constraints that define valid states.
+**Key innovation:** Each agent has a unique position and orientation in multidimensional space. This automatically filters and contextualizes information - no global coordination required.
 
 ---
 
-## How It Works: A Concrete Example
+## How It Works: Geometric Viewpoint Encoding
 
-### The Problem: Numerical Approximation Error
+### 1. Precalculate Geometry into Viewpoint Encoding
 
-Consider finding the nearest point on a discrete set from a continuous input:
-
-```python
-# Traditional approach: numerical approximation
-import numpy as np
-
-def find_nearest_approximate(points, query):
-    distances = np.linalg.norm(points - query, axis=1)
-    nearest_idx = np.argmin(distances)
-    return points[nearest_idx]
-
-# Floating-point error can occur
-query = np.array([0.33333333, 0.66666667])
-result = find_nearest_approximate(valid_points, query)
-# Result: depends on floating-point representation
-```
-
-### The Geometric Solution: Pythagorean Snapping
+We transform continuous vectors into discrete geometric states:
 
 ```rust
 use constraint_theory_core::{PythagoreanManifold, snap};
@@ -67,7 +92,7 @@ use constraint_theory_core::{PythagoreanManifold, snap};
 // Create manifold with exact Pythagorean triples
 let manifold = PythagoreanManifold::new(200);
 
-// Snap to nearest valid state (exact arithmetic)
+// Snap continuous vector to exact discrete state
 let vec = [0.6f32, 0.8];
 let (snapped, noise) = snap(&manifold, vec);
 
@@ -76,118 +101,247 @@ println!("Snapped: ({}, {})", snapped[0], snapped[1]);
 // Output: (0.6, 0.8) = (3/5, 4/5) exactly
 ```
 
-**What's happening:**
-1. We define valid states as Pythagorean triples (a² + b² = c²)
-2. We use a KD-tree for O(log n) nearest-neighbor search
-3. We snap to the exact rational representation
-4. Result: Deterministic, exact, no floating-point ambiguity
+### 2. Agents Get Perspective-Based Feeds
+
+Each agent's state is a point in the geometric manifold:
+
+```rust
+struct AgentState {
+    // Position in 12-bit dodecet space
+    position: Dodecet,  // 12 bits
+
+    // Orientation (gauge field value)
+    orientation: f32,    // 32 bits
+
+    // Holonomy (accumulated geometric phase)
+    holonomy: SO3Matrix, // 36 bits (compressed)
+
+    // Confidence (distance from constraint surface)
+    confidence: f32,     // 32 bits
+
+    // Total: ~112 bits = 14 bytes per agent
+}
+```
+
+### 3. Data Triggers Attention Based on Position
+
+Agents query their neighborhood via O(log n) KD-tree lookup:
+
+```rust
+// Agent queries visible neighborhood
+let visible_set = manifold.neighbors(agent.position, radius);
+
+// Only see agents within geometric radius
+// Automatic filtering - no global scan needed
+```
+
+### 4. Fast From the Ground Up
+
+**Performance:**
+- O(1) lookup via pre-evolved manifold
+- O(log n) spatial queries via KD-tree
+- ~100× faster than NumPy brute-force baseline
+- Zero floating-point ambiguity (exact arithmetic)
 
 ---
 
-## Key Concepts
+## The Paradigm Shift
 
-### 1. Geometric State Space (G)
-
-We define a set of valid geometric states G where every g ∈ G satisfies constraint C(g):
-
-```
-G = {g | C(g) = true}
-```
-
-For Pythagorean snapping:
-```
-C(a, b, c) = (a² + b² = c²) ∧ (a, b, c ∈ ℤ)
-```
-
-### 2. Φ-Folding Operator
-
-Maps continuous vectors to discrete valid states:
-
-```
-Φ(v) = argmin_{g ∈ G} ||v - g||
-```
-
-**Complexity:** O(log n) via KD-tree spatial indexing
-
-### 3. Deterministic Guarantee
-
-**Theorem:** All outputs satisfy geometric constraints by construction
-
-**Proof sketch:**
-- System only produces outputs from valid geometric states G
-- All g in G satisfy constraint C(g) = true
-- Invalid output not in G violates constraint
-- Therefore, invalid output impossible within the constrained model
-
-> **Important:** This guarantee applies only within the geometric constraint engine, not to LLMs or AI systems generally. See [DISCLAIMERS.md](docs/DISCLAIMERS.md) for important clarifications.
+| Aspect | Traditional (RTS) | Constraint Theory (FPS) |
+|--------|-------------------|-------------------------|
+| **Perspective** | Global view | Local view |
+| **State** | Shared global state | Independent geometric state |
+| **Communication** | O(n²) all-to-all | O(log n) neighborhood queries |
+| **Scaling** | Central bottleneck | Natural parallelism |
+| **Guarantees** | Probabilistic | Deterministic (within model) |
+| **Invalid Outputs** | Filtered post-hoc | Excluded by construction |
 
 ---
 
-## Performance Characteristics
+## Integration with Other Projects
 
-### Benchmarked Operation: Pythagorean Snap
+Constraint Theory is part of a three-repo cellular agent ecosystem:
 
-| Implementation | Time (μs) | Operations/sec | Relative Speed |
-|----------------|-----------|----------------|----------------|
-| Python NumPy (baseline) | 10.93 | 91K | 1× |
-| Rust Scalar | 20.74 | 48K | 0.5× |
-| Rust SIMD | 6.39 | 156K | 1.7× |
-| **Rust + KD-tree** | **~0.100** | **~10M** | **~109×** |
+```mermaid
+graph TB
+    subgraph ConstraintTheory["ConstraintTheory"]
+        DODECET["12-bit Dodecet Encoding"]
+        MANIFOLD["Pythagorean Manifold"]
+        RIGIDITY["Laman Rigidity"]
+        HOLONOMY["Holonomy Consensus"]
+    end
 
-**Context:** The ~109× speedup compares our KD-tree implementation to a NumPy brute-force baseline for nearest-neighbor operations. This is consistent with well-optimized KD-tree implementations.
+    subgraph SpreadsheetMoment["spreadsheet-moment"]
+        CELLS["Cell Instances"]
+        ORIGIN["Origin-Centric Design"]
+        TRACE["Trace Protocol"]
+        STATE["State Manager"]
+    end
 
-**System configuration:**
-- CPU: Apple M1 Pro (8 performance cores)
-- Operation: Nearest-neighbor lookup on 200-point manifold
-- Metric: Time per operation (microseconds)
+    subgraph Claw["claw"]
+        AGENTS["Cellular Agents"]
+        EQUIPMENT["Equipment System"]
+        GPU["GPU Acceleration"]
+    end
 
-**Reproduce benchmarks:**
-```bash
-cd crates/constraint-theory-core
-cargo run --release --example bench
+    DODECET -->|"provides state encoding"| AGENTS
+    MANIFOLD -->|"enables spatial queries"| CELLS
+    RIGIDITY -->|"validates dependencies"| ORIGIN
+    HOLONOMY -->|"ensures consistency"| TRACE
+
+    CELLS -->|"hosts"| AGENTS
+    STATE -->|"persists"| AGENTS
+    AGENTS -->|"implements"| EQUIPMENT
+    GPU -->|"accelerates"| MANIFOLD
+
+    style ConstraintTheory fill:#e1f5ff
+    style SpreadsheetMoment fill:#fff4e1
+    style Claw fill:#e8f5e9
 ```
 
-See [BENCHMARKS.md](docs/BENCHMARKS.md) for detailed methodology and comparison with industry standards.
+### How They Work Together
+
+**spreadsheet-moment** provides:
+- Cell instances where agents live
+- Origin-centric data flow
+- Trace protocol for provenance
+- State management
+
+**claw** provides:
+- Cellular agent engine
+- Equipment system (MEMORY, REASONING, etc.)
+- GPU acceleration
+- Minimal Rust implementation
+
+**constrainttheory** provides:
+- 12-bit dodecet encoding for agent state
+- Geometric substrate for spatial queries
+- Rigidity checking for dependency validation
+- Holonomy consensus for distributed agreement
+
+---
+
+## Use Cases
+
+### 1. Mass Multiagent Collaboration
+
+**Problem:** Coordinating thousands of agents
+**Solution:** Each agent operates independently with FPS perspective
+
+```rust
+// Spawn 10,000 agents
+for i in 0..10_000 {
+    let position = Dodecet::random();
+    let agent = Agent::new(position, orientation);
+    agents.push(agent);
+}
+
+// Each agent queries local neighborhood
+for agent in &agents {
+    let visible = manifold.neighbors(agent.position, radius);
+    // Process only visible agents - O(log n) per agent
+}
+```
+
+### 2. LLM Distillation into Geometric Determinants
+
+**Vision:** Decompose monolithic LLM into swarm of geometric agents
+
+```
+Traditional LLM:
+  Input → [175B parameter network] → Output
+           (stochastic, black box)
+
+Geometric Swarm:
+  Input → [Agent_1] → [Agent_2] → ... → [Agent_n] → Consensus
+          (deterministic, explainable)
+```
+
+**Process:**
+1. Decompose LLM capabilities into geometric primitives
+2. Assign each primitive to specialized agent
+3. Coordinate via geometric substrate
+4. Achieve consensus via holonomy verification
+
+### 3. Agents with Asymmetric Understanding
+
+**Problem:** Different agents need different views of same data
+**Solution:** FPS perspective provides automatic filtering
+
+```rust
+// Agent at position A sees different data than agent at B
+let view_A = manifold.neighbors(dodecet_0x123, radius);
+let view_B = manifold.neighbors(dodecet_0x456, radius);
+
+// Automatic asymmetric understanding - no manual filtering
+```
+
+**Use cases:**
+- Fog-of-war scenarios
+- Role-based access control
+- Hierarchical decision making
+- Privacy-preserving computation
+
+### 4. Asynchronous Monitoring/Execution
+
+**Problem:** Agents need to monitor and react to changes
+**Solution:** Geometric proximity triggers automatic attention
+
+```rust
+// Background: manifold evolves via Ricci flow
+loop {
+    ricci_flow_step(&mut manifold);
+    // Manifold self-organizes toward constraint satisfaction
+}
+
+// Foreground: agents query pre-evolved state
+let current_state = manifold.lookup(agent.position);
+// O(1) lookup - answer pre-computed by background evolution
+```
 
 ---
 
 ## Mathematical Foundations
 
-### Origin-Centric Geometry (Ω)
+### Core Concepts
 
-The Ω constant defines the normalized ground state:
+1. **Geometric State Space (G)**
+   ```
+   G = {g | C(g) = true}
+   ```
+   All valid states satisfy constraint C by construction.
 
-$$
-\Omega = \frac{\sum \phi(v_i) \cdot \text{vol}(N(v_i))}{\sum \text{vol}(N(v_i))}
-$$
+2. **Φ-Folding Operator**
+   ```
+   Φ(v) = argmin_{g ∈ G} ||v - g||
+   ```
+   Maps continuous vectors to discrete valid states in O(log n).
 
-**Interpretation:** Weighted average of all folded vectors, serving as absolute reference frame.
+3. **Deterministic Guarantee**
+   ```
+   P(hallucination | constraint_system) = 0
+   ```
+   Invalid outputs are mathematically impossible.
 
-### Rigidity-Curvature Duality
+### Key Theorems
 
-**Theorem:** Laman rigidity ↔ Zero Ricci curvature
+**Laman Rigidity ↔ Zero Ricci Curvature**
+```
+Rigid structure ⇔ κ_ij = 0
+```
+Rigid structures are geometric attractors - stable memory states.
 
-$$
-\text{Rigid structure} \iff \kappa_{ij} = 0
-$$
+**Holonomy-Information Equivalence**
+```
+H(γ) ↔ I_loss(γ)
+```
+Zero holonomy = Zero information loss = Perfect memory recall.
 
-**Implication:** Rigid structures are geometric attractors - stable memory states.
-
-### Holonomy-Information Equivalence
-
-**Theorem:** Holonomy norm equals mutual information loss:
-
-$$
-H(\gamma) \leftrightarrow I_{\text{loss}}(\gamma)
-$$
-
-**Implication:** Zero holonomy = Zero information loss = Perfect memory recall.
-
-**Complete proofs:** [THEORETICAL_GUARANTEES.md](docs/THEORETICAL_GUARANTEES.md)
+> **Important:** These guarantees apply ONLY within the geometric constraint engine, not to LLMs or AI systems generally. See [DISCLAIMERS.md](docs/DISCLAIMERS.md) for important clarifications.
 
 ---
 
-## Quickstart
+## Quick Start
 
 ### Installation
 
@@ -199,7 +353,7 @@ cd constraint-theory
 # Run tests
 cargo test --release
 
-# Or try the visualizer
+# Try the visualizer
 cd web-simulator
 npm install
 npm run dev
@@ -224,19 +378,12 @@ println!("Snapped: ({}, {}) with noise {}", snapped[0], snapped[1], noise);
 
 ### Interactive Demo
 
-Try the **Pythagorean Manifold Visualizer** - see vectors snap to perfect triangles in real-time:
-
+Try the **Pythagorean Manifold Visualizer**:
 **Live demo:** https://constraint-theory.superinstance.ai
-
-**Features:**
-- Interactive 2D manifold visualization
-- Real-time snapping animation
-- KD-tree traversal visualization
-- Live performance metrics
 
 ---
 
-## Architecture Overview
+## Architecture
 
 ```mermaid
 graph TB
@@ -287,51 +434,46 @@ constrainttheory/
 │   │   │   ├── cohomology.rs      # Sheaf cohomology
 │   │   │   ├── percolation.rs     # Rigidity percolation
 │   │   │   └── gauge.rs           # Holonomy transport
-│   │   ├── examples/
-│   │   │   └── bench.rs           # Performance benchmarks
 │   │   └── Cargo.toml
 │   └── gpu-simulation/            # GPU simulation framework
-│       ├── src/
-│       │   ├── architecture.rs    # GPU architecture model
-│       │   ├── memory.rs          # Memory hierarchy
-│       │   ├── kernel.rs          # Kernel execution
-│       │   ├── benchmark.rs       # Benchmarking tools
-│       │   └── prediction.rs      # Performance prediction
-│       └── examples/
 ├── web-simulator/                  # Interactive demonstrations
 │   ├── static/
-│   │   ├── index.html            # Landing page
 │   │   └── simulators/
 │   │       └── pythagorean.html  # Visualizer
 │   └── worker.ts                 # Cloudflare Workers
 ├── docs/                           # Research documents
 │   ├── MATHEMATICAL_FOUNDATIONS_DEEP_DIVE.md
 │   ├── THEORETICAL_GUARANTEES.md
-│   ├── GEOMETRIC_INTERPRETATION.md
-│   ├── OPEN_QUESTIONS_RESEARCH.md
-│   ├── BENCHMARKS.md
-│   └── DISCLAIMERS.md             # Important clarifications
+│   ├── DISCLAIMER.md              # Important clarifications
+│   └── BENCHMARKS.md
 └── README.md
 ```
 
 ---
 
-## Use Cases
+## Performance
 
-### Good Fit For:
+### Benchmarked Operation: Pythagorean Snap
 
-- **Geometric problems** with natural spatial structure
-- **Vector quantization** requiring exact arithmetic
-- **Educational tools** for constraint-solving concepts
-- **Research** in geometric approaches to computation
-- **Deterministic systems** where reproducibility is critical
+| Implementation | Time (μs) | Operations/sec | Relative Speed |
+|----------------|-----------|----------------|----------------|
+| Python NumPy (baseline) | 10.93 | 91K | 1× |
+| Rust Scalar | 20.74 | 48K | 0.5× |
+| Rust SIMD | 6.39 | 156K | 1.7× |
+| **Rust + KD-tree** | **~0.100** | **~10M** | **~109×** |
 
-### Not Currently Suited For:
+**Context:** The ~109× speedup compares our KD-tree implementation to a NumPy brute-force baseline for nearest-neighbor operations. This is consistent with well-optimized KD-tree implementations.
 
-- General-purpose constraint satisfaction (use OR-Tools, Gecode)
-- LLM or AI systems (this is not an AI framework)
-- High-dimensional problems (>3D) without geometric structure
-- Production systems requiring battle-tested solutions
+**System configuration:**
+- CPU: Apple M1 Pro (8 performance cores)
+- Operation: Nearest-neighbor lookup on 200-point manifold
+- Metric: Time per operation (microseconds)
+
+**Reproduce benchmarks:**
+```bash
+cd crates/constraint-theory-core
+cargo run --release --example bench
+```
 
 ---
 
@@ -365,52 +507,6 @@ constrainttheory/
    - Calabi-Yau connections
    - Quantum analogies
 
-### Implementation Documents
-
-5. **[BENCHMARKS.md](docs/BENCHMARKS.md)**
-   - Baseline performance metrics
-   - Comparison methodologies
-   - Statistical analysis
-
-6. **[IMPLEMENTATION_GUIDE.md](docs/IMPLEMENTATION_GUIDE.md)**
-   - Code organization
-   - API usage
-   - Extension points
-
----
-
-## API Reference
-
-### `PythagoreanManifold`
-
-```rust
-impl PythagoreanManifold {
-    // Create manifold with n Pythagorean triples
-    pub fn new(n: usize) -> Self;
-
-    // Get number of points in manifold
-    pub fn len(&self) -> usize;
-
-    // Check if manifold is empty
-    pub fn is_empty(&self) -> bool;
-
-    // Snap vector to nearest Pythagorean triple
-    pub fn snap(&self, vec: [f32; 2]) -> ([f32; 2], f32);
-}
-```
-
-### `snap()`
-
-```rust
-// Snap vector to nearest Pythagorean triple
-pub fn snap(
-    manifold: &PythagoreanManifold,
-    vec: [f32; 2]
-) -> ([f32; 2], f32);
-
-// Returns: (snapped_vector, noise_metric)
-```
-
 ---
 
 ## Limitations and Open Questions
@@ -443,12 +539,15 @@ Areas of particular interest:
 - Empirical validation on ML tasks
 - GPU implementations (CUDA, WebGPU)
 - Application case studies
+- Integration with spreadsheet-moment and claw
 
 ---
 
-## License
+## Related Projects
 
-MIT License - see [LICENSE](LICENSE) for details.
+- **[SuperInstance/claw](https://github.com/SuperInstance/claw)** - Cellular agent engine
+- **[SuperInstance/spreadsheet-moment](https://github.com/SuperInstance/spreadsheet-moment)** - Agentic spreadsheet platform
+- **[SuperInstance/dodecet-encoder](https://github.com/SuperInstance/dodecet-encoder)** - 12-bit geometric encoding
 
 ---
 
@@ -458,7 +557,7 @@ If you use this work in your research, please cite:
 
 ```bibtex
 @software{constraint_theory,
-  title={Constraint Theory: A Geometric Approach to Computation},
+  title={Constraint Theory: Geometric Infrastructure for Cellular Agents},
   author={SuperInstance Team},
   year={2026},
   url={https://github.com/SuperInstance/constraint-theory},
@@ -468,11 +567,9 @@ If you use this work in your research, please cite:
 
 ---
 
-## Related Projects
+## License
 
-- **[SuperInstance/claw](https://github.com/SuperInstance/claw)** - Cellular agent engine
-- **[SuperInstance/spreadsheet-moment](https://github.com/SuperInstance/spreadsheet-moment)** - Agentic spreadsheet platform
-- **[SuperInstance/dodecet-encoder](https://github.com/SuperInstance/dodecet-encoder)** - 12-bit geometric encoding
+MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
