@@ -82,6 +82,47 @@ Constraint Theory gives each agent its own first-person-shooter perspective:
 
 ## How It Works: Geometric Viewpoint Encoding
 
+### System Architecture
+
+```mermaid
+flowchart TB
+    subgraph Input["Input Layer"]
+        V[Continuous Vector v ∈ ℝⁿ]
+    end
+
+    subgraph Precompute["Pre-computation (Background)"]
+        PT[Pythagorean Triples]
+        KD[KD-tree Index]
+        MAN[Manifold]
+    end
+
+    subgraph Runtime["Runtime Processing"]
+        PHI[Φ-Folding]
+        SNAP[Snapping]
+        QUERY[Spatial Query]
+    end
+
+    subgraph Output["Output Layer"]
+        G[Geometric State g ∈ G]
+        NEIGHB[Visible Neighbors]
+    end
+
+    PT --> MAN
+    KD --> MAN
+    MAN --> PHI
+    V --> PHI
+    PHI --> SNAP
+    SNAP --> G
+    G --> QUERY
+    MAN --> QUERY
+    QUERY --> NEIGHB
+
+    style PHI fill:#e1f5ff
+    style SNAP fill:#fff4e1
+    style G fill:#e8f5e9
+    style NEIGHB fill:#e8f5e9
+```
+
 ### 1. Precalculate Geometry into Viewpoint Encoding
 
 We transform continuous vectors into discrete geometric states:
@@ -104,6 +145,31 @@ println!("Snapped: ({}, {})", snapped[0], snapped[1]);
 ### 2. Agents Get Perspective-Based Feeds
 
 Each agent's state is a point in the geometric manifold:
+
+```mermaid
+flowchart LR
+    subgraph AgentState["Agent State (~112 bits)"]
+        POS[position: Dodecet<br/>12 bits]
+        ORIENT[orientation: φ<br/>32 bits]
+        HOL[holonomy: SO(3)<br/>36 bits]
+        CONF[confidence<br/>32 bits]
+    end
+
+    subgraph Operations["Operations"]
+        LOOKUP[O(1) State Lookup]
+        QUERY[O(log n) Neighbor Query]
+        UPDATE[O(1) State Update]
+    end
+
+    POS --> LOOKUP
+    POS --> QUERY
+    AgentState --> UPDATE
+
+    style POS fill:#e1f5ff
+    style ORIENT fill:#fff4e1
+    style HOL fill:#f3e5f5
+    style CONF fill:#e8f5e9
+```
 
 ```rust
 struct AgentState {
@@ -218,6 +284,94 @@ graph TB
 - Geometric substrate for spatial queries
 - Rigidity checking for dependency validation
 - Holonomy consensus for distributed agreement
+
+---
+
+## Dodecet Encoding Flow
+
+The 12-bit dodecet encoding transforms continuous coordinates into discrete geometric states:
+
+```mermaid
+flowchart LR
+    subgraph Input["Continuous Input"]
+        V[Float Value<br/>v ∈ [0, 1]]
+    end
+
+    subgraph Quantize["Quantization"]
+        SCALE[Scale to 12-bit<br/>v × 4095]
+        ROUND[Round to Integer]
+        CLAMP[Clamp to [0, 4095]]
+    end
+
+    subgraph Dodecet["12-bit Dodecet"]
+        BITS[12 Binary Bits<br/>000000000000 - 111111111111]
+        HEX[3 Hex Digits<br/>0x000 - 0xFFF]
+        NIB[Nibbles: 3 × 4 bits]
+    end
+
+    subgraph Output["Output"]
+        STATE[Discrete State<br/>4096 possible values]
+    end
+
+    V --> SCALE
+    SCALE --> ROUND
+    ROUND --> CLAMP
+    CLAMP --> BITS
+    BITS --> HEX
+    BITS --> NIB
+    BITS --> STATE
+
+    style BITS fill:#e1f5ff
+    style HEX fill:#fff4e1
+    style STATE fill:#e8f5e9
+```
+
+**Key Properties:**
+- 4096 discrete states (vs 256 for 8-bit)
+- Hex-friendly: exactly 3 hex digits
+- 16x compression vs 32-bit float for normalized [0,1] range
+
+---
+
+## Geometric Primitive Relationships
+
+```mermaid
+graph TB
+    subgraph Core["Core Primitives"]
+        TILE[Tile<br/>Geometric Region]
+        ORIGIN[Origin<br/>Reference Point]
+        ORIENT[Orientation<br/>Rotation State]
+    end
+
+    subgraph Derived["Derived Structures"]
+        MANIFOLD[Pythagorean Manifold<br/>Discrete Lattice]
+        RIGID[Laman Rigid Graph<br/>Stable Structure]
+        HOLONOMY[Holonomy<br/>Geometric Phase]
+    end
+
+    subgraph Operations["Geometric Operations"]
+        SNAP[Snapping<br/>Φ-Folding]
+        TRANSPORT[Parallel Transport<br/>Connection]
+        FLOW[Ricci Flow<br/>Evolution]
+    end
+
+    TILE --> MANIFOLD
+    ORIGIN --> RIGID
+    ORIENT --> HOLONOMY
+
+    MANIFOLD --> SNAP
+    RIGID --> TRANSPORT
+    HOLONOMY --> FLOW
+
+    SNAP --> MANIFOLD
+    TRANSPORT --> ORIENT
+    FLOW --> MANIFOLD
+
+    style TILE fill:#e1f5ff
+    style ORIGIN fill:#fff4e1
+    style ORIENT fill:#f3e5f5
+    style MANIFOLD fill:#e8f5e9
+```
 
 ---
 
@@ -338,6 +492,140 @@ H(γ) ↔ I_loss(γ)
 Zero holonomy = Zero information loss = Perfect memory recall.
 
 > **Important:** These guarantees apply ONLY within the geometric constraint engine, not to LLMs or AI systems generally. See [DISCLAIMERS.md](docs/DISCLAIMERS.md) for important clarifications.
+
+---
+
+## 3D Pythagorean Visualization
+
+The Pythagorean manifold encodes exact rational coordinates:
+
+```mermaid
+graph TB
+    subgraph Input["Pythagorean Triple"]
+        A[a = 3]
+        B[b = 4]
+        C[c = 5]
+    end
+
+    subgraph Normalize["Normalization"]
+        NORM[a/c, b/c = 0.6, 0.8]
+        EXACT[Exact Rational<br/>No Floating Error]
+    end
+
+    subgraph Manifold2D["2D Manifold"]
+        P2[Point in Lattice]
+        D2[Dodecet Position]
+    end
+
+    subgraph Manifold3D["3D Extension"]
+        P3[Point in 3D Lattice]
+        D3[Dodecet Vector<br/>3 × 12 bits]
+        SO3[SO(3) Orientation<br/>Rotation Matrix]
+    end
+
+    A --> NORM
+    B --> NORM
+    C --> NORM
+    NORM --> EXACT
+    EXACT --> P2
+    P2 --> D2
+    P2 --> P3
+    P3 --> D3
+    P3 --> SO3
+
+    style EXACT fill:#e1f5ff
+    style D2 fill:#fff4e1
+    style D3 fill:#e8f5e9
+    style SO3 fill:#f3e5f5
+```
+
+**3D Coordinates:** Uses 3 dodecets (36 bits) for position + compressed SO(3) matrix (36 bits) for orientation.
+
+---
+
+## Calculus Operations Flow
+
+```mermaid
+flowchart TB
+    subgraph Input["Function Input"]
+        F[f: ℝⁿ → ℝ<br/>Scalar Function]
+        X[x ∈ ℝⁿ<br/>Position]
+    end
+
+    subgraph Differentiation["DodecetDifferentiation"]
+        DELTA[Δx in Dodecet Space]
+        LIMIT[f(x+Δ) - f(x-Δ) / 2Δ]
+        GRAD[∇f<br/>Gradient Vector]
+    end
+
+    subgraph Integration["DodecetIntegration"]
+        SAMPLES[Sample Points<br/>Dodecet Grid]
+        SIMPSON[Simpson's Rule<br/>Numerical Integration]
+        RESULT[∫f dx<br/>Definite Integral]
+    end
+
+    subgraph Gradient["DodecetGradient"]
+        PARTIAL[∂f/∂xᵢ<br/>Partial Derivatives]
+        DIREC[Directional Derivative]
+        NORMAL[Surface Normal<br/>∇f/|∇f|]
+    end
+
+    F --> DELTA
+    X --> DELTA
+    DELTA --> LIMIT
+    LIMIT --> GRAD
+
+    F --> SAMPLES
+    X --> SAMPLES
+    SAMPLES --> SIMPSON
+    SIMPSON --> RESULT
+
+    GRAD --> PARTIAL
+    PARTIAL --> DIREC
+    PARTIAL --> NORMAL
+
+    style GRAD fill:#e1f5ff
+    style RESULT fill:#fff4e1
+    style NORMAL fill:#e8f5e9
+```
+
+---
+
+## Simulator Structure
+
+```mermaid
+graph TB
+    subgraph WebLayer["Web Layer"]
+        HTML[HTML Pages<br/>pythagorean.html<br/>dodecet-demo.html<br/>calculus.html<br/>ml-demo.html]
+        CSS[CSS Styles<br/>main.css<br/>cyberpunk-base.css]
+        WORKER[Cloudflare Worker<br/>worker.ts]
+    end
+
+    subgraph WASMLayer["WASM Layer"]
+        DODECET_WASM[dodecet-encoder<br/>WASM Package]
+        JS[JavaScript Bindings<br/>dodecet_encoder.js]
+    end
+
+    subgraph RustLayer["Rust Core"]
+        CORE[constraint-theory-core<br/>Rust Crate]
+        MANIFOLD[PythagoreanManifold]
+        KDTREE[KD-tree Index]
+        SIMD[AVX2 SIMD]
+    end
+
+    HTML --> WORKER
+    CSS --> HTML
+    WORKER --> JS
+    JS --> DODECET_WASM
+    DODECET_WASM --> CORE
+    CORE --> MANIFOLD
+    CORE --> KDTREE
+    CORE --> SIMD
+
+    style HTML fill:#e1f5ff
+    style DODECET_WASM fill:#fff4e1
+    style CORE fill:#e8f5e9
+```
 
 ---
 
