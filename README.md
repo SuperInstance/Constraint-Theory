@@ -669,16 +669,19 @@ println!("Snapped: ({}, {}) with noise {}", snapped[0], snapped[1], noise);
 Try the **Pythagorean Manifold Visualizer**:
 **Live demo:** https://constraint-theory.superinstance.ai
 
-### ML Demonstrations
+### ML Demonstrations and Examples
 
-Interactive ML demonstrations showing practical applications:
+Interactive ML demonstrations and real-world examples have been moved to a separate repository:
 
-- **Neural Network Visualization** - Network with dodecet-encoded weights
-- **Gradient Descent Animation** - Rosenbrock function optimization
-- **Feature Map Embeddings** - 2D embeddings with nearest neighbors
-- **Template Gallery** - 25+ starter templates for various use cases
+**[constrainttheory-ml-demo](https://github.com/SuperInstance/constrainttheory-ml-demo)**
 
-Access at: `/simulators/ml-demo.html` and `/templates/gallery.html`
+This includes:
+- Neural Network Visualization
+- Gradient Descent Animation
+- Feature Map Embeddings
+- Template Gallery with 25+ starter examples
+- Web simulators for all geometric operations
+- Rust ML examples and benchmarks
 
 ---
 
@@ -735,17 +738,17 @@ constrainttheory/
 │   │   │   └── gauge.rs           # Holonomy transport
 │   │   └── Cargo.toml
 │   └── gpu-simulation/            # GPU simulation framework
-├── web-simulator/                  # Interactive demonstrations
-│   ├── static/
-│   │   └── simulators/
-│   │       └── pythagorean.html  # Visualizer
-│   └── worker.ts                 # Cloudflare Workers
-├── docs/                           # Research documents
+├── packages/
+│   └── constraint-theory-wasm/    # WebAssembly bindings
+├── docs/                          # Research documents
 │   ├── MATHEMATICAL_FOUNDATIONS_DEEP_DIVE.md
 │   ├── THEORETICAL_GUARANTEES.md
 │   ├── DISCLAIMER.md              # Important clarifications
 │   └── BENCHMARKS.md
 └── README.md
+
+Note: Interactive demonstrations and ML examples have moved to:
+https://github.com/SuperInstance/constrainttheory-ml-demo
 ```
 
 ---
@@ -844,6 +847,7 @@ Areas of particular interest:
 
 ## Related Projects
 
+- **[constrainttheory-ml-demo](https://github.com/SuperInstance/constrainttheory-ml-demo)** - Interactive demonstrations and ML examples
 - **[SuperInstance/claw](https://github.com/SuperInstance/claw)** - Cellular agent engine
 - **[SuperInstance/spreadsheet-moment](https://github.com/SuperInstance/spreadsheet-moment)** - Agentic spreadsheet platform
 - **[SuperInstance/dodecet-encoder](https://github.com/SuperInstance/dodecet-encoder)** - 12-bit geometric encoding
