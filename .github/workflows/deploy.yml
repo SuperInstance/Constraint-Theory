@@ -37,6 +37,7 @@ jobs:
           directory: web
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           wranglerVersion: '3'
+          createProject: true
 
       - name: Add deployment summary
         run: |
