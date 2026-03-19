@@ -1,0 +1,205 @@
+# CPU Thread Management Policy
+# CudaClaw Orchestrator - Operational Guardrails
+
+[cpu_workers]
+# Tokio worker thread configuration
+
+# Maximum number of Tokio worker threads
+# HARD LIMIT: Do not exceed under any circumstances
+max_workers = 8
+
+# Recommended worker count for optimal performance
+# Balances parallelism with context switching overhead
+recommended_workers = 8
+
+# Minimum worker count for basic functionality
+min_workers = 4
+
+[dispatcher_threads]
+# Command submission thread configuration
+
+# Number of threads dedicated to GPU command submission
+dispatcher_threads = 2
+
+# Dispatcher thread priority (higher than normal threads)
+priority = "high"
+
+# Use spin-lock dispatcher for ultra-low latency
+# Spin-wait on command queue instead of sleep/wakeup
+use_spin_lock = true
+
+# CPU core affinity for dispatcher threads
+# Pin to physical cores for cache locality
+affinity = "enabled"
+
+[monitoring_threads]
+# Health monitoring and watchdog thread configuration
+
+# Number of threads dedicated to kernel health monitoring
+monitoring_threads = 1
+
+# Watchdog check interval (in milliseconds)
+# How often to verify kernel is responsive
+watchdog_interval_ms = 1000
+
+# Watchdog timeout threshold (in milliseconds)
+# If kernel doesn't respond within this time, trigger restart
+watchdog_timeout_ms = 5000
+
+# Enable automatic kernel restart on watchdog timeout
+auto_restart_on_timeout = true
+
+[build_threads]
+# Build system thread configuration
+
+# Number of threads for nvcc compilation
+build_threads = 4
+
+# Parallel compilation of multiple CUDA files
+parallel_compilation = true
+
+# Use ccache for nvcc compilation caching
+use_ccache = true
+
+[thread_policy]
+# Thread scheduling and priority policy
+
+# Enable CPU core affinity (pin threads to physical cores)
+# Prevents context switching and cache pollution
+affinity_enabled = true
+
+# Thread priority class (values: idle, normal, high, realtime)
+priority_class = "high"
+
+# NUMA node policy (values: preferred, local, all)
+numa_policy = "local"
+
+# Thread isolation policy (values: enabled, disabled)
+# Isolate worker threads to prevent interference
+isolation_enabled = true
+
+[thread_allocation]
+# Thread allocation strategy
+
+# Tokio worker threads (8 threads)
+[[thread_allocation]]
+name = "tokio_workers"
+count = 8
+type = "worker"
+priority = "normal"
+affinity = "cores:0-7"
+description = "Main async runtime workers"
+
+# Dispatcher threads (2 threads)
+[[thread_allocation]]
+name = "dispatcher"
+count = 2
+type = "dedicated"
+priority = "high"
+affinity = "cores:0-1"
+description = "GPU command submission threads"
+
+# Monitoring thread (1 thread)
+[[thread_allocation]]
+name = "monitoring"
+count = 1
+type = "dedicated"
+priority = "high"
+affinity = "core:0"
+description = "Kernel health monitoring watchdog"
+
+[forbidden_patterns]
+# Thread usage patterns that are strictly forbidden
+
+# NEVER spawn threads dynamically in hot paths
+# Causes thread explosion and context switching overhead
+[[forbidden_patterns]]
+pattern = "dynamic_thread_spawn"
+reason = "Thread creation overhead, resource exhaustion"
+consequence = "Performance degradation, system instability"
+
+# NEVER block worker threads with synchronous I/O
+# Defeats the purpose of async runtime
+[[forbidden_patterns]]
+pattern = "blocking_io_in_worker"
+reason = "Blocks async workers, reduces throughput"
+consequence = "Poor latency, missed deadlines"
+
+# NEVER use thread::sleep in worker threads
+# Use tokio::time::sleep instead for async sleep
+[[forbidden_patterns]]
+pattern = "sync_sleep_in_worker"
+reason = "Blocks worker thread, wastes resources"
+consequence = "Reduced concurrency, poor response time"
+
+[resource_limits]
+# Per-thread resource limits
+
+# Maximum stack size per thread (in MB)
+# Prevents stack overflow and excessive memory usage
+max_stack_size_mb = 8
+
+# Maximum heap allocation per thread (in MB)
+# Prevents memory leaks in single thread from affecting system
+max_heap_per_thread_mb = 512
+
+# Maximum CPU time per thread (percentage)
+# Prevents CPU starvation from runaway threads
+max_cpu_time_percent = 80
+
+[emergency_actions]
+# Actions to take when CPU limits are breached
+
+# Action 1: Reduce worker count
+[[emergency_actions]]
+trigger_threshold = 0.95  # 95% CPU usage
+action = "reduce_worker_count"
+description = "Reduce Tokio worker count until CPU usage drops below 80%"
+command = "tokio_workers = max(4, tokio_workers - 2)"
+
+# Action 2: Throttle command submission
+[[emergency_actions]]
+trigger_threshold = 0.98  # 98% CPU usage
+action = "throttle_dispatch"
+description = "Add delay between command submissions"
+command = "dispatch_delay_ms = 1"
+
+# Action 3: Emergency shutdown
+[[emergency_actions]]
+trigger_threshold = 0.99  # 99% CPU usage
+action = "emergency_shutdown"
+description = "Graceful shutdown with state preservation"
+command = "emergency_shutdown(mode='graceful')"
+
+[monitoring]
+# CPU usage monitoring configuration
+
+# How often to check CPU usage (in milliseconds)
+check_interval_ms = 1000
+
+# Alert threshold (percentage of total CPU capacity)
+alert_threshold = 0.85  # Alert at 85% CPU usage
+
+# Critical threshold (percentage of total CPU capacity)
+critical_threshold = 0.95  # Critical at 95% CPU usage
+
+# Enable per-thread CPU usage tracking
+per_thread_tracking = true
+
+# Generate CPU usage report on shutdown
+generate_report_on_shutdown = true
+
+[compliance]
+# Compliance checking and enforcement
+
+# Verify CPU usage before launching new threads
+verify_before_spawn = true
+
+# Fail thread spawn if CPU insufficient
+fail_on_insufficient_cpu = true
+
+# Log all thread spawns for debugging
+log_all_spawns = true
+
+# Enforce thread priority limits
+enforce_priority_limits = true

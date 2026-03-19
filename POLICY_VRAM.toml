@@ -1,0 +1,157 @@
+# VRAM Management Policy
+# CudaClaw Orchestrator - Operational Guardrails
+
+[vram_allocation]
+# Maximum VRAM allocation per kernel instance
+# HARD LIMIT: Do not exceed under any circumstances
+max_allocation = "4GB"
+
+# Shared memory budget per warp (37KB is typical for modern GPUs)
+# This is L1-cached working set for register-speed access
+warp_working_set = "37KB"
+
+# Persistent kernel state (long-running kernel memory)
+# Includes command queues, health monitoring, state buffers
+persistent_state = "2MB"
+
+# Cell batch size for warp-level processing
+# Number of cells processed per warp in parallel
+cell_batch_size = "256"
+
+[allocation_strategy]
+# Memory allocation preferences and constraints
+
+# Prefer shared memory over device memory for warp coordination
+# Shared memory: 100x faster than global memory
+prefer = "shared_memory"
+
+# Never fragment VRAM - use contiguous allocations only
+# Fragmentation causes performance degradation and OOM errors
+fragment = "never"
+
+# Enable automatic leak detection and monitoring
+# Monitors VRAM usage over time and alerts on anomalies
+leak_detection = "enabled"
+
+[monitoring]
+# Real-time VRAM monitoring configuration
+
+# How often to check VRAM usage (in milliseconds)
+check_interval_ms = 1000
+
+# Alert threshold (percentage of max_allocation)
+alert_threshold = 0.90  # Alert at 90% VRAM usage
+
+# Critical threshold (percentage of max_allocation)
+critical_threshold = 0.95  # Critical at 95% VRAM usage
+
+# Enable automatic garbage collection on threshold breach
+auto_gc_on_threshold = true
+
+[working_set_breakdown]
+# Detailed breakdown of the 37KB shared memory budget
+
+# Geometric state cache (hot cells)
+geometric_state_cache = "16KB"
+
+# SmartCRDT operation buffers
+crdt_operation_buffers = "8KB"
+
+# KD-tree traversal stack
+kdtree_traversal_stack = "4KB"
+
+# Warp aggregation scratch space
+warp_aggregation_scratch = "6KB"
+
+# Reserved for future use
+reserved = "3KB"
+
+[allocation_patterns]
+# Approved VRAM allocation patterns
+
+# Pattern 1: Persistent worker kernel
+# Long-running kernel with continuous command processing
+[[allocation_patterns]]
+name = "persistent_worker_kernel"
+size = "2MB"
+type = "persistent"
+description = "Main orchestrator kernel with command queue"
+
+# Pattern 2: Batch processing kernel
+# Short-lived kernel for batch cell updates
+[[allocation_patterns]]
+name = "batch_processing_kernel"
+size = "512MB"
+type = "temporary"
+description = "Batch process up to 256 cells per warp"
+
+# Pattern 3: Shared memory working set
+# Warp-level coordination in shared memory
+[[allocation_patterns]]
+name = "shared_memory_working_set"
+size = "37KB"
+type = "shared"
+description = "L1-cached working set for warp coordination"
+
+[forbidden_patterns]
+# VRAM allocation patterns that are strictly forbidden
+
+# NEVER allocate global memory per-thread
+# This causes VRAM explosion: 32 threads × large allocation = OOM
+[[forbidden_patterns]]
+pattern = "per_thread_global_allocation"
+reason = "Causes 32× VRAM multiplication across warp threads"
+consequence = "Immediate kernel termination"
+
+# NEVER allocate VRAM in tight loops
+# Accumulates over time, causes OOM
+[[forbidden_patterns]]
+pattern = "loop_allocation_without_free"
+reason = "Memory leak over iterations"
+consequence = "Gradual VRAM exhaustion, kernel hang"
+
+# NEVER mix large and small allocations
+# Causes fragmentation
+[[forbidden_patterns]]
+pattern = "mixed_allocation_sizes"
+reason = "VRAM fragmentation, allocation failures"
+consequence = "Random OOM errors"
+
+[emergency_actions]
+# Actions to take when VRAM limits are breached
+
+# Action 1: Reduce batch size
+[[emergency_actions]]
+trigger_threshold = 0.90  # 90% VRAM usage
+action = "reduce_batch_size"
+description = "Halve cell_batch_size until VRAM usage drops below 80%"
+command = "cell_batch_size = max(32, cell_batch_size / 2)"
+
+# Action 2: Clear persistent state
+[[emergency_actions]]
+trigger_threshold = 0.95  # 95% VRAM usage
+action = "clear_persistent_state"
+description = "Clear non-essential persistent state buffers"
+command = "clear_state_buffers(['cache', 'scratch'])"
+
+# Action 3: Kernel restart
+[[emergency_actions]]
+trigger_threshold = 0.98  # 98% VRAM usage
+action = "emergency_restart"
+description = "Emergency kernel restart with minimal working set"
+command = "restart_kernel(mode='minimal')"
+
+[compliance]
+# Compliance checking and enforcement
+
+# Verify VRAM usage before kernel launch
+verify_before_launch = true
+
+# Fail kernel launch if VRAM insufficient
+fail_on_insufficient_vram = true
+
+# Log all VRAM allocations for debugging
+log_all_allocations = true
+
+# Generate VRAM usage report on shutdown
+generate_report_on_shutdown = true
