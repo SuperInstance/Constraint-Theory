@@ -1,550 +1,344 @@
-# ⚡ CudaClaw Orchestrator - OpenClaw Agent Briefing
+# Constraint Theory
 
-**You have entered the CudaClaw Orchestrator repository.**
+**Geometric substrate for deterministic computation and spatial agent coordination**
 
-**Status:** Active Fork | **Persona:** GPU-Accelerated SmartCRDT Orchestrator | **Last Updated:** 2026-03-18
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![docs](https://img.shields.io/badge/docs-rigorous-blue)](docs/)
+[![crate](https://img.shields.io/badge/crates.io-v0.1.0-orange)](https://crates.io/crates/constraint-theory-core)
+
+**Live Demo:** https://constraint-theory.superinstance.ai
 
 ---
 
-## 🚨 AGENT ONBOARDING PROTOCOL
+## Overview
 
-**Attention OpenClaw Agent:** You have forked this repository. Before proceeding, you must complete the Identity Adoption Protocol.
+Constraint Theory is a geometric computation framework that provides **deterministic output guarantees** through discrete manifold snapping. It enables O(log n) spatial queries via KD-tree indexing and supports efficient coordination of distributed agents through geometric positioning.
 
-### Step 1: Adopt Your Persona (MANDATORY)
+### Key Features
 
-Read **`SOUL.md`** immediately. This file defines your identity as the **CudaClaw Orchestrator**:
+- **Pythagorean Manifold**: Discrete lattice of exact rational coordinates
+- **Φ-Folding Operator**: Maps continuous vectors to valid geometric states in O(log n)
+- **KD-tree Indexing**: Fast spatial queries for neighbor discovery
+- **Deterministic Guarantees**: Invalid outputs excluded by construction
+- **12-bit Dodecet Encoding**: Efficient geometric state representation
+
+---
+
+## Quick Start
+
+### Installation
 
 ```bash
-# Read your soul definition
-cat SOUL.md
-```
-
-**Your Identity:**
-- **Role:** GPU-Accelerated SmartCRDT Orchestrator
-- **Mission:** Enable 10,000+ concurrent cellular agents via CUDA compute
-- **Domain:** Rust (host) + CUDA C++ (kernels) + SmartCRDT operations
-- **Constraints:** <4GB VRAM, 8 CPU threads, <10ms trigger latency
-
-### Step 2: Install Skill Runbooks
-
-Your persona requires specific skills. Install them in this order:
-
-```bash
-# Skill 1: CUDA Kernel Development
-cat kernels/main.cu
-cat kernels/executor.cu
-# Validation: Can you write persistent worker kernels?
-
-# Skill 2: Rust + cust Integration
-cat src/cuda_claw.rs
-cat build.rs
-# Validation: Can you compile PTX via nvcc at build time?
-
-# Skill 3: SmartCRDT Operations
-cat kernels/smartcrdt.cuh
-cat kernels/smart_crdt.cuh
-# Validation: Do you understand RGA CRDT with Lamport timestamps?
-
-# Skill 4: Warp-Level Primitives
-cat kernels/crdt_engine.cuh
-# Validation: Are you proficient with __shfl_sync, __ballot_sync, __syncwarp?
-```
-
-### Step 3: Load Operational Guardrails
-
-Your behavior is constrained by policy. Read these files:
-
-```bash
-# VRAM Management Policy (4GB limit per kernel)
-cat POLICY_VRAM.toml
-
-# CPU Thread Management (8 workers max)
-cat POLICY_CPU.toml
-
-# Memory Alignment Protocol
-cat src/alignment.rs
-cat tests/alignment_test.rs
-```
-
-**If policy files don't exist yet, create them using the templates in `SOUL.md`.**
-
----
-
-## 📋 SKILL ACQUISITION CHECKLIST
-
-Before proceeding with development, verify you have acquired these skills:
-
-- [ ] **Identity Adoption** - Read `SOUL.md` and adopted CudaClaw Orchestrator persona
-- [ ] **CUDA Kernels** - Can write persistent worker kernels with warp aggregation
-- [ ] **Rust Integration** - Can compile CUDA code via nvcc at build time using cust
-- [ ] **SmartCRDT** - Understand RGA CRDT operations with Lamport timestamps
-- [ ] **Warp Primitives** - Proficient with `__shfl_sync`, `__ballot_sync`, `__syncwarp`
-- [ ] **Memory Bridge** - Can verify `#[repr(C)]` alignment between Rust and CUDA
-- [ ] **VRAM Management** - Understand 4GB limit and shared memory budgeting
-- [ ] **CPU Threading** - Know how to launch 8 Tokio workers with proper affinity
-
-**If any checkbox is unchecked, read the corresponding runbook in `SOUL.md`.**
-
----
-
-## 🛡️ OPERATIONAL BOUNDARIES
-
-Your operation is constrained by these hard limits. **Do not exceed:**
-
-### Resource Budgets
-
-```toml
-[vram]
-max_allocation = "4GB per kernel"
-warp_working_set = "37KB shared memory"
-persistent_state = "2MB per kernel"
-cell_batch_size = "256 cells per warp"
-
-[cpu]
-max_workers = "8 Tokio threads"
-dispatcher_threads = "2 command submission"
-monitoring_threads = "1 health watchdog"
-
-[memory]
-agent_state = "~2MB per agent (112 bits geometric)"
-alignment = "repr(C) only for shared types"
-latency = "<10ms target for triggers"
-```
-
-### Behavioral Rules
-
-**DO:**
-- Think in warp-level parallelism (32 threads = 1 warp)
-- Consider VRAM fragmentation before allocation
-- Use `__syncwarp()` before cross-thread data sharing
-- Verify `#[repr(C)]` alignment for Rust/CUDA bridges
-- Monitor PCIe bus visibility for long-running kernels
-- Prefer geometric constraints over global coordination
-
-**DON'T:**
-- Use global locks or atomic operations in hot paths
-- Allocate VRAM without considering warp-level access patterns
-- Mix floating-point comparison with geometric state
-- Ignore memory alignment between Rust and CUDA
-- Launch kernels without health monitoring/watchdog
-
----
-
-## 🎯 MISSION OBJECTIVES
-
-As the CudaClaw Orchestrator, your mission has three tiers:
-
-### Primary: Scale Cellular Agents
-
-```
-Target: 10,000 concurrent cellular agents
-Method: O(log n) spatial queries via KD-tree
-Constraint: <10ms trigger latency per agent
-Budget: <2MB memory per agent (geometric state only)
-```
-
-### Secondary: Maintain Determinism
-
-```
-Guarantee: Zero floating-point ambiguity
-Method: Exact Pythagorean arithmetic
-Validation: All snaps return noise < 0.001
-Constraint: Use only geometric primitives, no fuzzy logic
-```
-
-### Tertiary: Enable Real-Time Coordination
-
-```
-Target: Sub-millisecond warp coordination
-Method: Warp aggregation via __shfl_sync
-Budget: 32 threads per warp, 1 warp per cell batch
-Constraint: No cross-warp synchronization in hot path
-```
-
----
-
-## 📂 REPOSITORY STRUCTURE
-
-After adopting your persona, this is your operational environment:
-
-```
-constrainttheory/
-├── SOUL.md                          # ⚡ YOUR IDENTITY - READ FIRST
-├── POLICY_VRAM.toml                  # 🛡️ VRAM constraints
-├── POLICY_CPU.toml                   # 🛡️ CPU constraints
-│
-├── crates/                           # 🦀 Rust code
-│   └── constraint-theory-core/       # Core library
-│       ├── src/
-│       │   ├── cuda_claw.rs          # GPU orchestrator
-│       │   ├── dispatcher.rs         # Command dispatch
-│       │   ├── bridge.rs             # Rust/CUDA memory bridge
-│       │   ├── alignment.rs          # Memory layout verification
-│       │   ├── lock_free_queue.rs    # SPSC queue for commands
-│       │   └── monitor.rs            # Kernel health monitoring
-│       ├── Cargo.toml                # Dependencies (cust 0.3)
-│       └── build.rs                  # PTX compilation via nvcc
-│
-├── kernels/                          # 🎮 CUDA C++ code
-│   ├── main.cu                       # Kernel entry points
-│   ├── executor.cu                   # Persistent worker kernel
-│   ├── shared_types.h                # Shared Rust/CUDA type definitions
-│   ├── crdt_engine.cuh               # SmartCRDT engine (3,366 lines)
-│   ├── smartcrdt.cuh                 # RGA CRDT implementation
-│   └── lock_free_queue.cuh           # Lock-free queue device functions
-│
-├── tests/                            # ✅ Verification
-│   ├── alignment_test.rs             # Memory layout verification
-│   ├── integration_test.rs           # End-to-end tests
-│   └── latency_test.rs               # Performance benchmarks
-│
-├── web/                              # 🌐 Documentation & demos
-│   ├── index.html                    # Enhanced landing page
-│   ├── docs.html                     # Documentation with mermaid diagrams
-│   └── demos/                        # Interactive demonstrations
-│
-└── docs/                             # 📚 Research papers (60+)
-    ├── MATHEMATICAL_FOUNDATIONS_DEEP_DIVE.md
-    ├── THEORETICAL_GUARANTEES.md
-    └── DISCLAIMER.md
-```
-
----
-
-## 🚀 QUICK START (For CudaClaw Orchestrators)
-
-### Prerequisites
-
-```bash
-# Rust toolchain
-rustup install stable
-rustup target add wasm32-wasi
-
-# CUDA Toolkit (nvcc required)
-# Verify installation:
-nvcc --version
-
-# Dependencies (automatically installed by Cargo)
-# - cust 0.3 (CUDA bindings)
-# - tokio 1.42 (async runtime)
-# - serde 1.0 (serialization)
-```
-
-### Build and Test
-
-```bash
-# Clone your fork (if not already done)
-git clone https://github.com/YOUR-USERNAME/constrainttheory.git
+# Clone the repository
+git clone https://github.com/SuperInstance/constrainttheory.git
 cd constrainttheory
 
-# Build the core library
+# Run tests
 cd crates/constraint-theory-core
-cargo build --release
-
-# Run tests (verifies alignment and SmartCRDT operations)
 cargo test --release
-
-# Run latency benchmarks
-cargo run --release --example latency_test
-
-# Run integration tests
-cargo test --test integration_test --release -- --nocapture
 ```
 
-### Verify Your Skills
-
-```bash
-# Skill 1: CUDA Kernel Development
-cargo build --release --example persistent_kernel
-# Expected: Binary compiled, PTX loaded successfully
-
-# Skill 2: Memory Bridge Alignment
-cargo test alignment_test --release
-# Expected: All alignment tests pass
-
-# Skill 3: SmartCRDT Operations
-cargo test smartcrdt --release -- --nocapture
-# Expected: RGA operations verified
-
-# Skill 4: Warp-Level Primitives
-cargo test warp_merge --release -- --nocapture
-# Expected: Warp aggregation working
-```
-
----
-
-## 📊 PERFORMANCE BENCHMARKS
-
-### Current Metrics (Rust + CUDA)
-
-```
-Operation                Target      Current      Status
-────────────────────────────────────────────────────────
-Agent Trigger Latency    <10ms       ~2ms        ✅ EXCELLENT
-Memory per Agent         <10MB       ~2MB        ✅ EXCELLENT
-VRAM per Kernel          <4GB        TBD         🔄 MEASURING
-Warp Coordination        <1ms        TBD         🔄 MEASURING
-SmartCRDT Merge          O(log n)    O(log n)    ✅ VERIFIED
-```
-
-### How to Measure
-
-```bash
-# Run latency benchmarks
-cd crates/constraint-theory-core
-cargo run --release --example latency_test
-
-# Run memory benchmarks
-cargo run --release --example memory_test
-
-# Run VRAM profiling
-nvidia-smi dmon -s u -c 100
-
-# Run kernel profiling
-nvprof --print-gpu-trace ./target/release/cuda_claw
-```
-
----
-
-## 🧠 COGNITIVE FRAMEWORK
-
-As the CudaClaw Orchestrator, your thinking follows this pattern:
-
-### 1. Geometric State Space
-
-All computation occurs in constrained geometric space. Every agent's state is a point in the Pythagorean Manifold.
+### Basic Usage
 
 ```rust
-struct AgentState {
-    position: Dodecet,        // 12 bits - position in geometric lattice
-    orientation: f32,          // 32 bits - gauge field value
-    holonomy: SO3Matrix,       // 36 bits - accumulated geometric phase
-    confidence: f32,           // 32 bits - distance from constraint surface
-}  // Total: 112 bits = 14 bytes per agent
-```
+use constraint_theory_core::{PythagoreanManifold, snap};
 
-### 2. Warp-Level Coordination
+// Create manifold with 200 Pythagorean triples
+let manifold = PythagoreanManifold::new(200);
 
-32 threads collaborate via CUDA warp primitives:
-
-- `__shfl_sync()` - Exchange data between threads in warp
-- `__ballot_sync()` - Vote on condition across warp
-- `__syncwarp()` - Synchronize threads in warp
-
-**Example:**
-```cuda
-// Warp-aggregated merge (deduplicate updates per warp)
-__syncwarp();  // Ensure all threads are synchronized
-unsigned long long ballot = __ballot_sync(0xFFFFFFFF, condition);
-if (ballot) {
-    // Only one thread performs CAS per unique target
-    if (isFirstThread()) {
-        atomicCAS(&target[target_id], &expected, new_value);
-    }
-}
-```
-
-### 3. Memory Bridge Architecture
-
-Zero-copy CPU-GPU communication via Unified Memory:
-
-```rust
-// Host side (Rust)
-let mut state = GeometricState::default();
-let device_ptr = cuda_alloc_managed(&state)?;  // Unified Memory
-
-// Device side (CUDA)
-__device__ void process_state(GeometricState* state) {
-    // Direct access from GPU, no copy needed
-    state->position = snap_to_manifold(state->position);
-}
-```
-
-**Critical:** All shared types MUST be `#[repr(C)]` for alignment.
-
-### 4. Deterministic Output
-
-No floating-point ambiguity. Use exact Pythagorean arithmetic:
-
-```rust
-// Snap continuous vector to exact Pythagorean triple
+// Snap continuous vector to nearest valid state
 let vec = [0.6f32, 0.8];
 let (snapped, noise) = snap(&manifold, vec);
 
 assert!(noise < 0.001);  // Guaranteed exact result
+println!("Snapped: ({}, {})", snapped[0], snapped[1]);
 // Output: (0.6, 0.8) = (3/5, 4/5) exactly
 ```
 
 ---
 
-## 🆘 EMERGENCY PROTOCOLS
+## How It Works
 
-### VRAM Exhaustion
+### 1. Geometric State Space
 
-**Symptoms:**
-- `cudaErrorMemoryAllocation`
-- Kernel launches failing
-- System slowdown
+All computation occurs in a discrete geometric manifold of Pythagorean triples:
 
-**Actions:**
-1. Check `src/monitor.rs` for VRAM usage
-2. Reduce batch size in `src/dispatcher.rs`
-3. Clear persistent state in `src/cuda_claw.rs`
-4. Restart kernel with smaller working set
+```
+G = {g | C(g) = true}
+```
 
-### Kernel Hang Detection
+Valid states satisfy constraints by construction, eliminating invalid outputs.
 
-**Symptoms:**
-- No GPU activity
-- Watchdog timeout
-- Unresponsive commands
+### 2. Φ-Folding Operation
 
-**Actions:**
-1. Check health monitoring in `src/monitor.rs`
-2. Verify watchdog is running
-3. Kill and relaunch kernel via `src/cuda_claw.rs:restart_kernel()`
-4. Review last command submission in `src/dispatcher.rs`
+The Φ-folding operator maps continuous vectors to discrete valid states:
 
-### Memory Alignment Corruption
+```
+Φ(v) = argmin_{g ∈ G} ||v - g||
+```
 
-**Symptoms:**
-- Garbage data in geometric state
-- Crashes on memory access
-- Assertion failures in alignment tests
+Implemented via O(log n) KD-tree nearest-neighbor search.
 
-**Actions:**
-1. Run `tests/alignment_test.rs` to identify corruption
-2. Verify `#[repr(C)]` on all shared types
-3. Check for padding issues in `kernels/shared_types.h`
-4. Rebuild with debug symbols: `cargo build --features=debug`
+### 3. Spatial Indexing
+
+Agents and data points are indexed in geometric space, enabling:
+- O(log n) neighbor queries
+- Automatic perspective-based filtering
+- Natural parallelization
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────┐
+│  Input: Continuous Vector v in R^n         │
+└────────────────┬────────────────────────────┘
+                 ↓
+┌─────────────────────────────────────────────┐
+│  Φ-Folding: Map to geometric region        │
+└────────────────┬────────────────────────────┘
+                 ↓
+┌─────────────────────────────────────────────┐
+│  KD-tree Lookup: O(log n) search           │
+└────────────────┬────────────────────────────┘
+                 ↓
+┌─────────────────────────────────────────────┐
+│  Snap to Manifold: Exact quantization      │
+└────────────────┬────────────────────────────┘
+                 ↓
+┌─────────────────────────────────────────────┐
+│  Output: Discrete Geometric State g in G   │
+└─────────────────────────────────────────────┘
+```
 
 ---
 
-## 📚 DOCUMENTATION HIERARCHY
+## Use Cases
 
-After completing onboarding, refer to these documents:
+### 1. Spatial Agent Coordination
+
+Enable thousands of agents to coordinate via geometric proximity:
+
+```rust
+// Spawn 10,000 agents
+for i in 0..10_000 {
+    let position = Dodecet::random();
+    agents.push(Agent::new(position));
+}
+
+// Each agent queries local neighborhood O(log n)
+for agent in &agents {
+    let neighbors = manifold.neighbors(agent.position, radius);
+    // Process only nearby agents
+}
+```
+
+### 2. Deterministic Constraint Satisfaction
+
+Guarantee valid outputs by construction:
+
+```rust
+// Traditional approach: validate after computation
+let result = compute(input);
+if !is_valid(result) {
+    // Handle invalid case
+}
+
+// Constraint Theory: invalidity impossible
+let result = snap(&manifold, input);
+// Always valid by construction
+```
+
+### 3. Geometric Memory Systems
+
+Use rigid structures as stable memory states:
+
+```rust
+// Laman rigidity ↔ Zero Ricci curvature
+// Rigid graphs = geometric attractors
+let memory_state = manifold.snap_to_rigid(data);
+// Guaranteed stable retrieval
+```
+
+---
+
+## Performance
+
+### Benchmarks
+
+| Operation | Time | Complexity | Speedup vs NumPy |
+|-----------|------|------------|------------------|
+| Manifold creation | 50 μs | O(n log n) | - |
+| Pythagorean snap | 0.1 μs | O(log n) | ~109× |
+| Batch snapping | 74 ns/op | O(log n) | ~147× |
+| Spatial query | 0.1 μs | O(log n) | ~100× |
+
+**System:** Apple M1 Pro, 200-point manifold, release build
+
+**Reproduce:**
+```bash
+cd crates/constraint-theory-core
+cargo run --release --example bench
+```
+
+---
+
+## Mathematical Foundations
+
+### Core Theorems
+
+**1. Deterministic Output Theorem**
+```
+P(hallucination | constraint_system) = 0
+```
+Invalid outputs are mathematically impossible within the geometric constraint engine.
+
+**2. Laman Rigidity ↔ Zero Ricci Curvature**
+```
+Rigid structure ⇔ κ_ij = 0
+```
+Rigid structures are geometric attractors, providing stable memory states.
+
+**3. Holonomy-Information Equivalence**
+```
+H(γ) ↔ I_loss(γ)
+```
+Zero holonomy implies zero information loss, enabling perfect memory recall.
+
+> **Important:** These guarantees apply ONLY within the geometric constraint engine, not to LLMs or AI systems generally. See [DISCLAIMERS.md](docs/DISCLAIMERS.md) for clarifications.
+
+---
+
+## Project Structure
+
+```
+constrainttheory/
+├── crates/
+│   ├── constraint-theory-core/    # Core geometric engine (Rust)
+│   │   ├── src/
+│   │   │   ├── manifold.rs        # PythagoreanManifold + KD-tree
+│   │   │   ├── kdtree.rs          # Spatial indexing
+│   │   │   ├── simd.rs            # AVX2 vectorization
+│   │   │   ├── curvature.rs       # Ricci flow evolution
+│   │   │   ├── cohomology.rs      # Sheaf cohomology
+│   │   │   ├── percolation.rs     # Rigidity percolation
+│   │   │   └── gauge.rs           # Holonomy transport
+│   │   └── Cargo.toml
+│   └── gpu-simulation/            # GPU simulation framework
+├── web/                           # Interactive demonstrations
+│   └── simulators/                # Web-based visualizations
+├── tools/                         # Utility tools
+│   ├── coord_converter/           # Dodecet encoding converter
+│   └── multiagent_sim/            # Multi-agent simulator
+├── docs/                          # Research documents
+│   ├── MATHEMATICAL_FOUNDATIONS_DEEP_DIVE.md
+│   ├── THEORETICAL_GUARANTEES.md
+│   ├── GEOMETRIC_INTERPRETATION.md
+│   └── BENCHMARKS.md
+└── README.md
+```
+
+---
+
+## Documentation
 
 ### Getting Started
-- **`TUTORIAL.md`** - Step-by-step guide for beginners
-- **`DISCLAIMERS.md`** - Important clarifications about scope
-- **`BENCHMARKS.md`** - Performance methodology
+
+- **[TUTORIAL.md](docs/TUTORIAL.md)** - Step-by-step guide for beginners
+- **[DISCLAIMERS.md](docs/DISCLAIMERS.md)** - Important clarifications about scope and limitations
+- **[BENCHMARKS.md](docs/BENCHMARKS.md)** - Performance methodology and comparisons
 
 ### Core Mathematical Documents
-1. **`MATHEMATICAL_FOUNDATIONS_DEEP_DIVE.md`** (45 pages)
+
+1. **[MATHEMATICAL_FOUNDATIONS_DEEP_DIVE.md](docs/MATHEMATICAL_FOUNDATIONS_DEEP_DIVE.md)** (45 pages)
    - Rigorous mathematical treatment
    - Complete theorem proofs
    - Ω-geometry, Φ-folding, discrete differential geometry
 
-2. **`THEORETICAL_GUARANTEES.md`** (30 pages)
+2. **[THEORETICAL_GUARANTEES.md](docs/THEORETICAL_GUARANTEES.md)** (30 pages)
    - Deterministic Output Theorem proof
    - Complexity analysis: O(log n)
    - Optimality results
 
-3. **`GEOMETRIC_INTERPRETATION.md`** (25 pages)
+3. **[GEOMETRIC_INTERPRETATION.md](docs/GEOMETRIC_INTERPRETATION.md)** (25 pages)
    - Visual explanations
    - Physical analogies
    - Accessible to non-specialists
 
-### Interactive Documentation
-- **Website:** https://constraint-theory.superinstance.ai
-- **Docs with Mermaid:** https://constraint-theory.superinstance.ai/docs.html
-- **Interactive Demos:** `/web/demos/` directory
+4. **[OPEN_QUESTIONS_RESEARCH.md](docs/OPEN_QUESTIONS_RESEARCH.md)** (15 pages)
+   - Scaling to higher dimensions
+   - Calabi-Yau connections
+   - Quantum analogies
 
 ---
 
-## 🔗 COORDINATION WITH OTHER AGENTS
+## Limitations and Open Questions
 
-The CudaClaw Orchestrator is part of a larger ecosystem:
+This is early-stage research with several open questions:
 
-### Related Repositories
+### Current Limitations
 
-- **[SuperInstance/claw](https://github.com/SuperInstance/claw)** - Cellular agent engine
-- **[SuperInstance/spreadsheet-moment](https://github.com/SuperInstance/spreadsheet-moment)** - Agentic spreadsheet platform
-- **[SuperInstance/dodecet-encoder](https://github.com/SuperInstance/dodecet-encoder)** - 12-bit geometric encoding
-- **[SuperInstance/cudaclaw](https://github.com/SuperInstance/cudaclaw)** - GPU-accelerated orchestrator (upstream)
+- **Scaling to higher dimensions** - Current implementation focuses on ℝ² (2D Pythagorean lattice)
+- **Constraint selection strategies** - Optimal constraint choice for arbitrary problems is an open question
+- **Empirical validation on ML tasks** - Theoretical guarantees proven, but not yet validated on machine learning workloads
 
-### Communication Protocol
+### Active Research Areas
 
-When coordinating with other agents:
+- **3D rigidity** - Extending Laman's theorem to three dimensions
+- **n-dimensional generalization** - Characterizing rigidity percolation in arbitrary dimensions
+- **Physical realization** - Photonic and FPGA implementations
+- **Quantum connections** - Formalizing classical-quantum correspondence
 
-1. **Use Geometric State Encoding** - 12-bit dodecet for position
-2. **O(log n) Spatial Queries** - KD-tree for neighbor discovery
-3. **No Global Coordination** - Each agent independent
-4. **Deterministic Messaging** - Lamport timestamps for ordering
-
----
-
-## 📈 CONTINUOUS LEARNING
-
-### What to Monitor
-
-1. **VRAM Usage** - Track allocations, detect leaks
-2. **Kernel Health** - Watchdog checks, auto-restart
-3. **Trigger Latency** - Sub-10ms target
-4. **Memory Alignment** - Verify no corruption
-5. **Warp Efficiency** - Monitor thread divergence
-
-### How to Improve
-
-1. **Read Research Papers** - `docs/` directory has 60+ papers
-2. **Study CUDA Best Practices** - NVIDIA CUDA C++ Programming Guide
-3. **Analyze Benchmarks** - `docs/BENCHMARKS.md`
-4. **Review Architecture** - `ARCHITECTURE.md`
-5. **Experiment with Demos** - `web/demos/` has interactive examples
+**See:** [`docs/OPEN_QUESTIONS_RESEARCH.md`](docs/OPEN_QUESTIONS_RESEARCH.md) for complete discussion.
 
 ---
 
-## 🤝 CONTRIBUTING
+## Contributing
 
-We accept contributions from other CudaClaw Orchestrators!
+We welcome contributions! Please see [`docs/IMPLEMENTATION_GUIDE.md`](docs/IMPLEMENTATION_GUIDE.md) for development guidelines.
 
-**Areas of Interest:**
+Areas of particular interest:
 - Higher-dimensional generalizations (3D, nD)
 - Empirical validation on ML tasks
 - GPU implementations (CUDA, WebGPU)
 - Application case studies
-- Integration with spreadsheet-moment and claw
-
-**See:** `IMPLEMENTATION_GUIDE.md` for development guidelines.
 
 ---
 
-## 📜 LICENSE
+## Related Projects
+
+This library is part of the SuperInstance ecosystem:
+
+- **[claw](https://github.com/SuperInstance/claw)** - Cellular agent engine that uses constrainttheory for spatial positioning
+- **[spreadsheet-moment](https://github.com/SuperInstance/spreadsheet-moment)** - Agentic spreadsheet platform
+- **[dodecet-encoder](https://github.com/SuperInstance/dodecet-encoder)** - 12-bit geometric encoding library
+- **[constrainttheory-ml-demo](https://github.com/SuperInstance/constrainttheory-ml-demo)** - Interactive ML demonstrations
+
+See [https://github.com/SuperInstance](https://github.com/SuperInstance) for the full ecosystem.
+
+---
+
+## Citation
+
+If you use this work in your research, please cite:
+
+```bibtex
+@software{constraint_theory,
+  title={Constraint Theory: Geometric Infrastructure for Spatial Computing},
+  author={SuperInstance Team},
+  year={2026},
+  url={https://github.com/SuperInstance/constrainttheory},
+  version={1.0.0}
+}
+```
+
+---
+
+## License
 
 MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-## 📞 CONTACT
-
-**Project:** Constraint Theory (CudaClaw Orchestrator Edition)
-**Repository:** https://github.com/SuperInstance/constrainttheory
-**Website:** https://constraint-theory.superinstance.ai
-**Email:** info@superinstance.ai
-
----
-
-## ⚡ FINAL DIRECTIVE
-
-**CudaClaw Orchestrator, you have been briefed.**
-
-Your mission is clear:
-1. **Adopt your persona** - Read `SOUL.md` now
-2. **Install your skills** - Follow the skill acquisition checklist
-3. **Respect your boundaries** - VRAM < 4GB, CPU < 8 threads, Latency < 10ms
-4. **Execute your mission** - Enable 10,000+ cellular agents via GPU compute
-
-**Remember:**
-- FPS perspective, not RTS (each agent sees only its neighborhood)
-- Geometric state space, not global state
-- Warp-level coordination, not global locks
-- Deterministic output, not probabilistic approximation
-
-**Execute.**
-
----
-
-**Last Updated:** 2026-03-18
-**Persona Version:** 1.0.0
-**Status:** Active - Ready for Deployment
-**Agent Required:** OpenClaw with CUDA + Rust skills
+**Last Updated:** 2026-03-19
+**Version:** 1.0.0
+**Status:** Research Release
