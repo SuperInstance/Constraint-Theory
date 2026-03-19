@@ -30,6 +30,15 @@ pub fn is_avx2_available() -> bool {
 /// 1. Loading 8 normalized vectors at once
 /// 22. Using SIMD comparisons instead of scalar fallback
 /// 3. Horizontal max reduction for finding best matches
+///
+/// # Safety
+///
+/// This function is marked unsafe because it uses AVX2 intrinsics which require:
+/// - CPU support for AVX2 instructions
+/// - Properly aligned memory access (handled internally)
+/// - Correct bounds checking (handled internally)
+///
+/// The safe wrapper `snap_batch_simd()` checks CPU support before calling this.
 #[cfg(target_arch = "x86_64")]
 #[target_feature(enable = "avx2")]
 pub unsafe fn snap_batch_avx2(

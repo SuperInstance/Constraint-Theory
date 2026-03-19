@@ -2,14 +2,27 @@
 
 use std::collections::HashMap;
 
+/// Result of rigidity percolation analysis
+///
+/// Provides comprehensive metrics about the rigidity properties of a graph
+/// based on Laman's theorem for structural rigidity.
 pub struct RigidityResult {
+    /// Whether the graph satisfies Laman's condition for minimal rigidity
     pub is_rigid: bool,
+    /// The rank of the rigidity matrix (number of independent constraints)
     pub rank: usize,
+    /// Deficiency from minimal rigidity (0 = minimally rigid)
     pub deficiency: usize,
+    /// Number of connected clusters in the graph
     pub n_clusters: usize,
+    /// Fraction of nodes that are part of rigid clusters
     pub rigid_fraction: f32,
 }
 
+/// Fast union-find data structure for rigidity percolation
+///
+/// Uses path compression and union by rank for efficient
+/// connectivity analysis of large graphs.
 pub struct FastPercolation {
     parent: Vec<usize>,
     rank: Vec<usize>,
@@ -17,6 +30,7 @@ pub struct FastPercolation {
 }
 
 impl FastPercolation {
+    /// Creates a new percolation structure for n nodes
     pub fn new(n: usize) -> Self {
         Self {
             parent: (0..n).collect(),
@@ -53,6 +67,20 @@ impl FastPercolation {
         }
     }
 
+    /// Computes rigidity metrics for a graph
+    ///
+    /// Uses Laman's theorem to determine if a graph is minimally rigid.
+    /// A graph with V vertices is minimally rigid if it has exactly 2V-3 edges
+    /// and every subgraph with k vertices has at most 2k-3 edges.
+    ///
+    /// # Arguments
+    ///
+    /// * `edges` - Slice of (u, v) tuples representing edges
+    /// * `n_nodes` - Total number of nodes in the graph
+    ///
+    /// # Returns
+    ///
+    /// RigidityResult containing comprehensive rigidity metrics
     pub fn compute_rigidity(&mut self, edges: &[(usize, usize)], n_nodes: usize) -> RigidityResult {
         for &(u, v) in edges {
             if u < n_nodes && v < n_nodes {

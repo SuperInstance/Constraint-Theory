@@ -174,6 +174,12 @@ pub struct ConstraintBlock {
     pub persistence_hash: u64,
 }
 
+impl Default for ConstraintBlock {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ConstraintBlock {
     /// Create a new constraint block with default values
     pub fn new() -> Self {

@@ -169,7 +169,7 @@ impl KDTree {
         best_point: &mut [f32; 2],
         best_idx: &mut usize,
         best_dist_sq: &mut f32,
-        depth: usize,
+        _depth: usize,
     ) {
         match node {
             KDNode::Internal {
@@ -193,7 +193,7 @@ impl KDTree {
                     best_point,
                     best_idx,
                     best_dist_sq,
-                    depth + 1,
+                    _depth + 1,
                 );
 
                 // Check if we need to search the other side
@@ -206,7 +206,7 @@ impl KDTree {
                         best_point,
                         best_idx,
                         best_dist_sq,
-                        depth + 1,
+                        _depth + 1,
                     );
                 }
             }
@@ -258,7 +258,7 @@ impl KDTree {
         node: &KDNode,
         query: &[f32; 2],
         results: &mut NearestK,
-        depth: usize,
+        _depth: usize,
     ) {
         match node {
             KDNode::Internal {
@@ -275,13 +275,13 @@ impl KDTree {
                 };
 
                 // Search preferred side
-                self.nearest_k_recursive(&first.root, query, results, depth + 1);
+                self.nearest_k_recursive(&first.root, query, results, _depth + 1);
 
                 // Check if we need to search other side
                 if let Some(worst_dist) = results.worst_distance() {
                     let dist_to_split = query_val - *split_value;
                     if dist_to_split * dist_to_split < worst_dist {
-                        self.nearest_k_recursive(&second.root, query, results, depth + 1);
+                        self.nearest_k_recursive(&second.root, query, results, _depth + 1);
                     }
                 }
             }

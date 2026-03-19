@@ -94,6 +94,17 @@ impl PythagoreanManifold {
         &self.valid_states
     }
 
+    /// Snap a vector to the nearest Pythagorean triple
+    ///
+    /// Uses KD-tree for O(log N) nearest neighbor lookup.
+    ///
+    /// # Arguments
+    ///
+    /// * `vector` - Input 2D vector to snap
+    ///
+    /// # Returns
+    ///
+    /// Tuple of (snapped_vector, noise) where noise is 1 - resonance
     pub fn snap(&self, vector: [f32; 2]) -> ([f32; 2], f32) {
         let norm = (vector[0] * vector[0] + vector[1] * vector[1]).sqrt();
 
@@ -160,6 +171,12 @@ impl PythagoreanManifold {
         snap_batch_simd(&self.valid_states, vectors, results);
     }
 
+    /// Scalar batch snapping (fallback for non-SIMD or small batches)
+    ///
+    /// # Arguments
+    ///
+    /// * `vectors` - Input vectors to snap
+    /// * `results` - Output buffer (must have same length as vectors)
     pub fn snap_batch(&self, vectors: &[[f32; 2]], results: &mut [([f32; 2], f32)]) {
         for (i, &vec) in vectors.iter().enumerate() {
             results[i] = self.snap(vec);
@@ -167,6 +184,16 @@ impl PythagoreanManifold {
     }
 }
 
+/// Convenience function for snapping a vector
+///
+/// # Arguments
+///
+/// * `manifold` - The Pythagorean manifold to use
+/// * `vector` - Input 2D vector to snap
+///
+/// # Returns
+///
+/// Tuple of (snapped_vector, noise)
 pub fn snap(manifold: &PythagoreanManifold, vector: [f32; 2]) -> ([f32; 2], f32) {
     manifold.snap(vector)
 }
@@ -188,10 +215,10 @@ fn gcd(a: usize, b: usize) -> usize {
 
     while a != b {
         if a > b {
-            a = a - b;
+            a -= b;
             a = a >> a.trailing_zeros();
         } else {
-            b = b - a;
+            b -= a;
             b = b >> b.trailing_zeros();
         }
     }

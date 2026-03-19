@@ -15,7 +15,8 @@ impl RicciFlow {
         }
     }
 
-    pub fn default() -> Self {
+    /// Creates a default RicciFlow with alpha=0.1 and target_curvature=0.0
+    pub fn with_defaults() -> Self {
         Self::new(0.1, 0.0)
     }
 
