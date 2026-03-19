@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Constraint Theory Documentation - Complete guide with mermaid diagrams">
+  <title>Documentation - Constraint Theory</title>
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Mermaid JS -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <style>
+    .docs-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--spacing-20) var(--container-padding);
+    }
+
+    .docs-nav {
+      position: sticky;
+      top: var(--spacing-20);
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-6);
+      margin-bottom: var(--spacing-10);
+    }
+
+    .docs-nav h1 {
+      font-size: var(--text-heading-2xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--foreground);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .docs-nav p {
+      color: var(--muted-foreground);
+      margin-bottom: var(--spacing-4);
+    }
+
+    .docs-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-4);
+      background: var(--primary);
+      color: var(--primary-foreground);
+      border-radius: var(--radius-lg);
+      text-decoration: none;
+      font-weight: var(--font-weight-medium);
+      transition: all var(--duration-base) var(--ease-smooth);
+    }
+
+    .docs-nav a:hover {
+      background: oklch(0.65 0.18 230);
+      transform: translateY(-2px);
+    }
+
+    .docs-content {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-10);
+      line-height: var(--leading-relaxed);
+    }
+
+    .docs-content h1 {
+      font-size: var(--text-display-xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--foreground);
+      margin-bottom: var(--spacing-6);
+      padding-bottom: var(--spacing-4);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .docs-content h2 {
+      font-size: var(--text-heading-2xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--foreground);
+      margin-top: var(--spacing-10);
+      margin-bottom: var(--spacing-4);
+    }
+
+    .docs-content h3 {
+      font-size: var(--text-heading-xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--foreground);
+      margin-top: var(--spacing-8);
+      margin-bottom: var(--spacing-3);
+    }
+
+    .docs-content p {
+      color: var(--muted-foreground);
+      margin-bottom: var(--spacing-4);
+    }
+
+    .docs-content pre {
+      background: var(--background);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      overflow-x: auto;
+      margin-bottom: var(--spacing-6);
+    }
+
+    .docs-content code {
+      font-family: var(--font-mono);
+      font-size: var(--text-body-sm);
+      color: var(--primary);
+    }
+
+    .docs-content pre code {
+      color: var(--foreground);
+    }
+
+    .docs-content ul,
+    .docs-content ol {
+      margin-bottom: var(--spacing-4);
+      padding-left: var(--spacing-6);
+    }
+
+    .docs-content li {
+      color: var(--muted-foreground);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .docs-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: var(--spacing-6);
+    }
+
+    .docs-content th,
+    .docs-content td {
+      padding: var(--spacing-3) var(--spacing-4);
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .docs-content th {
+      background: var(--background);
+      color: var(--foreground);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .docs-content td {
+      color: var(--muted-foreground);
+    }
+
+    .mermaid {
+      margin: var(--spacing-8) 0;
+      background: var(--background);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-6);
+    }
+
+    .docs-content blockquote {
+      border-left: 4px solid var(--primary);
+      padding-left: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+      color: var(--muted-foreground);
+      font-style: italic;
+    }
+
+    .docs-content a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color var(--duration-base) var(--ease-smooth);
+    }
+
+    .docs-content a:hover {
+      color: oklch(0.65 0.18 230);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .docs-container {
+        padding: var(--spacing-10) var(--spacing-4);
+      }
+
+      .docs-content {
+        padding: var(--spacing-6);
+      }
+
+      .docs-content h1 {
+        font-size: var(--text-heading-xl);
+      }
+
+      .docs-content h2 {
+        font-size: var(--text-heading-lg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="docs-container">
+    <nav class="docs-nav">
+      <h1>📚 Constraint Theory Documentation</h1>
+      <p>Complete project documentation with interactive diagrams</p>
+      <a href="/">← Back to Home</a>
+    </nav>
+
+    <div class="docs-content" id="readme-content">
+      <p>Loading documentation...</p>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Mermaid
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        primaryColor: 'oklch(0.72 0.19 145)',
+        primaryTextColor: 'oklch(0.98 0.005 145)',
+        primaryBorderColor: 'oklch(0.25 0.02 145)',
+        lineColor: 'oklch(0.72 0.19 145)',
+        secondaryColor: 'oklch(0.65 0.18 230)',
+        tertiaryColor: 'oklch(0.12 0.01 145)',
+        background: 'oklch(0.08 0.01 145)',
+        mainBkg: 'oklch(0.12 0.01 145)',
+        nodeBorder: 'oklch(0.25 0.02 145)',
+        clusterBkg: 'oklch(0.10 0.01 145)',
+        clusterBorder: 'oklch(0.25 0.02 145)',
+        titleColor: 'oklch(0.98 0.005 145)',
+        edgeLabelBackground: 'oklch(0.12 0.01 145)',
+        actorBkg: 'oklch(0.12 0.01 145)',
+        actorBorder: 'oklch(0.25 0.02 145)',
+        actorTextColor: 'oklch(0.98 0.005 145)',
+        actorLineColor: 'oklch(0.72 0.19 145)',
+        signalColor: 'oklch(0.98 0.005 145)',
+        signalTextColor: 'oklch(0.98 0.005 145)',
+        labelBoxBkgColor: 'oklch(0.12 0.01 145)',
+        labelBoxBorderColor: 'oklch(0.25 0.02 145)',
+        labelTextColor: 'oklch(0.98 0.005 145)',
+        loopTextColor: 'oklch(0.98 0.005 145)',
+        noteBorderColor: 'oklch(0.25 0.02 145)',
+        noteBkgColor: 'oklch(0.10 0.01 145)',
+        noteTextColor: 'oklch(0.98 0.005 145)',
+        activationBorderColor: 'oklch(0.72 0.19 145)',
+        activationBkgColor: 'oklch(0.72 0.19 145 / 0.1)',
+        sequenceNumberColor: 'oklch(0.98 0.005 145)'
+      },
+      securityLevel: 'loose',
+      fontFamily: 'Geist, sans-serif'
+    });
+
+    // Fetch and render README
+    async function loadReadme() {
+      try {
+        const response = await fetch('/README.md');
+        const markdown = await response.text();
+
+        // Parse markdown (basic implementation)
+        const html = parseMarkdown(markdown);
+        document.getElementById('readme-content').innerHTML = html;
+
+        // Re-initialize Mermaid after content is loaded
+        mermaid.init(undefined, '.mermaid');
+      } catch (error) {
+        document.getElementById('readme-content').innerHTML = `
+          <p>Error loading documentation: ${error.message}</p>
+          <p>Please visit <a href="https://github.com/SuperInstance/constrainttheory">GitHub</a> to view the documentation.</p>
+        `;
+      }
+    }
+
+    // Simple markdown parser
+    function parseMarkdown(markdown) {
+      let html = markdown;
+
+      // Code blocks with mermaid
+      html = html.replace(/```mermaid\n([\s\S]*?)```/g, '<pre class="mermaid">$1</pre>');
+
+      // Code blocks
+      html = html.replace(/```\w*\n([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+
+      // Inline code
+      html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+      // Headers
+      html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+      html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+      html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+
+      // Bold
+      html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+      // Italic
+      html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
+      // Links
+      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+      // Images
+      html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />');
+
+      // Blockquotes
+      html = html.replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>');
+
+      // Unordered lists
+      html = html.replace(/^\s*[-*]\s+(.*$)/gim, '<li>$1</li>');
+      html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+
+      // Ordered lists
+      html = html.replace(/^\s*\d+\.\s+(.*$)/gim, '<li>$1</li>');
+
+      // Tables (basic support)
+      const lines = html.split('\n');
+      let inTable = false;
+      let tableHtml = '';
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        if (line.includes('|')) {
+          if (!inTable) {
+            inTable = true;
+            tableHtml = '<table>\n';
+          }
+
+          const cells = line.split('|').filter(c => c.trim() !== '');
+          const isHeader = i > 0 && lines[i - 1].includes('|') && lines[i - 1].includes('---');
+          const tag = isHeader || line.includes('---') ? 'th' : 'td';
+
+          if (!line.includes('---')) {
+            tableHtml += '<tr>';
+            cells.forEach(cell => {
+              tableHtml += `<${tag}>${cell.trim()}</${tag}>`;
+            });
+            tableHtml += '</tr>\n';
+          }
+        } else {
+          if (inTable) {
+            tableHtml += '</table>\n';
+            html = html.replace(/(\|[^\n]+\n)+/, tableHtml);
+            tableHtml = '';
+            inTable = false;
+          }
+        }
+      }
+
+      // Paragraphs
+      html = html.replace(/\n\n/g, '</p><p>');
+      html = '<p>' + html + '</p>';
+
+      // Clean up empty paragraphs
+      html = html.replace(/<p>\s*<\/p>/g, '');
+      html = html.replace(/<p>(<h[1-6]>)/g, '$1');
+      html = html.replace(/(<\/h[1-6]>)<\/p>/g, '$1');
+      html = html.replace(/<p>(<ul>)/g, '$1');
+      html = html.replace(/(<\/ul>)<\/p>/g, '$1');
+      html = html.replace(/<p>(<ol>)/g, '$1');
+      html = html.replace(/(<\/ol>)<\/p>/g, '$1');
+      html = html.replace(/<p>(<pre>)/g, '$1');
+      html = html.replace(/(<\/pre>)<\/p>/g, '$1');
+      html = html.replace(/<p>(<blockquote>)/g, '$1');
+      html = html.replace(/(<\/blockquote>)<\/p>/g, '$1');
+      html = html.replace(/<p>(<table>)/g, '$1');
+      html = html.replace(/(<\/table>)<\/p>/g, '$1');
+
+      return html;
+    }
+
+    // Load documentation on page load
+    document.addEventListener('DOMContentLoaded', loadReadme);
+  </script>
+</body>
+</html>
