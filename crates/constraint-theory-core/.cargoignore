@@ -1,0 +1,30 @@
+# Ignore build artifacts
+/target/
+
+# Ignore documentation files (not needed in crate)
+CHANGELOG.md
+OPTIMIZATION_ROADMAP.md
+PERFORMANCE_ANALYSIS_SUMMARY.md
+PERFORMANCE_REPORT_ROUND_8.md
+PROFILING_GUIDE.md
+QUICK_REFERENCE.md
+RELEASE_NOTES_v1.0.0.md
+ROUND_*.md
+TUTORIAL_ROUND_8.md
+
+# Ignore development files
+/.github/
+/.git/
+.gitignore
+.cargo/
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
