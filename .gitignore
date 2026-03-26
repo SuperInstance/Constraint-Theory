@@ -3,6 +3,12 @@ target/
 **/target/
 Cargo.lock
 
+# Cloudflare
+.wrangler/
+
+# Node
+node_modules/
+
 # Python
 __pycache__/
 *.py[cod]
@@ -56,3 +62,6 @@ out/
 .pytest_cache/
 .coverage
 .coverage.*
+
+# Misc artifacts
+*.mhtml
