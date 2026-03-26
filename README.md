@@ -158,7 +158,43 @@ Use rigid structures as stable memory states:
 let memory_state = manifold.snap_to_rigid(data);
 // Guaranteed stable retrieval
 ```
+🚀 Quick Start: Enforce Constraints on Your Agents
+The constraint-theory-core engine allows you to define "Super-Constraints" that govern agent behavior.
+1. Add the Crate
+bash
 
+cargo add constraint_theory_core
+
+Use code with caution.
+2. Define a Geometric Constraint
+Ensure your agent stays within a 2D "logical" boundary (e.g., preventing it from over-engineering beyond a specific architecture depth).
+rust
+
+use constraint_theory_core::{ConstraintEngine, Point};
+
+fn main() {
+    let mut engine = ConstraintEngine::new();
+    
+    // Define the 'Safe Zone' for code complexity
+    engine.add_boundary("complexity_cap", vec![Point(0,0), Point(10,10)]);
+    
+    // Audit an agent's current state (e.g., from a Claude Code log)
+    let agent_state = Point(12, 5); // This agent is drifting!
+    
+    if let Err(drift) = engine.check_constraint(agent_state) {
+        println!("⚠️ Constraint Violation: Agent drifted by {} units", drift.magnitude);
+        // Trigger OpenClaw to 'pull' the agent back
+    }
+}
+
+Use code with caution.
+3. Run the Watchdog Example
+To see how this integrates with live Claude Code logs:
+bash
+
+cargo run --example claude_watchdog
+
+Use code with caution.
 ---
 
 ## Performance
@@ -311,7 +347,6 @@ This library is part of the SuperInstance ecosystem:
 - **[claw](https://github.com/SuperInstance/claw)** - Cellular agent engine that uses constrainttheory for spatial positioning
 - **[spreadsheet-moment](https://github.com/SuperInstance/spreadsheet-moment)** - Agentic spreadsheet platform
 - **[dodecet-encoder](https://github.com/SuperInstance/dodecet-encoder)** - 12-bit geometric encoding library
-- **[constrainttheory-ml-demo](https://github.com/SuperInstance/constrainttheory-ml-demo)** - Interactive ML demonstrations
 
 See [https://github.com/SuperInstance](https://github.com/SuperInstance) for the full ecosystem.
 
@@ -341,4 +376,3 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 **Last Updated:** 2026-03-19
 **Version:** 1.0.0
-**Status:** Research Release
