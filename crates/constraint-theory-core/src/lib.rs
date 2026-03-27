@@ -41,7 +41,7 @@
 //! }
 //! ```
 
-#![warn(missing_docs)]
+#![deny(missing_docs)]
 #![warn(unused_extern_crates)]
 
 pub mod cohomology;
